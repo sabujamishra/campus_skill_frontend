@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Dark Mode Theme (Hinglish: Raat ke waqt app ka look) -->
+    <style name="Base.Theme.CampusSkill" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Dark mode mein bhi blue brand color hi rakha hai -->
+        <item name="colorPrimary">@color/button_blue</item>
+        <item name="colorSecondary">@color/button_blue</item>
+        <item name="colorTertiary">@color/button_blue</item>
+        <item name="colorAccent">@color/button_blue</item>
+        <item name="colorControlActivated">@color/button_blue</item>
+        
+        <!-- Input fields ki styling (Same as light mode) -->
+        <item name="textInputStyle">@style/CustomTextInputLayout</item>
+        <item name="editTextStyle">@style/CustomEditText</item>
+    </style>
+</resources>

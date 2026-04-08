@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo ke piche ka gol ghera (Hinglish: Round background for logo) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#F0F4FF" /> <!-- Light blueish white color -->
+</shape>

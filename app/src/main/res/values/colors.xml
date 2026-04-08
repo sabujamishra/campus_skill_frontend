@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App ke saare color resources (Hinglish: Rango ki list) -->
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="navy_blue">#0D1B3E</color>
+    <color name="light_grey_field">#EAEAEA</color>
+    <color name="button_blue">#2196F3</color> <!-- Hamara main brand color -->
+    <color name="text_grey">#757575</color> <!-- Hint ke liye grey -->
+    <color name="darker_grey">#333333</color> <!-- Dark border ke liye -->
+    <color name="error">#B00020</color>
+    <color name="background">#FFFFFF</color>
+</resources>

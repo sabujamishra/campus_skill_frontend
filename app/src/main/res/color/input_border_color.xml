@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Input border ka color decide karne wala selector -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Jab field focused hai toh blue dikhao -->
+    <item android:color="@color/button_blue" android:state_focused="true" />
+    <!-- Jab field khali/unfocused hai toh darker grey dikhao -->
+    <item android:color="@color/darker_grey" />
+</selector>

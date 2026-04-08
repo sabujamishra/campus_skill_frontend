@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Splash Screen ka design screenshot ke hisaab se (Hinglish: User ke diye gaye design ke mutabiq) -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/button_blue"
+    android:fitsSystemWindows="false"
+    tools:context=".SplashActivity">
+
+    <!-- Branding Group: Beech mein logo aur text (Hinglish: Beech mein brand aur logo) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Animated Logo humne tint karke safed (white) kar diya hai -->
+        <ImageView
+            android:id="@+id/logo_view"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/animated_logo"
+            android:backgroundTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CampusSkill"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skills for Students, by Students"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Dots: Screenshot ke jaise 3 dots neeche (Hinglish: Neeche ke teen dots) -->
+
+</RelativeLayout>

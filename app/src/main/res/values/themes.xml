@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme (Hinglish: App ki global styling) -->
+    <style name="Base.Theme.CampusSkill" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Brand colors yahan set kiye hain -->
+        <item name="colorPrimary">@color/button_blue</item>
+        <item name="colorSecondary">@color/button_blue</item>
+        <item name="colorTertiary">@color/button_blue</item>
+        <item name="colorAccent">@color/button_blue</item>
+        <item name="colorControlActivated">@color/button_blue</item> <!-- Focus hone par blue dikhane ke liye -->
+        
+        <!-- Input fields ki specific styling -->
+        <item name="textInputStyle">@style/CustomTextInputLayout</item>
+        <item name="editTextStyle">@style/CustomEditText</item>
+    </style>
+
+    <!-- Outlined input box ki customized settings -->
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/input_border_color</item> <!-- Border color selector -->
+        <item name="hintTextColor">@color/input_hint_color</item> <!-- Hint focus color -->
+        <item name="android:textColorHint">@color/text_grey</item> <!-- Default hint color -->
+    </style>
+
+    <!-- Input text (Jo user type karta hai) ki styling -->
+    <style name="CustomEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/button_blue</item> <!-- Type kiya hua text blue dikhega -->
+        <item name="android:textCursorDrawable">@drawable/blue_cursor</item> <!-- Cursor theme color pick karega (Blue) -->
+        <item name="android:textColorHighlight">#402196F3</item> <!-- Text select karne par blue highlight -->
+    </style>
+
+    <style name="Theme.CampusSkill" parent="Base.Theme.CampusSkill" />
+</resources>
