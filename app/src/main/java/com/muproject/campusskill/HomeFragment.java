@@ -1,6 +1,7 @@
 package com.muproject.campusskill;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Marketplace Home screen (Hinglish: Search aur Category filter dono yahan handle ho rahe hain)
+// Marketplace Home screen (Hinglish: Lifecycle safety aur non-blocking load add kiya gaya hai)
 public class HomeFragment extends Fragment {
 
     private RecyclerView rvServices, rvCategories;
@@ -44,20 +45,19 @@ public class HomeFragment extends Fragment {
         rvCategories = view.findViewById(R.id.rvCategories);
 
         // Setup Services List
-        rvServices.setLayoutManager(new LinearLayoutManager(requireContext())); 
+        rvServices.setLayoutManager(new LinearLayoutManager(getContext())); 
         serviceAdapter = new ServiceAdapter(new ArrayList<>());
         rvServices.setAdapter(serviceAdapter);
 
         // Setup Categories List
-        rvCategories.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(new ArrayList<>(), category -> {
-            // Category click logic (Hinglish: Naya category select hone par list filter karo)
             currentCategoryId = (category.getId() == -1) ? null : category.getId();
             loadServices();
         });
         rvCategories.setAdapter(categoryAdapter);
 
-        // Search logic (Hinglish: Keyboard ka search button dabane par keyword bhej rahe hain)
+        // Search logic
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 loadServices();
@@ -71,21 +71,20 @@ public class HomeFragment extends Fragment {
         loadServices();
         loadHeaderProfile(view);
 
-        // "View All" logic (Hinglish: Saare services dekhne ke liye Marketplace par switch)
+        // "View All" logic
         view.findViewById(R.id.tvViewAllHome).setOnClickListener(v -> {
-            if (getParentFragment() instanceof DashboardFragment) {
-                ((com.google.android.material.bottomnavigation.BottomNavigationView) 
-                    requireActivity().findViewById(R.id.bottom_navigation)).setSelectedItemId(R.id.nav_services);
+            if (getParentFragment() instanceof DashboardFragment && getActivity() != null) {
+                View navView = getActivity().findViewById(R.id.bottom_navigation);
+                if (navView instanceof com.google.android.material.bottomnavigation.BottomNavigationView) {
+                    ((com.google.android.material.bottomnavigation.BottomNavigationView) navView).setSelectedItemId(R.id.nav_services);
+                }
             }
         });
 
         // FAB to open Create Service screen
         view.findViewById(R.id.fabCreateService).setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new CreateServiceFragment())
-                        .addToBackStack(null)
-                        .commit();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new CreateServiceFragment());
             }
         });
 
@@ -96,6 +95,7 @@ public class HomeFragment extends Fragment {
         RetrofitClient.getApiService().getCategories().enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                if (!isAdded() || getContext() == null) return;
                 if (response.isSuccessful() && response.body() != null) {
                     List<Category> cats = new ArrayList<>();
                     cats.add(new Category(-1, "All", 0));
@@ -112,30 +112,22 @@ public class HomeFragment extends Fragment {
         String searchQuery = etSearch.getText().toString().trim();
         if (searchQuery.isEmpty()) searchQuery = null;
 
-        android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(requireContext());
-        progressDialog.setMessage("Searching marketplace...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        // API call with both Category and Search parameters (Hinglish: Dono filters ke saath call)
+        // Lifecycle tip: No blocking ProgressDialog for discovery screens, it causes crashes on back navigation
         RetrofitClient.getApiService().getServices(currentCategoryId, searchQuery).enqueue(new Callback<ServiceListResponse>() {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
-                progressDialog.dismiss();
+                if (!isAdded() || getContext() == null) return;
                 if (response.isSuccessful() && response.body() != null) {
                     serviceAdapter.setServices(response.body().getData());
-                    if (response.body().getData().isEmpty()) {
-                        Toast.makeText(requireContext(), "No services found match your search", Toast.LENGTH_SHORT).show();
-                    }
                 } else {
-                    Toast.makeText(requireContext(), "Failed to load services", Toast.LENGTH_SHORT).show();
+                    Log.e("HomeFragment", "Service load failed: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ServiceListResponse> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(requireContext(), "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (!isAdded() || getContext() == null) return;
+                Log.e("HomeFragment", "Network Error in Home", t);
             }
         });
     }
@@ -145,9 +137,10 @@ public class HomeFragment extends Fragment {
         RetrofitClient.getApiService().getMyProfile().enqueue(new Callback<com.muproject.campusskill.model.ProfileResponse>() {
             @Override
             public void onResponse(Call<com.muproject.campusskill.model.ProfileResponse> call, Response<com.muproject.campusskill.model.ProfileResponse> response) {
+                if (!isAdded() || getContext() == null) return;
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     String img = response.body().getData().getProfileImage();
-                    if (img != null && !img.isEmpty()) {
+                    if (img != null && !img.isEmpty() && ivHeader != null) {
                         String url = img.startsWith("http") ? img : "https://lightgrey-dogfish-642647.hostingersite.com/" + img;
                         com.bumptech.glide.Glide.with(HomeFragment.this)
                                 .load(url)

@@ -1,6 +1,7 @@
 package com.muproject.campusskill;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// User's own services management (Hinglish: Yahan sirf logged-in user ki posts dikhengi)
+// User's own services management (Hinglish: Background loading safety aur lifecycle fixes)
 public class MyServicesFragment extends Fragment {
 
     private RecyclerView rvServices;
@@ -30,9 +31,17 @@ public class MyServicesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_services, container, false);
 
         rvServices = view.findViewById(R.id.rvMyServices);
-        view.findViewById(R.id.btnBackMyServices).setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        
+        android.widget.ImageView btnBack = view.findViewById(R.id.btnBackMyServices);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).goBack();
+                }
+            });
+        }
 
-        rvServices.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ServiceAdapter(new ArrayList<>());
         rvServices.setAdapter(adapter);
 
@@ -42,28 +51,24 @@ public class MyServicesFragment extends Fragment {
     }
 
     private void loadMyServices() {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
-        pd.setMessage("Fetching your creations...");
-        pd.show();
-
+        // Lifecycle Tip: No blocking dialog for non-action data loads to avoid navigation crashes
         RetrofitClient.getApiService().getMyServices().enqueue(new Callback<ServiceListResponse>() {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
-                pd.dismiss();
+                if (!isAdded() || getContext() == null) return;
+                
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.setServices(response.body().getData());
                     if (response.body().getData().isEmpty()) {
-                        Toast.makeText(requireContext(), "You haven't posted any services yet!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "No services found!", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(requireContext(), "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ServiceListResponse> call, Throwable t) {
-                pd.dismiss();
-                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (!isAdded()) return;
+                Log.e("MyServices", "Failed to load", t);
             }
         });
     }

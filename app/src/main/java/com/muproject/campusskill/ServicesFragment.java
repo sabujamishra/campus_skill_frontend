@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Market Discovery Fragment (Hinglish: Global marketplace jahan browse aur search ho sakti hai)
+// Market Discovery Fragment (Hinglish: Safe context fetching aur loading logic update kiya gaya hai)
 public class ServicesFragment extends Fragment {
 
     private RecyclerView rvServices;
@@ -36,18 +36,16 @@ public class ServicesFragment extends Fragment {
         etSearch = view.findViewById(R.id.etSearchMarket);
         rvServices = view.findViewById(R.id.rvMarketServices);
 
-        rvServices.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ServiceAdapter(new ArrayList<>());
         rvServices.setAdapter(adapter);
 
-        // Fetch all services (Hinglish: Saare active services load karo marketplace ke liye)
-        loadServices(null);
+        loadServices(null, false);
 
-        // Search logic
         etSearch.setHint("Search anything...");
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                loadServices(etSearch.getText().toString().trim());
+                loadServices(etSearch.getText().toString().trim(), true);
                 return true;
             }
             return false;
@@ -56,26 +54,32 @@ public class ServicesFragment extends Fragment {
         return view;
     }
 
-    private void loadServices(String query) {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
-        pd.setMessage("Loading services...");
-        pd.show();
+    private void loadServices(String query, boolean showLoader) {
+        // Only show blocking loader if explicitly requested (e.g. search click)
+        android.app.ProgressDialog pd = null;
+        if (showLoader && getContext() != null) {
+            pd = new android.app.ProgressDialog(getContext());
+            pd.setMessage("Searching...");
+            pd.show();
+        }
 
+        final android.app.ProgressDialog finalPd = pd;
         RetrofitClient.getApiService().getServices(null, query).enqueue(new Callback<ServiceListResponse>() {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
-                pd.dismiss();
+                if (finalPd != null) finalPd.dismiss();
+                if (!isAdded() || getContext() == null) return;
+                
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.setServices(response.body().getData());
-                } else {
-                    Toast.makeText(requireContext(), "Failed to fetch services", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ServiceListResponse> call, Throwable t) {
-                pd.dismiss();
-                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (finalPd != null) finalPd.dismiss();
+                if (!isAdded()) return;
+                Log.e("ServicesFragment", "Error loading services", t);
             }
         });
     }

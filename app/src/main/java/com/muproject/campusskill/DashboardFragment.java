@@ -12,6 +12,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 // Main App Dashboard handling fragment (Hinglish: App ka main hub jahan bottom bar hai)
 public class DashboardFragment extends Fragment {
 
+    // Tab state persistence (Hinglish: Yaad rakhein pichli baar kaunsa tab khula tha)
+    private static int lastSelectedId = R.id.nav_home;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class DashboardFragment extends Fragment {
             }
 
             if (selectedFragment != null) {
+                lastSelectedId = id; // Yaad rakho kaunsa tab select hua
                 getChildFragmentManager().beginTransaction()
                         .replace(R.id.dashboard_container, selectedFragment)
                         .commit();
@@ -45,12 +49,8 @@ public class DashboardFragment extends Fragment {
             return true;
         });
 
-        // Default: Home fragment load karo jab dashboard shuru ho
-        if (savedInstanceState == null) {
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.dashboard_container, new HomeFragment())
-                    .commit();
-        }
+        // Default: Pichla select kiya hua tab load karo (Hinglish: Puraana selection restore karo)
+        bottomNav.setSelectedItemId(lastSelectedId);
 
         return view;
     }

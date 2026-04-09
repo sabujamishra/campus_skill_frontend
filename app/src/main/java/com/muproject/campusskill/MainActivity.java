@@ -43,15 +43,21 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    // Dusre/Naye fragment (Jaise Register) par switch karne ke liye function
+    // Naye fragment par switch karne ke liye logic (Hinglish: Switch to a new fragment with backstack)
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
-                // Naya fragment puraane wale ki jagah le lega
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.fragment_container, fragment)
-                // Back button dabane par pichle fragment par wapas ja sakein
                 .addToBackStack(null)
-                // Switch hone par transition animation dikhao
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+    }
+
+    // Safe way to go back (Hinglish: Fragments se dashboard wapas jaane ka safe tarika)
+    public void goBack() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            loadFragment(new DashboardFragment());
+        }
     }
 }
