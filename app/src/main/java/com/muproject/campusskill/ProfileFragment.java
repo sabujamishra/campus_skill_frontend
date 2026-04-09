@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
     );
 
     private void loadProfile() {
+        // Glide logic for image placeholder (Hinglish: Pehle se stored image agar hai toh profile pic dikhao)
         RetrofitClient.getApiService().getMyProfile().enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
@@ -78,9 +79,18 @@ public class ProfileFragment extends Fragment {
                         com.muproject.campusskill.model.User user = response.body().getData();
                         tvName.setText(user.getName());
                         tvDept.setText(user.getDepartment());
-                        tvEarnings.setText("₹" + (int)user.getTotalEarnings());
+                        tvEarnings.setText("₹" + user.getTotalEarnings());
                         tvRating.setText(String.valueOf(user.getAverageRating()));
                         tvScore.setText(String.valueOf(user.getLeaderboardScore()));
+
+                        // Glide image loading (Hinglish: Server URL se image load kar rahe hain)
+                        if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
+                            com.bumptech.glide.Glide.with(ProfileFragment.this)
+                                    .load(user.getProfileImage())
+                                    .placeholder(R.drawable.rounded_placeholder)
+                                    .circleCrop()
+                                    .into(ivProfileImage);
+                        }
                     }
                 } catch (Exception e) {}
             }
@@ -90,16 +100,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void uploadProfileImage(android.net.Uri uri) {
+        // Instant feedback (Hinglish: Turant UI par image set kar rahi hai feedback ke liye)
+        com.bumptech.glide.Glide.with(this).load(uri).circleCrop().into(ivProfileImage);
+
         try {
-            // Android Uri se File path nikalna complex hai, short logic used here (Hinglish: Image upload flow)
-            java.io.InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
-            byte[] bytes = android.util.Base64.encode(new byte[inputStream.available()], android.util.Base64.DEFAULT); // Placeholder logic
-            
-            // Real multipart request requires a File object or RequestBody
-            // For now showing the flow (Hinglish: Multipart request logic placeholder)
             Toast.makeText(requireContext(), "Uploading image...", Toast.LENGTH_SHORT).show();
-            
-            // Assume we create MultipartBody.Part from File...
+            // TODO: Add real Multipart upload logic here
         } catch (Exception e) {}
     }
 

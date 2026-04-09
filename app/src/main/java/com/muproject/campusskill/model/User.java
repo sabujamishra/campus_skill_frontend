@@ -2,7 +2,7 @@ package com.muproject.campusskill.model;
 
 import com.google.gson.annotations.SerializedName;
 
-// User ka detailed profile model (Hinglish: User ki saari details)
+// Consolidated User model (Hinglish: User ki saari details ek hi jagah)
 public class User {
     private int id;
     private String name;
@@ -13,16 +13,27 @@ public class User {
     private String profileImage;
     
     @SerializedName("total_earnings")
-    private double totalEarnings;
+    private String totalEarnings; // String as per server response "0.00"
     
-    @SerializedName("leaderboard_score")
-    private int leaderboardScore;
+    @SerializedName("total_completed_orders")
+    private int totalCompletedOrders;
     
     @SerializedName("average_rating")
     private float averageRating;
     
+    @SerializedName("repeat_clients")
+    private int repeatClients;
+    
     @SerializedName("response_rate")
-    private String responseRate;
+    private int responseRate;
+    
+    @SerializedName("leaderboard_score")
+    private int leaderboardScore;
+    
+    private String status;
+    
+    @SerializedName("created_at")
+    private String createdAt;
 
     // Getters
     public int getId() { return id; }
@@ -30,8 +41,12 @@ public class User {
     public String getEmail() { return email; }
     public String getDepartment() { return department; }
     public String getProfileImage() { return profileImage; }
-    public double getTotalEarnings() { return totalEarnings; }
-    public int getLeaderboardScore() { return leaderboardScore; }
+    public String getTotalEarnings() { return totalEarnings; }
+    public int getTotalCompletedOrders() { return totalCompletedOrders; }
     public float getAverageRating() { return averageRating; }
-    public String getResponseRate() { return responseRate; }
+    public int getRepeatClients() { return repeatClients; }
+    public int getResponseRate() { return responseRate; }
+    public int getLeaderboardScore() { return leaderboardScore; }
+    public String getStatus() { return status; }
+    public String getCreatedAt() { return createdAt; }
 }

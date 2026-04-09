@@ -11,47 +11,208 @@
 > Task :app:generateDebugRFile UP-TO-DATE
 > Task :app:compileDebugKotlin NO-SOURCE
 > Task :app:javaPreCompileDebug UP-TO-DATE
-> Task :app:compileDebugJavaWithJavac UP-TO-DATE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets UP-TO-DATE
-> Task :app:compressDebugAssets UP-TO-DATE
-> Task :app:processDebugJavaRes NO-SOURCE
-> Task :app:mergeDebugJavaResource UP-TO-DATE
-> Task :app:checkDebugDuplicateClasses UP-TO-DATE
-> Task :app:desugarDebugFileDependencies UP-TO-DATE
-> Task :app:mergeExtDexDebug UP-TO-DATE
-> Task :app:mergeLibDexDebug UP-TO-DATE
-> Task :app:checkDebugAarMetadata UP-TO-DATE
-> Task :app:compileDebugNavigationResources UP-TO-DATE
-> Task :app:mapDebugSourceSetPaths UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
-> Task :app:processDebugMainManifest UP-TO-DATE
-> Task :app:processDebugManifest UP-TO-DATE
-> Task :app:processDebugManifestForPackage UP-TO-DATE
-> Task :app:mergeDebugJniLibFolders UP-TO-DATE
-> Task :app:mergeDebugNativeLibs NO-SOURCE
-> Task :app:stripDebugDebugSymbols NO-SOURCE
-> Task :app:validateSigningDebug UP-TO-DATE
-> Task :app:writeDebugAppMetadata UP-TO-DATE
-> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
-> Task :app:processDebugResources FAILED
+
+> Task :app:compileDebugJavaWithJavac FAILED
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:72: error: class, interface, or enum expected
+        } catch (Exception e) {}
+          ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:79: error: class, interface, or enum expected
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                   ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:83: error: class, interface, or enum expected
+                        tvName.setText(user.getName());
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:84: error: class, interface, or enum expected
+                        tvDept.setText(user.getDepartment());
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:85: error: class, interface, or enum expected
+                        tvEarnings.setText("Γé╣" + (int)user.getTotalEarnings());
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:86: error: class, interface, or enum expected
+                        tvRating.setText(String.valueOf(user.getAverageRating()));
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:87: error: class, interface, or enum expected
+                        tvScore.setText(String.valueOf(user.getLeaderboardScore()));
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:90: error: class, interface, or enum expected
+                        if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:96: error: class, interface, or enum expected
+                        }
+                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:101: error: class, interface, or enum expected
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {}
+                   ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:103: error: class, interface, or enum expected
+    }
+    ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:109: error: class, interface, or enum expected
+        try {
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:112: error: class, interface, or enum expected
+        } catch (Exception e) {}
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:118: error: class, interface, or enum expected
+        etName.setHint("New Name");
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:119: error: class, interface, or enum expected
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:124: error: class, interface, or enum expected
+                    updateProfile(newName, tvDept.getText().toString());
+                    ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:125: error: class, interface, or enum expected
+                })
+                ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:127: error: class, interface, or enum expected
+    }
+    ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:131: error: class, interface, or enum expected
+        RetrofitClient.getApiService().updateProfile(request).enqueue(new Callback<ProfileResponse>() {
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:133: error: class, interface, or enum expected
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                   ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:136: error: class, interface, or enum expected
+                    loadProfile();
+                    ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:137: error: class, interface, or enum expected
+                }
+                ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:140: error: class, interface, or enum expected
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {}
+                   ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:142: error: class, interface, or enum expected
+    }
+    ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:149: error: class, interface, or enum expected
+        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:150: error: class, interface, or enum expected
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:150: error: <identifier> expected
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                                                        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:151: error: class, interface, or enum expected
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:152: error: class, interface, or enum expected
+        startActivity(intent);
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:153: error: class, interface, or enum expected
+        requireActivity().finish();
+        ^
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:154: error: class, interface, or enum expected
+    }
+    ^
+31 errors
+
+[Incubating] Problems report is available at: file:///C:/Users/mrsbz/OneDrive/Documents/CampusSkill/build/reports/problems/problems-report.html
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:processDebugResources'.
-> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
-   > Android resource linking failed
-     com.muproject.campusskill.app-mergeDebugResources-53:/layout/fragment_profile.xml:33: error: resource style/CircleImage (aka com.muproject.campusskill:style/CircleImage) not found.
-     error: failed linking file resources.
-
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:72: error: class, interface, or enum expected
+          } catch (Exception e) {}
+            ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:79: error: class, interface, or enum expected
+              public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                     ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:83: error: class, interface, or enum expected
+                          tvName.setText(user.getName());
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:84: error: class, interface, or enum expected
+                          tvDept.setText(user.getDepartment());
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:85: error: class, interface, or enum expected
+                          tvEarnings.setText("Γé╣" + (int)user.getTotalEarnings());
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:86: error: class, interface, or enum expected
+                          tvRating.setText(String.valueOf(user.getAverageRating()));
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:87: error: class, interface, or enum expected
+                          tvScore.setText(String.valueOf(user.getLeaderboardScore()));
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:90: error: class, interface, or enum expected
+                          if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:96: error: class, interface, or enum expected
+                          }
+                          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:101: error: class, interface, or enum expected
+              public void onFailure(Call<ProfileResponse> call, Throwable t) {}
+                     ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:103: error: class, interface, or enum expected
+      }
+      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:109: error: class, interface, or enum expected
+          try {
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:112: error: class, interface, or enum expected
+          } catch (Exception e) {}
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:118: error: class, interface, or enum expected
+          etName.setHint("New Name");
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:119: error: class, interface, or enum expected
+          new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:124: error: class, interface, or enum expected
+                      updateProfile(newName, tvDept.getText().toString());
+                      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:125: error: class, interface, or enum expected
+                  })
+                  ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:127: error: class, interface, or enum expected
+      }
+      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:131: error: class, interface, or enum expected
+          RetrofitClient.getApiService().updateProfile(request).enqueue(new Callback<ProfileResponse>() {
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:133: error: class, interface, or enum expected
+              public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                     ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:136: error: class, interface, or enum expected
+                      loadProfile();
+                      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:137: error: class, interface, or enum expected
+                  }
+                  ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:140: error: class, interface, or enum expected
+              public void onFailure(Call<ProfileResponse> call, Throwable t) {}
+                     ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:142: error: class, interface, or enum expected
+      }
+      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:149: error: class, interface, or enum expected
+          Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:150: error: class, interface, or enum expected
+          Intent intent = new Intent(requireActivity(), MainActivity.class);
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:151: error: class, interface, or enum expected
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:152: error: class, interface, or enum expected
+          startActivity(intent);
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:153: error: class, interface, or enum expected
+          requireActivity().finish();
+          ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:154: error: class, interface, or enum expected
+      }
+      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:150: error: <identifier> expected
+          Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                                                          ^
+  31 errors
 
 * Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
+> Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to generate a Build Scan (Powered by Develocity).
-> Get more help at https://help.gradle.org.
 
-BUILD FAILED in 3s
-30 actionable tasks: 1 executed, 29 up-to-date
+BUILD FAILED in 4s
+10 actionable tasks: 1 executed, 9 up-to-date

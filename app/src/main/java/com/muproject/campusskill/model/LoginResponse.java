@@ -19,27 +19,12 @@ public class LoginResponse {
 
     public static class Data {
         @SerializedName("user")
-        private User user;
+        private User user; // Use the consolidated User class
         
         @SerializedName("token")
         private String token;
 
         public User getUser() { return user; }
         public String getToken() { return token; }
-    }
-
-    public static class User {
-        @SerializedName("id")
-        private int id;
-        
-        @SerializedName("name")
-        private String name;
-        
-        @SerializedName("email")
-        private String email;
-
-        public int getId() { return id; }
-        public String getName() { return name; }
-        public String getEmail() { return email; }
     }
 }
