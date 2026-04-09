@@ -27,8 +27,8 @@ public class DashboardFragment extends Fragment {
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (id == R.id.nav_services) {
-                // Future: ServicesFragment
-                selectedFragment = new HomeFragment(); // Placeholder
+                // Discover services (Hinglish: Services browse karne wala page)
+                selectedFragment = new ServicesFragment();
             } else if (id == R.id.nav_orders) {
                 // Future: OrdersFragment
                 selectedFragment = new HomeFragment(); // Placeholder
