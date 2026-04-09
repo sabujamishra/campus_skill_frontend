@@ -38,13 +38,15 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         Service service = services.get(position);
         
         holder.tvTitle.setText(service.getTitle() != null ? service.getTitle() : "No Title");
-        holder.tvSeller.setText(service.getSellerName() != null ? service.getSellerName() : "Unknown Seller");
+        holder.tvSeller.setText("by " + (service.getSellerName() != null ? service.getSellerName() : "Unknown"));
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
         
-        // Category aur Delivery Time agar zarourat ho (Hinglish: Extra info add kar sakte hain tag ki tarah)
+        // New fields (Hinglish: Naye fields bind kar rahe hain card mein)
+        holder.tvCategory.setText(service.getCategory() != null ? service.getCategory() : "General");
+        holder.tvDeliveryTime.setText(service.getDeliveryTime() + " days");
         
-        // For now using placeholder (Image API is separate or handled later)
+        // For now using placeholder
         holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
     }
 
@@ -55,7 +57,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage;
-        TextView tvTitle, tvSeller, tvPrice, tvRating;
+        TextView tvTitle, tvSeller, tvPrice, tvRating, tvCategory, tvDeliveryTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +66,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             tvSeller = itemView.findViewById(R.id.tvSellerName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvRating = itemView.findViewById(R.id.tvRating);
+            tvCategory = itemView.findViewById(R.id.tvServiceCategory);
+            tvDeliveryTime = itemView.findViewById(R.id.tvDeliveryTime);
         }
     }
 }
