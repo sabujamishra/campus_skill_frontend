@@ -20,7 +20,7 @@ public class Service implements java.io.Serializable {
     @SerializedName("seller_id")
     private int sellerId;
     
-    @SerializedName("seller_profile_image")
+    @SerializedName(value = "seller_profile_image", alternate = {"profile_image", "seller_photo", "avatar"})
     private String sellerProfileImage;
     
     // Server thumbnail field variations (Hinglish: Agar name match na ho)

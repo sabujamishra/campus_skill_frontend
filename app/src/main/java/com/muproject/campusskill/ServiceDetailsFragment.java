@@ -87,9 +87,19 @@ public class ServiceDetailsFragment extends Fragment {
             ivImage.setImageResource(R.drawable.service_placeholder);
         }
 
-        if (service.getSellerProfileImage() != null) {
-            String url = service.getSellerProfileImage().startsWith("http") ? service.getSellerProfileImage() : "https://lightgrey-dogfish-642647.hostingersite.com/" + service.getSellerProfileImage();
-            Glide.with(this).load(url).circleCrop().placeholder(R.drawable.ic_profile).into(ivAvatar);
+        if (service.getSellerProfileImage() != null && !service.getSellerProfileImage().isEmpty()) {
+            String avatarUrl = service.getSellerProfileImage();
+            String url;
+            if (avatarUrl.startsWith("http")) {
+                url = avatarUrl;
+            } else {
+                String baseUrl = "https://lightgrey-dogfish-642647.hostingersite.com/";
+                if (avatarUrl.startsWith("/")) avatarUrl = avatarUrl.substring(1);
+                url = baseUrl + avatarUrl;
+            }
+            Glide.with(this).load(url).circleCrop().placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).into(ivAvatar);
+        } else {
+            ivAvatar.setImageResource(R.drawable.ic_profile);
         }
 
         btnBack.setOnClickListener(v -> ((MainActivity)requireActivity()).goBack());

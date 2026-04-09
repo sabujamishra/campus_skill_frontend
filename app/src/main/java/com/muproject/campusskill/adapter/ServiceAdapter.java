@@ -60,10 +60,19 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         // Seller avatar logic (Hinglish: Seller ki photo load ho rahi hai)
         String avatarUrl = service.getSellerProfileImage();
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            String url = avatarUrl.startsWith("http") ? avatarUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + avatarUrl;
+            String url;
+            if (avatarUrl.startsWith("http")) {
+                url = avatarUrl;
+            } else {
+                String baseUrl = "https://lightgrey-dogfish-642647.hostingersite.com/";
+                if (avatarUrl.startsWith("/")) avatarUrl = avatarUrl.substring(1);
+                url = baseUrl + avatarUrl;
+            }
+            
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                     .load(url)
                     .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
                     .circleCrop()
                     .into(holder.ivSellerAvatar);
         } else {

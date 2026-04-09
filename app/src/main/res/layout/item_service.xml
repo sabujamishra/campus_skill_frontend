@@ -88,8 +88,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivSellerAvatar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/ic_profile"
                     app:shapeAppearanceOverlay="@style/CircleImage"
                     app:tint="@color/text_grey" />

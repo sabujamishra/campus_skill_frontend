@@ -99,9 +99,26 @@ public class PublicProfileFragment extends Fragment {
             tvMemberSince.setText("Member since " + date);
         }
 
-        if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
-            String url = user.getProfileImage().startsWith("http") ? user.getProfileImage() : "https://lightgrey-dogfish-642647.hostingersite.com/" + user.getProfileImage();
-            Glide.with(this).load(url).placeholder(R.drawable.ic_profile).circleCrop().into(ivProfile);
+        // Image loading with safety (Hinglish: Photo load karne ka safe tarikha)
+        String imgPath = user.getProfileImage();
+        if (imgPath != null && !imgPath.isEmpty()) {
+            String url;
+            if (imgPath.startsWith("http")) {
+                url = imgPath;
+            } else {
+                String baseUrl = "https://lightgrey-dogfish-642647.hostingersite.com/";
+                if (imgPath.startsWith("/")) imgPath = imgPath.substring(1);
+                url = baseUrl + imgPath;
+            }
+
+            Glide.with(this)
+                    .load(url)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
+                    .circleCrop()
+                    .into(ivProfile);
+        } else {
+            ivProfile.setImageResource(R.drawable.ic_profile);
         }
     }
 }
