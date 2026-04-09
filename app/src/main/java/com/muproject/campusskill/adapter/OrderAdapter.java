@@ -34,13 +34,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         holder.tvOrderId.setText("Order #" + order.getId());
         holder.tvServiceTitle.setText(order.getServiceTitle() != null ? order.getServiceTitle() : "Service #" + order.getServiceId());
-        holder.tvPrice.setText("₹" + (order.getServicePrice() != null ? order.getServicePrice() : "N/A"));
+        holder.tvPrice.setText("₹" + (order.getAmount() != null ? order.getAmount() : "N/A"));
 
-        // Show relevant person based on role
+        // Show relevant person based on role (Hinglish: Role ke hisaab se naam dikhao)
         if ("buyer".equals(role)) {
-            holder.tvPerson.setText("Seller: " + (order.getSellerName() != null ? order.getSellerName() : "N/A"));
+            String seller = order.getSellerName();
+            holder.tvPerson.setText(seller != null && !seller.isEmpty() ? "Seller: " + seller : "");
+            holder.tvPerson.setVisibility(seller != null && !seller.isEmpty() ? View.VISIBLE : View.GONE);
         } else {
-            holder.tvPerson.setText("Buyer: " + (order.getBuyerName() != null ? order.getBuyerName() : "N/A"));
+            String buyer = order.getBuyerName();
+            holder.tvPerson.setText(buyer != null && !buyer.isEmpty() ? "Buyer: " + buyer : "");
+            holder.tvPerson.setVisibility(buyer != null && !buyer.isEmpty() ? View.VISIBLE : View.GONE);
         }
 
         // Status badge styling (Hinglish: Status ke hisaab se rang badalo)
