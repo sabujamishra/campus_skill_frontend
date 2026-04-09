@@ -41,11 +41,30 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
         
-        // Image logic (Thumbnail)
-        holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
+        // Image logic (Thumbnail) (Hinglish: Service ki photo load ho rahi hai)
+        String thumbUrl = service.getThumbnail();
+        if (thumbUrl != null && !thumbUrl.isEmpty()) {
+            String url = thumbUrl.startsWith("http") ? thumbUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + thumbUrl;
+            com.bumptech.glide.Glide.with(holder.itemView.getContext())
+                    .load(url)
+                    .placeholder(R.drawable.rounded_placeholder)
+                    .into(holder.ivImage);
+        } else {
+            holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
+        }
         
-        // Optional: Load seller avatar if available (Hinglish: Agar seller photo hai toh dikhao)
-        holder.ivSellerAvatar.setImageResource(R.drawable.ic_profile);
+        // Seller avatar logic (Hinglish: Seller ki photo load ho rahi hai)
+        String avatarUrl = service.getSellerProfileImage();
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            String url = avatarUrl.startsWith("http") ? avatarUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + avatarUrl;
+            com.bumptech.glide.Glide.with(holder.itemView.getContext())
+                    .load(url)
+                    .placeholder(R.drawable.ic_profile)
+                    .circleCrop()
+                    .into(holder.ivSellerAvatar);
+        } else {
+            holder.ivSellerAvatar.setImageResource(R.drawable.ic_profile);
+        }
     }
 
     @Override

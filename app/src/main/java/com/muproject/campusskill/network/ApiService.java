@@ -57,4 +57,8 @@ public interface ApiService {
             @retrofit2.http.Query("category_id") Integer categoryId,
             @retrofit2.http.Query("search") String search
     );
+
+    // Saari service categories mangwayen (Hinglish: List of all categories)
+    @GET("categories")
+    Call<com.muproject.campusskill.model.CategoryResponse> getCategories();
 }

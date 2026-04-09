@@ -87,27 +87,16 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Categories Horizontal Scroll -->
-            <HorizontalScrollView
+            <!-- Categories Horizontal Scroll (Dynamic) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:scrollbars="none">
-                
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp">
-                    
-                    <!-- Chips (Hardcoded UI for now) -->
-                    <TextView style="@style/CategoryChipActive" android:text="All" />
-                    <TextView style="@style/CategoryChip" android:text="Tutor" />
-                    <TextView style="@style/CategoryChip" android:text="Design" />
-                    <TextView style="@style/CategoryChip" android:text="Coder" />
-                    <TextView style="@style/CategoryChip" android:text="Writing" />
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <!-- Popular Section Title -->
             <RelativeLayout

@@ -1,35 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Home screen item for Categories (Hinglish: Ek horizontal category ka design) -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvCategoryName"
+    style="@style/CategoryChip"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="8dp">
-
-    <View
-        android:id="@+id/viewCategoryBg"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/circle_background"
-        android:backgroundTint="#F5F5F5" />
-    
-    <ImageView
-        android:id="@+id/ivCategoryIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="-48dp"
-        android:tint="@color/button_blue"
-        android:src="@drawable/ic_services" />
-
-    <TextView
-        android:id="@+id/tvCategoryName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Category"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold" />
-
-</LinearLayout>
+    android:text="Category" />
