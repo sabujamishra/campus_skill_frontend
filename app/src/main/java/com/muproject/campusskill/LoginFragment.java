@@ -78,7 +78,8 @@ public class LoginFragment extends Fragment {
 
                             android.widget.Toast.makeText(requireContext(), "Welcome back, " + response.body().getData().getUser().getName(), android.widget.Toast.LENGTH_SHORT).show();
                             
-                            // Home screen par navigate kar sakte hain (Future)
+                            // Home screen par navigate kar rahe hain (Hinglish: Dashboard par le jaa rahe hain)
+                            ((MainActivity) requireActivity()).replaceFragment(new DashboardFragment());
                         } else {
                             throw new Exception(response.body().getMessage());
                         }

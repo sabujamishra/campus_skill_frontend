@@ -86,8 +86,9 @@ public class RegisterFragment extends Fragment {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         if ("success".equals(response.body().getStatus())) {
-                            android.widget.Toast.makeText(requireContext(), "Registration successful! Please login.", android.widget.Toast.LENGTH_LONG).show();
-                            requireActivity().onBackPressed();
+                            android.widget.Toast.makeText(requireContext(), "Registration successful! Welcome.", android.widget.Toast.LENGTH_LONG).show();
+                            // Dashboard par le jaa rahe hain (Hinglish: Naye account ke baad dashboard)
+                            ((MainActivity) requireActivity()).replaceFragment(new DashboardFragment());
                         } else {
                             throw new Exception(response.body().getMessage());
                         }
