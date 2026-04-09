@@ -61,4 +61,8 @@ public interface ApiService {
     // Saari service categories mangwayen (Hinglish: List of all categories)
     @GET("categories")
     Call<com.muproject.campusskill.model.CategoryResponse> getCategories();
+
+    // Naya category banane ke liye (Hinglish: Add a new service category)
+    @POST("category/create")
+    Call<com.muproject.campusskill.model.CommonResponse> createCategory(@Body java.util.Map<String, String> body);
 }

@@ -9,9 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import com.muproject.campusskill.model.Category;
 import com.muproject.campusskill.model.CategoryResponse;
@@ -19,12 +21,14 @@ import com.muproject.campusskill.model.CommonResponse;
 import com.muproject.campusskill.model.ServiceCreateRequest;
 import com.muproject.campusskill.network.RetrofitClient;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Naya service create karne ka logic (Hinglish: Spinner styling aur error handling improve Kari gayi hai)
+// Naya service create karne ka logic (Hinglish: Category creation functionality add kari gayi hai)
 public class CreateServiceFragment extends Fragment {
 
     private EditText etTitle, etDesc, etPrice, etTime;
@@ -42,19 +46,68 @@ public class CreateServiceFragment extends Fragment {
         etPrice = view.findViewById(R.id.etServicePrice);
         etTime = view.findViewById(R.id.etServiceTime);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        TextView tvAddCategory = view.findViewById(R.id.tvAddCategory);
         Button btnCreate = view.findViewById(R.id.btnCreateService);
         android.widget.ImageView btnBack = view.findViewById(R.id.btnBackCreate);
 
-        // Initial placeholder (Hinglish: Pehle "Loading" dikhao)
         setupPlaceholderSpinner();
-
-        // Load Categories
         loadCategories();
 
         btnCreate.setOnClickListener(v -> handleCreateService());
         btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        
+        // Category creation dialog (Hinglish: Naya category banane ke liye popup)
+        tvAddCategory.setOnClickListener(v -> showAddCategoryDialog());
 
         return view;
+    }
+
+    private void showAddCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Create New Category");
+
+        final EditText input = new EditText(requireContext());
+        input.setHint("Category Name (e.g. Video Editing)");
+        builder.setView(input);
+
+        builder.setPositiveButton("Create", (dialog, which) -> {
+            String name = input.getText().toString().trim();
+            if (!name.isEmpty()) {
+                createNewCategory(name);
+            } else {
+                Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void createNewCategory(String name) {
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        pd.setMessage("Adding category...");
+        pd.show();
+
+        Map<String, String> body = new HashMap<>();
+        body.put("name", name);
+
+        RetrofitClient.getApiService().createCategory(body).enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                pd.dismiss();
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Category added successfully!", Toast.LENGTH_SHORT).show();
+                    loadCategories(); // Refresh the list (Hinglish: List refresh karo naye category ke saath)
+                } else {
+                    Toast.makeText(requireContext(), "Failed to add category", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                pd.dismiss();
+                Toast.makeText(requireContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupPlaceholderSpinner() {
@@ -80,18 +133,11 @@ public class CreateServiceFragment extends Fragment {
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, categoryNames);
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
-                        Log.d("CreateService", "Categories loaded: " + categoryNames.size());
                     }
-                } else {
-                    Log.e("CreateService", "Failed to load categories: " + response.code());
-                    Toast.makeText(requireContext(), "Empty categories from server!", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                Log.e("CreateService", "Category API Failure", t);
-                Toast.makeText(requireContext(), "Check internet for categories", Toast.LENGTH_SHORT).show();
-            }
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {}
         });
     }
 
@@ -133,7 +179,7 @@ public class CreateServiceFragment extends Fragment {
                         Toast.makeText(requireContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                         requireActivity().getSupportFragmentManager().popBackStack();
                     } else {
-                        Toast.makeText(requireContext(), "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Failed to create service!", Toast.LENGTH_SHORT).show();
                     }
                 }
 

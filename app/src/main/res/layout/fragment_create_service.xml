@@ -111,14 +111,30 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Category"
-                android:textColor="@color/button_blue"
-                android:textSize="12sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="4dp" />
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Category"
+                    android:textColor="@color/button_blue"
+                    android:textSize="12sp"
+                    android:layout_marginStart="4dp" />
+
+                <TextView
+                    android:id="@+id/tvAddCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="+ Add New"
+                    android:textColor="@color/button_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="8dp" />
+            </RelativeLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
