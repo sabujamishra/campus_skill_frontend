@@ -79,7 +79,19 @@
         android:text="Forgot Password?"
         android:textColor="@color/button_blue"
         android:textSize="12sp"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="16dp" />
+
+    <!-- Remember Me Toggle (Hinglish: Yaad rakhne wala checkbox) -->
+    <CheckBox
+        android:id="@+id/cbRememberMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:text="Remember Me"
+        android:textColor="@color/text_grey"
+        android:buttonTint="@color/button_blue"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp" />
 
     <!-- Login Button -->
     <Button

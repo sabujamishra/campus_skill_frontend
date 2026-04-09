@@ -10,9 +10,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // App ko hamesha Light Mode mein rakhne ke liye
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO);
+        
+        // RetrofitClient ko context de rahe hain (Hinglish: Network engine start kar rahe hain context ke saath)
+        com.muproject.campusskill.network.RetrofitClient.init(this);
+
         super.onCreate(savedInstanceState);
         // activity_main layout set kar raha hai jisme fragment container hai
         setContentView(R.layout.activity_main);
+
+        // Auto-login check (Hinglish: Agar pehle se logged in hai toh seedha dashboard)
+        com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(this);
+        if (sessionManager.getToken() != null) {
+            loadFragment(new DashboardFragment());
+            return;
+        }
 
         // Jab app start hogi, agar pehle se koi state save nahi hai toh Login page load karo
         if (savedInstanceState == null) {

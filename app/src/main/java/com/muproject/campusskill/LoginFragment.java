@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 // Login screen ka logic yahan handle ho raha hai
 public class LoginFragment extends Fragment {
+    private android.widget.CheckBox cbRememberMe;
 
     @Nullable
     @Override
@@ -24,6 +25,7 @@ public class LoginFragment extends Fragment {
         android.widget.EditText etPassword = view.findViewById(R.id.etPassword);
         TextView tvRegister = view.findViewById(R.id.tvRegister);
         Button btnLogin = view.findViewById(R.id.btnLogin);
+        cbRememberMe = view.findViewById(R.id.cbRememberMe);
 
         // Sabse pehle version check karenge (Hinglish: Pehle version match karenge)
         checkVersion();
@@ -72,10 +74,13 @@ public class LoginFragment extends Fragment {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         if ("success".equals(response.body().getStatus())) {
-                            // Token securely save karo (Hinglish: Token tijori mein save karo)
+                            // Token ko secure storage mein save kar rahe hain (Hinglish: Tijori mein token rakh rahe hain)
                             com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
-                            sessionManager.saveToken(response.body().getData().getToken());
-
+                            // Sirf tab save karenge jab 'Remember Me' on ho
+                            if (cbRememberMe.isChecked()) {
+                                sessionManager.saveToken(response.body().getData().getToken());
+                            }
+                            
                             android.widget.Toast.makeText(requireContext(), "Welcome back, " + response.body().getData().getUser().getName(), android.widget.Toast.LENGTH_SHORT).show();
                             
                             // Home screen par navigate kar rahe hain (Hinglish: Dashboard par le jaa rahe hain)

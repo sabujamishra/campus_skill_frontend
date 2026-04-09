@@ -24,5 +24,24 @@ public interface ApiService {
 
     // Login call (Hinglish: Login karne ke liye)
     @POST("login")
-    Call<LoginResponse> login(@Body LoginRequest request);
+    Call<com.muproject.campusskill.model.LoginResponse> login(@Body com.muproject.campusskill.model.LoginRequest request);
+
+    // Profile Endpoints
+    
+    // Apna khud ka profile mangne ke liye (Hinglish: My Profile data)
+    @GET("user/me")
+    Call<com.muproject.campusskill.model.ProfileResponse> getMyProfile();
+
+    // Kisi doosre user ka profile dekhne ke liye (Hinglish: Public Profile)
+    @GET("user/profile")
+    Call<com.muproject.campusskill.model.ProfileResponse> getPublicProfile(@retrofit2.http.Query("id") int userId);
+
+    // Profile details update karne ke liye (Hinglish: Data edit karo)
+    @retrofit2.http.PUT("user/update")
+    Call<com.muproject.campusskill.model.ProfileResponse> updateProfile(@Body com.muproject.campusskill.model.UpdateProfileRequest request);
+
+    // Profile photo upload karne ke liye (Hinglish: Image upload multipart flow)
+    @retrofit2.http.Multipart
+    @POST("user/upload-image")
+    Call<com.muproject.campusskill.model.ProfileResponse> uploadProfileImage(@retrofit2.http.Part okhttp3.MultipartBody.Part image);
 }
