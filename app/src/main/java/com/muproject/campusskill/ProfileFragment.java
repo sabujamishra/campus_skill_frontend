@@ -78,9 +78,15 @@ public class ProfileFragment extends Fragment {
 
     // Server se profile data load karo (Hinglish: API se data mangwa ke UI mein set karo)
     private void loadProfile() {
+        android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(requireContext());
+        progressDialog.setMessage("Loading profile...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         RetrofitClient.getApiService().getMyProfile().enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                progressDialog.dismiss();
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         User user = response.body().getData();
@@ -141,6 +147,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(requireContext(), "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -168,9 +175,15 @@ public class ProfileFragment extends Fragment {
             okhttp3.MultipartBody.Part imagePart = okhttp3.MultipartBody.Part.createFormData("profile_image", "profile.jpg", requestBody);
 
             // Server par upload karo
+            android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(requireContext());
+            progressDialog.setMessage("Uploading photo...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             RetrofitClient.getApiService().uploadProfileImage(imagePart).enqueue(new Callback<ProfileResponse>() {
                 @Override
                 public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                    progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         Toast.makeText(requireContext(), "Image uploaded!", Toast.LENGTH_SHORT).show();
                         loadProfile();
@@ -188,6 +201,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                    progressDialog.dismiss();
                     Toast.makeText(requireContext(), "Upload error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -234,10 +248,16 @@ public class ProfileFragment extends Fragment {
 
     // Profile update karo (Hinglish: Server par naam, email, dept update bhejo)
     private void updateProfile(String name, String email, String dept) {
+        android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(requireContext());
+        progressDialog.setMessage("Updating profile...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         com.muproject.campusskill.model.UpdateProfileRequest request = new com.muproject.campusskill.model.UpdateProfileRequest(name, email, dept);
         RetrofitClient.getApiService().updateProfile(request).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show();
                     loadProfile(); // Re-fetch to refresh UI (Hinglish: Dobara data lo taaki naya naam dikhe)
@@ -246,6 +266,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(requireContext(), "Update Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

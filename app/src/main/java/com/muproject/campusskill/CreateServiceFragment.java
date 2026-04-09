@@ -63,9 +63,15 @@ public class CreateServiceFragment extends Fragment {
             ServiceCreateRequest request = new ServiceCreateRequest(title, desc, categoryId, price, time);
 
             // API call logic (Hinglish: Server par naya service post kar rahe hain)
+            android.app.ProgressDialog progressDialog = new android.app.ProgressDialog(requireContext());
+            progressDialog.setMessage("Launching your service...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
             RetrofitClient.getApiService().createService(request).enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                    progressDialog.dismiss();
                     if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(requireContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                         // Dashboard par wapas bhej do ya clear form (Hinglish: Success hone par pichle screen par)
@@ -77,6 +83,7 @@ public class CreateServiceFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
+                    progressDialog.dismiss();
                     Toast.makeText(requireContext(), "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
