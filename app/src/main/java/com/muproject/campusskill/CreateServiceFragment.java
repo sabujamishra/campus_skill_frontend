@@ -97,9 +97,16 @@ public class CreateServiceFragment extends Fragment {
                 pd.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(requireContext(), "Category added successfully!", Toast.LENGTH_SHORT).show();
-                    loadCategories(); // Refresh the list (Hinglish: List refresh karo naye category ke saath)
+                    loadCategories(); 
                 } else {
-                    Toast.makeText(requireContext(), "Failed to add category", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "Failed";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorMsg = response.errorBody().string();
+                        }
+                    } catch (Exception e) {}
+                    Toast.makeText(requireContext(), "Status " + response.code() + ": " + errorMsg, Toast.LENGTH_LONG).show();
+                    Log.e("CreateService", "Category Add Error: " + errorMsg);
                 }
             }
             @Override
