@@ -28,6 +28,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/rounded_placeholder" />
 
+                <!-- Gradient Overlay for readability -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -55,6 +56,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="20dp">
+
+                <!-- Category Tag (Hinglish: Category chip) -->
+                <TextView
+                    android:id="@+id/tvDetailCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_tag_blue"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:text="Web Development"
+                    android:textColor="@color/button_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
 
                 <!-- Title & Rating -->
                 <TextView
@@ -154,7 +169,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Computer Science Dept"
+                            android:text="Verified Student"
                             android:textColor="@color/text_grey"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -162,10 +177,11 @@
 
                 <!-- Description -->
                 <TextView
+                    android:id="@+id/tvDetailId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Service Description"
+                    android:text="Service Description #4"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -175,7 +191,7 @@
                     android:id="@+id/tvDetailDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="I will help you with calculus assignments and exam preparation. I have 2 years of experience in tutoring mathematics."
+                    android:text="I will help you with calculus assignments and exam preparation."
                     android:textColor="#555555"
                     android:textSize="15sp"
                     android:lineSpacingExtra="4dp" />

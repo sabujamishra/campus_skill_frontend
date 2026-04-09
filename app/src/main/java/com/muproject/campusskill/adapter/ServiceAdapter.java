@@ -41,6 +41,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
         
+        if (holder.tvCategory != null) {
+            holder.tvCategory.setText(service.getCategory() != null ? service.getCategory() : "Misc");
+        }
+        
         // Image logic (Thumbnail) (Hinglish: Service ki photo load ho rahi hai)
         String thumbUrl = service.getThumbnail();
         if (thumbUrl != null && !thumbUrl.isEmpty()) {
@@ -82,7 +86,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage, ivSellerAvatar;
-        TextView tvTitle, tvSeller, tvPrice, tvRating;
+        TextView tvTitle, tvSeller, tvPrice, tvRating, tvCategory;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +96,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             tvSeller = itemView.findViewById(R.id.tvSellerName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvRating = itemView.findViewById(R.id.tvRating);
+            tvCategory = itemView.findViewById(R.id.tvCategory);
         }
     }
 }

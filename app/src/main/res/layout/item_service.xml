@@ -47,6 +47,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="12dp" />
 
+            <!-- Category Tag (Hinglish: Category ka chhota tag image par) -->
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_tag_blue"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="Category"
+                android:textColor="@color/button_blue"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="12dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

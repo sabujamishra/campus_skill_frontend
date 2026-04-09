@@ -54,6 +54,7 @@ public class ServiceDetailsFragment extends Fragment {
         ImageView ivImage = view.findViewById(R.id.ivDetailServiceImage);
         ImageView ivAvatar = view.findViewById(R.id.ivDetailSellerAvatar);
         TextView tvTitle = view.findViewById(R.id.tvDetailTitle);
+        TextView tvCategory = view.findViewById(R.id.tvDetailCategory);
         TextView tvPrice = view.findViewById(R.id.tvDetailPrice);
         TextView tvRating = view.findViewById(R.id.tvDetailRating);
         TextView tvTime = view.findViewById(R.id.tvDetailDeliverTime);
@@ -64,11 +65,17 @@ public class ServiceDetailsFragment extends Fragment {
 
         // Set Data
         tvTitle.setText(service.getTitle());
+        tvCategory.setText(service.getCategory() != null ? service.getCategory() : "General");
         tvPrice.setText("₹" + service.getPrice());
         tvRating.setText("⭐ " + service.getAverageRating());
         tvTime.setText(service.getDeliveryTime() + " days delivery");
         tvSeller.setText(service.getSellerName());
         tvDesc.setText(service.getDescription());
+        
+        TextView tvId = view.findViewById(R.id.tvDetailId);
+        if (tvId != null) {
+            tvId.setText("Service Description #" + service.getId());
+        }
 
         // Load Images
         if (service.getThumbnail() != null) {
