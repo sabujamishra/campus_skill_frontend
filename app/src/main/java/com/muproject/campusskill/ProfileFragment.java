@@ -128,11 +128,49 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    // Image turant dikhao aur upload karo (Hinglish: Photo select hote hi dikhao)
+    // Image turant dikhao aur server par upload karo (Hinglish: Photo select → dikhao → upload karo)
     private void uploadProfileImage(android.net.Uri uri) {
+        // Instant local preview
         com.bumptech.glide.Glide.with(this).load(uri).circleCrop().into(ivProfileImage);
         Toast.makeText(requireContext(), "Uploading image...", Toast.LENGTH_SHORT).show();
-        // TODO: Add real Multipart upload logic here
+
+        try {
+            // Uri se InputStream kholo aur temp file mein copy karo (Hinglish: Gallery image ko file mein badlo)
+            java.io.InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
+            java.io.File tempFile = new java.io.File(requireContext().getCacheDir(), "profile_upload.jpg");
+            java.io.OutputStream outputStream = new java.io.FileOutputStream(tempFile);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.close();
+            inputStream.close();
+
+            // Multipart request body banao (Hinglish: File ko network request mein wrap karo)
+            okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), tempFile);
+            okhttp3.MultipartBody.Part imagePart = okhttp3.MultipartBody.Part.createFormData("profile_image", tempFile.getName(), requestBody);
+
+            // Server par upload karo
+            RetrofitClient.getApiService().uploadProfileImage(imagePart).enqueue(new Callback<ProfileResponse>() {
+                @Override
+                public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(requireContext(), "Image uploaded!", Toast.LENGTH_SHORT).show();
+                        loadProfile(); // Refresh to get server URL (Hinglish: Server se naya URL le lo)
+                    } else {
+                        Toast.makeText(requireContext(), "Upload failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                    Toast.makeText(requireContext(), "Upload error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), "File error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Profile edit dialog (Hinglish: Name, Email, Department change karne wala popup)
