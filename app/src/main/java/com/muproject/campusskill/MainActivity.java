@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 // Yeh main screen hai jo fragments (Login/Register) ko host karti hai
 public class MainActivity extends AppCompatActivity {
 
+    private long backPressedTime;
+    private android.widget.Toast backToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // App ko hamesha Light Mode mein rakhne ke liye
@@ -19,6 +22,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // activity_main layout set kar raha hai jisme fragment container hai
         setContentView(R.layout.activity_main);
+
+        // Standard Back logic (Hinglish: Fragment pops aur Double-back handling)
+        getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportFragmentManager().popBackStack();
+                    return;
+                }
+
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                    if (backToast != null) backToast.cancel();
+                    finish();
+                } else {
+                    backToast = android.widget.Toast.makeText(MainActivity.this, "Press back again to exit", android.widget.Toast.LENGTH_SHORT);
+                    backToast.show();
+                }
+                backPressedTime = System.currentTimeMillis();
+            }
+        });
 
         // Auto-login check (Hinglish: Agar Remember Me on hai aur token hai toh seedha dashboard)
         com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(this);

@@ -14,13 +14,33 @@ public class DashboardFragment extends Fragment {
 
     // Tab state persistence (Hinglish: Yaad rakhein pichli baar kaunsa tab khula tha)
     private static int lastSelectedId = R.id.nav_home;
+    private BottomNavigationView bottomNav;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        // Back interception (Hinglish: Kisi bhi tab se Home par wapas bhejene ka logic)
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (bottomNav != null && bottomNav.getSelectedItemId() != R.id.nav_home) {
+                    bottomNav.setSelectedItemId(R.id.nav_home);
+                } else {
+                    setEnabled(false);
+                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        });
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-        BottomNavigationView bottomNav = view.findViewById(R.id.bottom_navigation);
+        bottomNav = view.findViewById(R.id.bottom_navigation);
 
         // Sidebar click handling logic (Hinglish: Bar ke items click hone par fragments change karna)
         bottomNav.setOnItemSelectedListener(item -> {
