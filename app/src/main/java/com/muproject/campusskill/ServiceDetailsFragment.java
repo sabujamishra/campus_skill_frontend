@@ -94,6 +94,12 @@ public class ServiceDetailsFragment extends Fragment {
 
         btnBack.setOnClickListener(v -> ((MainActivity)requireActivity()).goBack());
         
+        view.findViewById(R.id.rowSellerInfo).setOnClickListener(v -> {
+            if (service != null && getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(PublicProfileFragment.newInstance(service.getSellerId()));
+            }
+        });
+        
         // Owner Check (Hinglish: Check karo kya user khud hi seller hai)
         SessionManager session = new SessionManager(requireContext());
         User currentUser = session.getUser();

@@ -12,24 +12,14 @@
 > Task :app:compileDebugKotlin NO-SOURCE
 > Task :app:javaPreCompileDebug UP-TO-DATE
 
-> Task :app:compileDebugJavaWithJavac
-C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:151: error: no suitable method found for create(File,MediaType)
-            okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(tempFile, okhttp3.MediaType.parse("image/*"));
-                                                                 ^
-    method RequestBody.create(MediaType,String) is not applicable
-      (argument mismatch; File cannot be converted to MediaType)
-    method RequestBody.create(MediaType,ByteString) is not applicable
-      (argument mismatch; File cannot be converted to MediaType)
-    method RequestBody.create(MediaType,byte[]) is not applicable
-      (argument mismatch; File cannot be converted to MediaType)
-    method RequestBody.create(MediaType,File) is not applicable
-      (argument mismatch; File cannot be converted to MediaType)
+> Task :app:compileDebugJavaWithJavac FAILED
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\PublicProfileFragment.java:73: error: incompatible types: com.muproject.campusskill.model.User cannot be converted to com.muproject.campusskill.data.model.User
+                    updateUI(response.body().getData());
+                                                    ^
 Note: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
 1 error
-
-> Task :app:compileDebugJavaWithJavac FAILED
 
 [Incubating] Problems report is available at: file:///C:/Users/mrsbz/OneDrive/Documents/CampusSkill/build/reports/problems/problems-report.html
 
@@ -38,18 +28,10 @@ FAILURE: Build failed with an exception.
 * What went wrong:
 Execution failed for task ':app:compileDebugJavaWithJavac'.
 > Compilation failed; see the compiler output below.
-  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\ProfileFragment.java:151: error: no suitable method found for create(File,MediaType)
-              okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(tempFile, okhttp3.MediaType.parse("image/*"));
-                                                                   ^
-      method RequestBody.create(MediaType,String) is not applicable
-        (argument mismatch; File cannot be converted to MediaType)
-      method RequestBody.create(MediaType,ByteString) is not applicable
-        (argument mismatch; File cannot be converted to MediaType)
-      method RequestBody.create(MediaType,byte[]) is not applicable
-        (argument mismatch; File cannot be converted to MediaType)
-      method RequestBody.create(MediaType,File) is not applicable
-        (argument mismatch; File cannot be converted to MediaType)
   Note: Recompile with -Xlint:deprecation for details.
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\PublicProfileFragment.java:73: error: incompatible types: com.muproject.campusskill.model.User cannot be converted to com.muproject.campusskill.data.model.User
+                      updateUI(response.body().getData());
+                                                      ^
   Note: Some input files use or override a deprecated API.
   Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
   1 error
@@ -58,5 +40,5 @@ Execution failed for task ':app:compileDebugJavaWithJavac'.
 > Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to generate a Build Scan (Powered by Develocity).
 
-BUILD FAILED in 4s
+BUILD FAILED in 2s
 10 actionable tasks: 1 executed, 9 up-to-date

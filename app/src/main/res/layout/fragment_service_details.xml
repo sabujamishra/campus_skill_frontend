@@ -156,10 +156,13 @@
                     android:layout_marginBottom="12dp" />
 
                 <LinearLayout
+                    android:id="@+id/rowSellerInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="8dp">
 
                     <ImageView
                         android:id="@+id/ivDetailSellerAvatar"
