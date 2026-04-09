@@ -177,37 +177,28 @@ public class ProfileFragment extends Fragment {
 
     private void showEditProfileDialog() {
         if (getContext() == null) return;
-        android.widget.LinearLayout layout = new android.widget.LinearLayout(getContext());
-        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-        layout.setPadding(60, 40, 60, 0);
+        
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_update_profile, null);
+        com.google.android.material.textfield.TextInputEditText etName = dialogView.findViewById(R.id.etEditName);
+        com.google.android.material.textfield.TextInputEditText etEmail = dialogView.findViewById(R.id.etEditEmail);
+        com.google.android.material.textfield.TextInputEditText etDept = dialogView.findViewById(R.id.etEditDept);
 
-        android.widget.EditText etName = new android.widget.EditText(getContext());
-        etName.setHint("Name");
+        // Pre-fill existing data
         etName.setText(tvName.getText());
-        layout.addView(etName);
-
-        android.widget.EditText etEmailEdit = new android.widget.EditText(getContext());
-        etEmailEdit.setHint("Email");
-        etEmailEdit.setText(tvEmail.getText());
-        layout.addView(etEmailEdit);
-
-        android.widget.EditText etDeptEdit = new android.widget.EditText(getContext());
-        etDeptEdit.setHint("Department");
-        etDeptEdit.setText(tvDept.getText());
-        layout.addView(etDeptEdit);
+        etEmail.setText(tvEmail.getText());
+        etDept.setText(tvDept.getText());
 
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext())
-                .setTitle("Update Profile")
-                .setView(layout)
-                .setPositiveButton("Update", (dialog, which) -> {
+                .setView(dialogView)
+                .setPositiveButton("Save Changes", (dialog, which) -> {
                     String newName = etName.getText().toString().trim();
-                    String newEmail = etEmailEdit.getText().toString().trim();
-                    String newDept = etDeptEdit.getText().toString().trim();
+                    String newEmail = etEmail.getText().toString().trim();
+                    String newDept = etDept.getText().toString().trim();
                     if (!newName.isEmpty()) {
                         updateProfile(newName, newEmail, newDept);
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Maybe Later", null)
                 .show();
     }
 
