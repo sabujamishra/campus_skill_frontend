@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/rounded_placeholder"
+                android:src="@drawable/service_placeholder"
                 android:background="@color/white" />
 
             <!-- Price Tag Overlay -->

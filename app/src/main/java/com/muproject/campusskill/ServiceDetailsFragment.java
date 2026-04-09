@@ -82,7 +82,9 @@ public class ServiceDetailsFragment extends Fragment {
         // Load Images
         if (service.getThumbnail() != null) {
             String url = service.getThumbnail().startsWith("http") ? service.getThumbnail() : "https://lightgrey-dogfish-642647.hostingersite.com/" + service.getThumbnail();
-            Glide.with(this).load(url).placeholder(R.drawable.rounded_placeholder).into(ivImage);
+            Glide.with(this).load(url).placeholder(R.drawable.service_placeholder).into(ivImage);
+        } else {
+            ivImage.setImageResource(R.drawable.service_placeholder);
         }
 
         if (service.getSellerProfileImage() != null) {

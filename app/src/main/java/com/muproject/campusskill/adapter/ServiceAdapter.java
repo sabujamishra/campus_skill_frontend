@@ -51,10 +51,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             String url = thumbUrl.startsWith("http") ? thumbUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + thumbUrl;
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                     .load(url)
-                    .placeholder(R.drawable.rounded_placeholder)
+                    .placeholder(R.drawable.service_placeholder)
                     .into(holder.ivImage);
         } else {
-            holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
+            holder.ivImage.setImageResource(R.drawable.service_placeholder);
         }
         
         // Seller avatar logic (Hinglish: Seller ki photo load ho rahi hai)
