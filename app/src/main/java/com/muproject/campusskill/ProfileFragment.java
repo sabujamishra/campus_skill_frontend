@@ -95,7 +95,17 @@ public class ProfileFragment extends Fragment {
                         tvOrders.setText(String.valueOf(user.getTotalCompletedOrders()));
                         tvRepeatClients.setText(String.valueOf(user.getRepeatClients()));
                         tvResponseRate.setText(user.getResponseRate() + "%");
-                        tvMemberSince.setText("Member since: " + (user.getCreatedAt() != null ? user.getCreatedAt().split(" ")[0] : "N/A"));
+                        // Date format DD-MM-YYYY (Hinglish: Date ko readable format mein badlo)
+                        String memberDate = "N/A";
+                        if (user.getCreatedAt() != null) {
+                            try {
+                                java.text.SimpleDateFormat inputFmt = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                                java.text.SimpleDateFormat outputFmt = new java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault());
+                                java.util.Date date = inputFmt.parse(user.getCreatedAt());
+                                memberDate = outputFmt.format(date);
+                            } catch (Exception ex) { memberDate = user.getCreatedAt().split(" ")[0]; }
+                        }
+                        tvMemberSince.setText("Member since: " + memberDate);
 
                         // Glide image loading (Hinglish: Server URL se image load kar rahe hain)
                         if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
@@ -125,27 +135,45 @@ public class ProfileFragment extends Fragment {
         // TODO: Add real Multipart upload logic here
     }
 
-    // Profile edit dialog (Hinglish: Naam change karne wala popup)
+    // Profile edit dialog (Hinglish: Name, Email, Department change karne wala popup)
     private void showEditProfileDialog() {
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(requireContext());
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setPadding(60, 40, 60, 0);
+
         android.widget.EditText etName = new android.widget.EditText(requireContext());
-        etName.setHint("New Name");
+        etName.setHint("Name");
         etName.setText(tvName.getText());
+        layout.addView(etName);
+
+        android.widget.EditText etEmailEdit = new android.widget.EditText(requireContext());
+        etEmailEdit.setHint("Email");
+        etEmailEdit.setText(tvEmail.getText());
+        layout.addView(etEmailEdit);
+
+        android.widget.EditText etDeptEdit = new android.widget.EditText(requireContext());
+        etDeptEdit.setHint("Department");
+        etDeptEdit.setText(tvDept.getText());
+        layout.addView(etDeptEdit);
+
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Update Profile")
-                .setView(etName)
+                .setView(layout)
                 .setPositiveButton("Update", (dialog, which) -> {
                     String newName = etName.getText().toString().trim();
+                    String newEmail = etEmailEdit.getText().toString().trim();
+                    String newDept = etDeptEdit.getText().toString().trim();
                     if (!newName.isEmpty()) {
-                        updateProfile(newName, tvDept.getText().toString());
+                        updateProfile(newName, newEmail, newDept);
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
-    // Profile update karo (Hinglish: Server par naam update bhejo)
-    private void updateProfile(String name, String dept) {
-        com.muproject.campusskill.model.UpdateProfileRequest request = new com.muproject.campusskill.model.UpdateProfileRequest(name, dept);
+    // Profile update karo (Hinglish: Server par naam, email, dept update bhejo)
+    private void updateProfile(String name, String email, String dept) {
+        com.muproject.campusskill.model.UpdateProfileRequest request = new com.muproject.campusskill.model.UpdateProfileRequest(name, email, dept);
         RetrofitClient.getApiService().updateProfile(request).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
