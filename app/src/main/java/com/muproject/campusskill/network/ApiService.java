@@ -65,4 +65,8 @@ public interface ApiService {
     // Naya category banane ke liye (Hinglish: Add a new service category)
     @POST("categories")
     Call<com.muproject.campusskill.model.CommonResponse> createCategory(@Body java.util.Map<String, String> body);
+
+    // User ki apni banayi hui services (Hinglish: My Services list)
+    @GET("user/services")
+    Call<com.muproject.campusskill.model.ServiceListResponse> getMyServices();
 }

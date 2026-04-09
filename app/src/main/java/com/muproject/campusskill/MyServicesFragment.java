@@ -1,12 +1,9 @@
 package com.muproject.campusskill;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,54 +18,45 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Market Discovery Fragment (Hinglish: Global marketplace jahan browse aur search ho sakti hai)
-public class ServicesFragment extends Fragment {
+// User's own services management (Hinglish: Yahan sirf logged-in user ki posts dikhengi)
+public class MyServicesFragment extends Fragment {
 
     private RecyclerView rvServices;
     private ServiceAdapter adapter;
-    private EditText etSearch;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_services, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_services, container, false);
 
-        etSearch = view.findViewById(R.id.etSearchMarket);
-        rvServices = view.findViewById(R.id.rvMarketServices);
+        rvServices = view.findViewById(R.id.rvMyServices);
+        view.findViewById(R.id.btnBackMyServices).setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
         rvServices.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ServiceAdapter(new ArrayList<>());
         rvServices.setAdapter(adapter);
 
-        // Fetch all services (Hinglish: Saare active services load karo marketplace ke liye)
-        loadServices(null);
-
-        // Search logic
-        etSearch.setHint("Search anything...");
-        etSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                loadServices(etSearch.getText().toString().trim());
-                return true;
-            }
-            return false;
-        });
+        loadMyServices();
 
         return view;
     }
 
-    private void loadServices(String query) {
+    private void loadMyServices() {
         android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
-        pd.setMessage("Loading services...");
+        pd.setMessage("Fetching your creations...");
         pd.show();
 
-        RetrofitClient.getApiService().getServices(null, query).enqueue(new Callback<ServiceListResponse>() {
+        RetrofitClient.getApiService().getMyServices().enqueue(new Callback<ServiceListResponse>() {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
                 pd.dismiss();
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.setServices(response.body().getData());
+                    if (response.body().getData().isEmpty()) {
+                        Toast.makeText(requireContext(), "You haven't posted any services yet!", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(requireContext(), "Failed to fetch services", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 

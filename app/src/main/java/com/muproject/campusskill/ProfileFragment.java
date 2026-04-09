@@ -48,14 +48,14 @@ public class ProfileFragment extends Fragment {
 
         Button btnEdit = view.findViewById(R.id.btnEditProfile);
         Button btnLogout = view.findViewById(R.id.btnLogout);
-
         sessionManager = new SessionManager(requireContext());
 
         // Profile data load karo (Hinglish: Server se profile details mangwa rahe hain)
         loadProfile();
 
-        btnLogout.setOnClickListener(v -> logout());
-        btnEdit.setOnClickListener(v -> showEditProfileDialog());
+        view.findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
+        view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditProfileDialog());
+        view.findViewById(R.id.btnMyServices).setOnClickListener(v -> ((MainActivity)requireActivity()).replaceFragment(new MyServicesFragment()));
 
         view.findViewById(R.id.fabEditImage).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

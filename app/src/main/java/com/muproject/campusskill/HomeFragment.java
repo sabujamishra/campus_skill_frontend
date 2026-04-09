@@ -71,6 +71,14 @@ public class HomeFragment extends Fragment {
         loadServices();
         loadHeaderProfile(view);
 
+        // "View All" logic (Hinglish: Saare services dekhne ke liye Marketplace par switch)
+        view.findViewById(R.id.tvViewAllHome).setOnClickListener(v -> {
+            if (getParentFragment() instanceof DashboardFragment) {
+                ((com.google.android.material.bottomnavigation.BottomNavigationView) 
+                    requireActivity().findViewById(R.id.bottom_navigation)).setSelectedItemId(R.id.nav_services);
+            }
+        });
+
         // FAB to open Create Service screen
         view.findViewById(R.id.fabCreateService).setOnClickListener(v -> {
             if (getActivity() != null) {

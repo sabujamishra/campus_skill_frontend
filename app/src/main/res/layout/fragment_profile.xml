@@ -183,6 +183,15 @@
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/btnMyServices"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:text="My Services"
+                android:backgroundTint="@color/button_blue"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
