@@ -109,10 +109,28 @@ public class ProfileFragment extends Fragment {
 
                         // Glide image loading (Hinglish: Server URL se image load kar rahe hain)
                         if (user.getProfileImage() != null && !user.getProfileImage().isEmpty()) {
+                            String imageUrl = user.getProfileImage();
+                            if (!imageUrl.startsWith("http")) {
+                                // Relative path logic (Hinglish: Agar adha URL hai toh pura domain jodo)
+                                imageUrl = "https://lightgrey-dogfish-642647.hostingersite.com/" + imageUrl;
+                            }
+
                             com.bumptech.glide.Glide.with(ProfileFragment.this)
-                                    .load(user.getProfileImage())
+                                    .load(imageUrl)
                                     .placeholder(R.drawable.rounded_placeholder)
+                                    .error(R.drawable.rounded_placeholder) // Error fallback
                                     .circleCrop()
+                                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+                                            android.util.Log.e("GlideError", "Image load failed: " + (e != null ? e.getMessage() : "unknown"));
+                                            return false;
+                                        }
+                                        @Override
+                                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    })
                                     .into(ivProfileImage);
                         }
                     }
