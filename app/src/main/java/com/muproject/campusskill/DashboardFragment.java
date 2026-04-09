@@ -53,8 +53,8 @@ public class DashboardFragment extends Fragment {
                 // Discover services (Hinglish: Services browse karne wala page)
                 selectedFragment = new ServicesFragment();
             } else if (id == R.id.nav_orders) {
-                // Future: OrdersFragment
-                selectedFragment = new HomeFragment(); // Placeholder
+                // Orders history (Hinglish: Buyer/Seller ke orders dikhao)
+                selectedFragment = new OrdersFragment();
             } else if (id == R.id.nav_profile) {
                 // Profile screen load karo (Hinglish: Naye Profile fragment par switch)
                 selectedFragment = new ProfileFragment();

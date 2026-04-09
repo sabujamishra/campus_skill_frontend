@@ -122,8 +122,20 @@ public class PublicProfileFragment extends Fragment {
             Glide.with(this)
                     .load(url)
                     .placeholder(R.drawable.ic_profile)
-                    .error(R.drawable.ic_profile)
+                    .error(R.drawable.service_placeholder)
                     .circleCrop()
+                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+                            Log.e("PublicProfile", "Glide Load Failed for URL: " + url, e);
+                            return false; 
+                        }
+                        @Override
+                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                            Log.d("PublicProfile", "Glide Load Success: " + url);
+                            return false;
+                        }
+                    })
                     .into(ivProfile);
         } else {
             ivProfile.setImageResource(R.drawable.ic_profile);

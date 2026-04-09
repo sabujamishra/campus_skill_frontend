@@ -65,9 +65,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             if (avatarUrl.startsWith("http")) {
                 url = avatarUrl;
             } else {
-                String baseUrl = "https://lightgrey-dogfish-642647.hostingersite.com/";
+                String baseUrl = "http://lightgrey-dogfish-642647.hostingersite.com/";
                 if (avatarUrl.startsWith("/")) avatarUrl = avatarUrl.substring(1);
                 url = baseUrl + avatarUrl;
+                Log.d("ServiceAdapter", "Loading Image URL: " + url);
             }
             
             com.bumptech.glide.Glide.with(holder.itemView.getContext())

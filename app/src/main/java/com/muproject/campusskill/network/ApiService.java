@@ -83,4 +83,8 @@ public interface ApiService {
     // Naya order place karne ke liye (Hinglish: Book a service)
     @POST("order/create")
     Call<com.muproject.campusskill.model.CommonResponse> createOrder(@Body java.util.Map<String, Integer> body);
+
+    // Order history (Hinglish: Buyer ya Seller ke orders ki list)
+    @GET("orders")
+    Call<com.muproject.campusskill.model.OrderListResponse> getOrders(@retrofit2.http.Query("role") String role);
 }

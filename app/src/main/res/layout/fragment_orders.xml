@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8FAFC">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Orders"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Track your purchases and service requests"
+            android:textColor="@color/text_grey"
+            android:textSize="13sp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- Buyer / Seller Toggle Tabs -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabOrderRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_input_background"
+        app:tabBackground="@android:color/transparent"
+        app:tabIndicatorColor="@color/button_blue"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="@color/button_blue"
+        app:tabTextColor="@color/text_grey"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabRippleColor="@android:color/transparent">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Purchases" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Service Requests" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <!-- Loading State -->
+    <ProgressBar
+        android:id="@+id/progressOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:visibility="gone"
+        android:indeterminateTint="@color/button_blue" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="40dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_orders"
+            app:tint="#CCCCCC" />
+
+        <TextView
+            android:id="@+id/tvEmptyOrdersMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No orders yet"
+            android:textColor="@color/text_grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Your order history will appear here"
+            android:textColor="#AAAAAA"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Orders List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp" />
+
+</LinearLayout>
