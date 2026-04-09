@@ -66,13 +66,21 @@ public class PublicProfileFragment extends Fragment {
     }
 
     private void loadPublicProfile() {
+        if (userId <= 0) {
+            Toast.makeText(getContext(), "Error: Valid User ID not found in service data.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         RetrofitClient.getApiService().getPublicProfile(userId).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                 if (isAdded() && response.isSuccessful() && response.body() != null) {
                     updateUI(response.body().getData());
                 } else {
-                    Toast.makeText(getContext(), "Oops! Could not load profile.", Toast.LENGTH_SHORT).show();
+                    String error = "Unknown Error";
+                    try { if (response.errorBody() != null) error = response.errorBody().string(); } catch (Exception e) {}
+                    Toast.makeText(getContext(), "Server Error (" + response.code() + "): " + error, Toast.LENGTH_LONG).show();
+                    Log.e("PublicProfile", "Failed to load ID " + userId + ". Code: " + response.code() + " Error: " + error);
                 }
             }
 

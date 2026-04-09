@@ -12,14 +12,17 @@
 > Task :app:compileDebugKotlin NO-SOURCE
 > Task :app:javaPreCompileDebug UP-TO-DATE
 
-> Task :app:compileDebugJavaWithJavac FAILED
-C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\PublicProfileFragment.java:73: error: incompatible types: com.muproject.campusskill.model.User cannot be converted to com.muproject.campusskill.data.model.User
-                    updateUI(response.body().getData());
-                                                    ^
+> Task :app:compileDebugJavaWithJavac
+C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\adapter\ServiceAdapter.java:84: error: cannot find symbol
+            Log.d("ServiceAdapter", "Service Clicked: " + service.getTitle() + " | Seller ID: " + service.getSellerId());
+            ^
+  symbol:   variable Log
+  location: class ServiceAdapter
 Note: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
-Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+
 1 error
+> Task :app:compileDebugJavaWithJavac FAILED
 
 [Incubating] Problems report is available at: file:///C:/Users/mrsbz/OneDrive/Documents/CampusSkill/build/reports/problems/problems-report.html
 
@@ -29,16 +32,17 @@ FAILURE: Build failed with an exception.
 Execution failed for task ':app:compileDebugJavaWithJavac'.
 > Compilation failed; see the compiler output below.
   Note: Recompile with -Xlint:deprecation for details.
-  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\PublicProfileFragment.java:73: error: incompatible types: com.muproject.campusskill.model.User cannot be converted to com.muproject.campusskill.data.model.User
-                      updateUI(response.body().getData());
-                                                      ^
+  C:\Users\mrsbz\OneDrive\Documents\CampusSkill\app\src\main\java\com\muproject\campusskill\adapter\ServiceAdapter.java:84: error: cannot find symbol
+              Log.d("ServiceAdapter", "Service Clicked: " + service.getTitle() + " | Seller ID: " + service.getSellerId());
+              ^
+    symbol:   variable Log
+    location: class ServiceAdapter
   Note: Some input files use or override a deprecated API.
-  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
   1 error
 
 * Try:
 > Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to generate a Build Scan (Powered by Develocity).
 
-BUILD FAILED in 2s
+BUILD FAILED in 8s
 10 actionable tasks: 1 executed, 9 up-to-date

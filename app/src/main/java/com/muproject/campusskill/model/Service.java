@@ -17,7 +17,7 @@ public class Service implements java.io.Serializable {
     @SerializedName("seller_name")
     private String sellerName;
 
-    @SerializedName("seller_id")
+    @SerializedName(value = "seller_id", alternate = {"user_id", "owner_id", "created_by", "sellerID", "userID"})
     private int sellerId;
     
     @SerializedName(value = "seller_profile_image", alternate = {"profile_image", "seller_photo", "avatar"})

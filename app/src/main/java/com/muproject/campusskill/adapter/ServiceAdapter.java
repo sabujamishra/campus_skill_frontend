@@ -1,5 +1,6 @@
 package com.muproject.campusskill.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
         // Logic to open Service Details (Hinglish: Card click par detail fragment load karo)
         holder.itemView.setOnClickListener(v -> {
+            Log.d("ServiceAdapter", "Service Clicked: " + service.getTitle() + " | Seller ID: " + service.getSellerId());
             if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
                 ((com.muproject.campusskill.MainActivity) v.getContext())
                         .replaceFragment(com.muproject.campusskill.ServiceDetailsFragment.newInstance(service));
