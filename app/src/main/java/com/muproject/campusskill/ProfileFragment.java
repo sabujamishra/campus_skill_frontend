@@ -135,19 +135,17 @@ public class ProfileFragment extends Fragment {
         Toast.makeText(requireContext(), "Uploading image...", Toast.LENGTH_SHORT).show();
 
         try {
-            // Uri se InputStream kholo aur temp file mein copy karo (Hinglish: Gallery image ko file mein badlo)
-            java.io.InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
-            java.io.File tempFile = new java.io.File(requireContext().getCacheDir(), "profile_upload.jpg");
+            // Uri se Bitmap load karo compression ke liye (Hinglish: Pehle image ko memory mein lo compress karne ke liye)
+            android.graphics.Bitmap bitmap = android.provider.MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
+            
+            // Image size compress karo (70% quality usually brings it under 2MB easily)
+            java.io.File tempFile = new java.io.File(requireContext().getCacheDir(), "profile_compressed.jpg");
             java.io.OutputStream outputStream = new java.io.FileOutputStream(tempFile);
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, outputStream);
+            outputStream.flush();
             outputStream.close();
-            inputStream.close();
 
-            // Multipart request body banao (Hinglish: File ko network request mein wrap karo)
+            // Multipart request body banao
             okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/jpeg"), tempFile);
             okhttp3.MultipartBody.Part imagePart = okhttp3.MultipartBody.Part.createFormData("profile_image", "profile.jpg", requestBody);
 
