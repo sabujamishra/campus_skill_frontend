@@ -1,5 +1,9 @@
 package com.muproject.campusskill.network;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -31,6 +35,22 @@ public class RetrofitClient {
                     }
                 }
                 return chain.proceed(requestBuilder.build());
+            });
+
+            // Global Auth Guard (Hinglish: Server 401 de toh seedha login page par bhejo)
+            clientBuilder.addInterceptor(chain -> {
+                okhttp3.Response response = chain.proceed(chain.request());
+                if (response.code() == 401 && appContext != null) {
+                    Log.w("RetrofitClient", "401 Unauthorized detected. Redirecting to Login.");
+                    SessionManager sm = new SessionManager(appContext);
+                    sm.clearSession();
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        Intent intent = new Intent(appContext, com.muproject.campusskill.MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        appContext.startActivity(intent);
+                    });
+                }
+                return response;
             });
 
             // Humne yahan SslUtils use kiya hai taaki hosting ki certificate errors bypass ho sakein

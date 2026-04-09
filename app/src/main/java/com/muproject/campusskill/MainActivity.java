@@ -43,17 +43,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Auto-login check (Hinglish: Agar Remember Me on hai aur token hai toh seedha dashboard)
+        // Auth Guard: Token must exist to enter Dashboard (Hinglish: Bina token ke dashboard nahi khulega)
         com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(this);
-        if (sessionManager.getToken() != null && sessionManager.isRememberMe()) {
+        String token = sessionManager.getToken();
+
+        if (token != null && !token.isEmpty() && sessionManager.isRememberMe()) {
+            // Token exists + Remember Me → Go straight to Dashboard
             loadFragment(new DashboardFragment());
             return;
         } else {
-            // Agar Remember Me off tha toh purana token clear karo
+            // No valid session → Clear everything and show Login
             sessionManager.clearSession();
         }
 
-        // Jab app start hogi, agar pehle se koi state save nahi hai toh Login page load karo
+        // Default: Show Login page
         if (savedInstanceState == null) {
             loadFragment(new LoginFragment());
         }
