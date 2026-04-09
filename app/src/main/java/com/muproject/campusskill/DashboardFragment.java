@@ -33,8 +33,8 @@ public class DashboardFragment extends Fragment {
                 // Future: OrdersFragment
                 selectedFragment = new HomeFragment(); // Placeholder
             } else if (id == R.id.nav_profile) {
-                // Future: ProfileFragment
-                selectedFragment = new HomeFragment(); // Placeholder
+                // Profile screen load karo (Hinglish: Naye Profile fragment par switch)
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {
