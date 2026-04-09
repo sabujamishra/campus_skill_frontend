@@ -148,8 +148,8 @@ public class ProfileFragment extends Fragment {
             inputStream.close();
 
             // Multipart request body banao (Hinglish: File ko network request mein wrap karo)
-            okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), tempFile);
-            okhttp3.MultipartBody.Part imagePart = okhttp3.MultipartBody.Part.createFormData("profile_image", tempFile.getName(), requestBody);
+            okhttp3.RequestBody requestBody = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/jpeg"), tempFile);
+            okhttp3.MultipartBody.Part imagePart = okhttp3.MultipartBody.Part.createFormData("profile_image", "profile.jpg", requestBody);
 
             // Server par upload karo
             RetrofitClient.getApiService().uploadProfileImage(imagePart).enqueue(new Callback<ProfileResponse>() {
@@ -157,9 +157,16 @@ public class ProfileFragment extends Fragment {
                 public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(requireContext(), "Image uploaded!", Toast.LENGTH_SHORT).show();
-                        loadProfile(); // Refresh to get server URL (Hinglish: Server se naya URL le lo)
+                        loadProfile();
                     } else {
-                        Toast.makeText(requireContext(), "Upload failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                        // Server error body parse karo (Hinglish: Server ne kya galat bataya dekhte hain)
+                        String errorMsg = "Upload failed: " + response.code();
+                        try {
+                            if (response.errorBody() != null) {
+                                errorMsg = response.errorBody().string();
+                            }
+                        } catch (Exception ex) {}
+                        Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
                 }
 
