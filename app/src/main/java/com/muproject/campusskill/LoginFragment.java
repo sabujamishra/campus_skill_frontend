@@ -74,11 +74,15 @@ public class LoginFragment extends Fragment {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         if ("success".equals(response.body().getStatus())) {
-                            // Token ko secure storage mein save kar rahe hain (Hinglish: Tijori mein token rakh rahe hain)
+                            // Token ko hamesha save karo current session ke liye (Hinglish: Token zaroor save hoga API calls ke liye)
                             com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
-                            // Sirf tab save karenge jab 'Remember Me' on ho
-                            if (cbRememberMe.isChecked()) {
-                                sessionManager.saveToken(response.body().getData().getToken());
+                            sessionManager.saveToken(response.body().getData().getToken());
+                            
+                            // Remember Me off hone par app band hone par token clear hoga
+                            if (!cbRememberMe.isChecked()) {
+                                sessionManager.setRememberMe(false);
+                            } else {
+                                sessionManager.setRememberMe(true);
                             }
                             
                             android.widget.Toast.makeText(requireContext(), "Welcome back, " + response.body().getData().getUser().getName(), android.widget.Toast.LENGTH_SHORT).show();

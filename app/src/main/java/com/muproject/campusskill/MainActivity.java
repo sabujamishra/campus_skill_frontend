@@ -20,11 +20,14 @@ public class MainActivity extends AppCompatActivity {
         // activity_main layout set kar raha hai jisme fragment container hai
         setContentView(R.layout.activity_main);
 
-        // Auto-login check (Hinglish: Agar pehle se logged in hai toh seedha dashboard)
+        // Auto-login check (Hinglish: Agar Remember Me on hai aur token hai toh seedha dashboard)
         com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(this);
-        if (sessionManager.getToken() != null) {
+        if (sessionManager.getToken() != null && sessionManager.isRememberMe()) {
             loadFragment(new DashboardFragment());
             return;
+        } else {
+            // Agar Remember Me off tha toh purana token clear karo
+            sessionManager.clearSession();
         }
 
         // Jab app start hogi, agar pehle se koi state save nahi hai toh Login page load karo

@@ -50,4 +50,14 @@ public class SessionManager {
     public void clearSession() {
         sharedPreferences.edit().clear().apply();
     }
+
+    // Remember Me flag save karo (Hinglish: Auto-login on/off rakhne ke liye)
+    public void setRememberMe(boolean value) {
+        sharedPreferences.edit().putBoolean("remember_me", value).apply();
+    }
+
+    // Remember Me flag check karo
+    public boolean isRememberMe() {
+        return sharedPreferences.getBoolean("remember_me", false);
+    }
 }
