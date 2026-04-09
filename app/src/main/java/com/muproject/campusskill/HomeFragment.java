@@ -25,6 +25,17 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        view.findViewById(R.id.fabCreateService).setOnClickListener(v -> {
+            // Dashboard fragment se fragment transition handle kar rahe hain (Hinglish: Naya screen open ho raha hai)
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new CreateServiceFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         return view;
     }
 }

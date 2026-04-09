@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="#F8FAFF">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to CampusSkill"
+            android:textColor="@color/button_blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your marketplace is being prepared..."
+            android:textColor="@color/text_grey"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home Coming Soon"
-        android:textColor="@color/button_blue"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_add"
+        app:tint="@color/white"
+        android:backgroundTint="@color/button_blue"
+        app:elevation="6dp" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

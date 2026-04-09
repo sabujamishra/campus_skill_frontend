@@ -40,8 +40,14 @@ public interface ApiService {
     @retrofit2.http.PUT("user/update")
     Call<com.muproject.campusskill.model.ProfileResponse> updateProfile(@Body com.muproject.campusskill.model.UpdateProfileRequest request);
 
-    // Profile photo upload karne ke liye (Hinglish: Image upload multipart flow)
+    // Service photo upload karne ke liye (Hinglish: Image upload multipart flow)
     @retrofit2.http.Multipart
     @POST("user/upload-image")
     Call<com.muproject.campusskill.model.ProfileResponse> uploadProfileImage(@retrofit2.http.Part okhttp3.MultipartBody.Part image);
+
+    // --- Service Module ---
+
+    // Naya service banane ke liye (Hinglish: Post a new service)
+    @POST("service/create")
+    Call<com.muproject.campusskill.model.CommonResponse> createService(@Body com.muproject.campusskill.model.ServiceCreateRequest request);
 }
