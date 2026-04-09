@@ -111,20 +111,29 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Category"
+                android:textColor="@color/button_blue"
+                android:textSize="12sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="4dp" />
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Category ID (e.g. 1)"
-                app:boxStrokeColor="@color/button_blue"
-                app:hintTextColor="@color/button_blue">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etServiceCategory"
+                android:layout_marginTop="4dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#A0A0A0">
+                <Spinner
+                    android:id="@+id/spinnerCategory"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="8dp" />
+            </com.google.android.material.card.MaterialCardView>
 
             <Button
                 android:id="@+id/btnCreateService"
