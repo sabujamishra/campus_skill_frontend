@@ -16,6 +16,9 @@ public class Service implements java.io.Serializable {
     
     @SerializedName("seller_name")
     private String sellerName;
+
+    @SerializedName("seller_id")
+    private int sellerId;
     
     @SerializedName("seller_profile_image")
     private String sellerProfileImage;
@@ -34,6 +37,7 @@ public class Service implements java.io.Serializable {
     public int getDeliveryTime() { return deliveryTime; }
     public String getCategory() { return category; }
     public String getSellerName() { return sellerName; }
+    public int getSellerId() { return sellerId; }
     public String getSellerProfileImage() { return sellerProfileImage; }
     public String getThumbnail() { return thumbnail; }
     public float getAverageRating() { return averageRating; }

@@ -21,6 +21,8 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import com.muproject.campusskill.utils.SessionManager;
+import com.muproject.campusskill.data.model.User;
 
 // Service ki poori detail dikhane wala aur order place karne wala screen (Hinglish: Order Module integration)
 public class ServiceDetailsFragment extends Fragment {
@@ -89,6 +91,21 @@ public class ServiceDetailsFragment extends Fragment {
         }
 
         btnBack.setOnClickListener(v -> ((MainActivity)requireActivity()).goBack());
+        
+        // Owner Check (Hinglish: Check karo kya user khud hi seller hai)
+        SessionManager session = new SessionManager(requireContext());
+        User currentUser = session.getUser();
+        if (currentUser != null) {
+            boolean isOwner = (currentUser.getId() == service.getSellerId()) || 
+                             (service.getSellerName() != null && service.getSellerName().equals(currentUser.getName()));
+            
+            if (isOwner) {
+                btnBook.setEnabled(false);
+                btnBook.setText("This is your service");
+                btnBook.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.GRAY));
+                view.findViewById(R.id.tvYourServiceBadge).setVisibility(View.VISIBLE);
+            }
+        }
         
         btnBook.setOnClickListener(v -> handlePlaceOrder());
 
