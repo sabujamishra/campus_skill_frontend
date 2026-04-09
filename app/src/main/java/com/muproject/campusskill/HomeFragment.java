@@ -29,9 +29,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Setup RecyclerView (Hinglish: List ko grid format mein set kar rahe hain)
+        // Setup RecyclerView (Hinglish: List ko row format mein set kar rahe hain)
         rvServices = view.findViewById(R.id.rvServices);
-        rvServices.setLayoutManager(new GridLayoutManager(requireContext(), 2)); // 2 columns for a modern look
+        rvServices.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(requireContext())); 
         
         adapter = new ServiceAdapter(new ArrayList<>());
         rvServices.setAdapter(adapter);

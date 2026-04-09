@@ -20,7 +20,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         this.services = services;
     }
 
-    // Naya data aane par list refresh karne ke liye function
     public void setServices(List<Service> services) {
         this.services = services;
         notifyDataSetChanged();
@@ -38,16 +37,15 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         Service service = services.get(position);
         
         holder.tvTitle.setText(service.getTitle() != null ? service.getTitle() : "No Title");
-        holder.tvSeller.setText("by " + (service.getSellerName() != null ? service.getSellerName() : "Unknown"));
+        holder.tvSeller.setText(service.getSellerName() != null ? service.getSellerName() : "Unknown");
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
         
-        // New fields (Hinglish: Naye fields bind kar rahe hain card mein)
-        holder.tvCategory.setText(service.getCategory() != null ? service.getCategory() : "General");
-        holder.tvDeliveryTime.setText(service.getDeliveryTime() + " days");
-        
-        // For now using placeholder
+        // Image logic (Thumbnail)
         holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
+        
+        // Optional: Load seller avatar if available (Hinglish: Agar seller photo hai toh dikhao)
+        holder.ivSellerAvatar.setImageResource(R.drawable.ic_profile);
     }
 
     @Override
@@ -56,18 +54,17 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivImage;
-        TextView tvTitle, tvSeller, tvPrice, tvRating, tvCategory, tvDeliveryTime;
+        ImageView ivImage, ivSellerAvatar;
+        TextView tvTitle, tvSeller, tvPrice, tvRating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImage = itemView.findViewById(R.id.ivServiceImage);
+            ivSellerAvatar = itemView.findViewById(R.id.ivSellerAvatar);
             tvTitle = itemView.findViewById(R.id.tvServiceTitle);
             tvSeller = itemView.findViewById(R.id.tvSellerName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvRating = itemView.findViewById(R.id.tvRating);
-            tvCategory = itemView.findViewById(R.id.tvServiceCategory);
-            tvDeliveryTime = itemView.findViewById(R.id.tvDeliveryTime);
         }
     }
 }
