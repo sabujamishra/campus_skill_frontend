@@ -6,6 +6,7 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="16dp"
+    app:shapeAppearanceOverlay="@style/BottomRoundedCard"
     app:cardElevation="0dp"
     app:cardBackgroundColor="#FFFFFF"
     app:strokeWidth="1dp"
@@ -28,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/rounded_placeholder"
-                android:background="#F8F9FF" />
+                android:background="@color/white" />
 
             <!-- Price Tag Overlay -->
             <TextView

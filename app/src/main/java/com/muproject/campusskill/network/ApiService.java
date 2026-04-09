@@ -77,4 +77,10 @@ public interface ApiService {
             @retrofit2.http.Part("service_id") okhttp3.RequestBody serviceId,
             @retrofit2.http.Part okhttp3.MultipartBody.Part image
     );
+
+    // --- Order Module ---
+    
+    // Naya order place karne ke liye (Hinglish: Book a service)
+    @POST("order/create")
+    Call<com.muproject.campusskill.model.CommonResponse> createOrder(@Body java.util.Map<String, Integer> body);
 }

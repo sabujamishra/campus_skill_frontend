@@ -3,7 +3,7 @@ package com.muproject.campusskill.model;
 import com.google.gson.annotations.SerializedName;
 
 // Service data model synced with API (Hinglish: API se aane waale services ka structure)
-public class Service {
+public class Service implements java.io.Serializable {
     private int id;
     private String title;
     private String description;

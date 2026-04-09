@@ -65,6 +65,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         } else {
             holder.ivSellerAvatar.setImageResource(R.drawable.ic_profile);
         }
+
+        // Logic to open Service Details (Hinglish: Card click par detail fragment load karo)
+        holder.itemView.setOnClickListener(v -> {
+            if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
+                ((com.muproject.campusskill.MainActivity) v.getContext())
+                        .replaceFragment(com.muproject.campusskill.ServiceDetailsFragment.newInstance(service));
+            }
+        });
     }
 
     @Override
