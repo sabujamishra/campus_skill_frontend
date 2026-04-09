@@ -30,7 +30,7 @@ public class MyServicesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_services, container, false);
 
         rvServices = view.findViewById(R.id.rvMyServices);
-        view.findViewById(R.id.btnBackMyServices).setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        view.findViewById(R.id.btnBackMyServices).setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         rvServices.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ServiceAdapter(new ArrayList<>());

@@ -54,7 +54,7 @@ public class CreateServiceFragment extends Fragment {
         loadCategories();
 
         btnCreate.setOnClickListener(v -> handleCreateService());
-        btnBack.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         
         // Category creation dialog (Hinglish: Naya category banane ke liye popup)
         tvAddCategory.setOnClickListener(v -> showAddCategoryDialog());
