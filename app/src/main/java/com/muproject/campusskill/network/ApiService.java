@@ -69,4 +69,12 @@ public interface ApiService {
     // User ki apni banayi hui services (Hinglish: My Services list)
     @GET("user/services")
     Call<com.muproject.campusskill.model.ServiceListResponse> getMyServices();
+
+    // Service image upload karne ke liye (Hinglish: Service cover photo upload)
+    @retrofit2.http.Multipart
+    @POST("service/upload-image")
+    Call<com.muproject.campusskill.model.CommonResponse> uploadServiceImage(
+            @retrofit2.http.Part("service_id") okhttp3.RequestBody serviceId,
+            @retrofit2.http.Part okhttp3.MultipartBody.Part image
+    );
 }
