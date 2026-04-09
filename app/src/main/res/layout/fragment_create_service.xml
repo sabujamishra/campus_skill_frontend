@@ -15,6 +15,14 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <!-- Back Button -->
+            <ImageView
+                android:id="@+id/btnBackCreate"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_back_arrow"
+                android:layout_marginBottom="16dp" />
+
             <!-- Title -->
             <TextView
                 android:layout_width="wrap_content"

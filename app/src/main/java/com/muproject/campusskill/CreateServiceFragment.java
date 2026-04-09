@@ -34,8 +34,10 @@ public class CreateServiceFragment extends Fragment {
         etTime = view.findViewById(R.id.etServiceTime);
         etCategory = view.findViewById(R.id.etServiceCategory);
         Button btnCreate = view.findViewById(R.id.btnCreateService);
+        android.widget.ImageView btnBack = view.findViewById(R.id.btnBackCreate);
 
         btnCreate.setOnClickListener(v -> handleCreateService());
+        btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
         return view;
     }
