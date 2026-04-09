@@ -148,14 +148,28 @@ public class ServiceDetailsFragment extends Fragment {
     }
 
     private void showSuccessDialog(String message) {
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Order Successful! ✅")
-                .setMessage(message != null ? message : "Your order has been placed. You can track it in the Orders section.")
-                .setPositiveButton("View Orders", (dialog, which) -> {
-                    // Switch to Orders Tab or just go back for now
-                    ((MainActivity)requireActivity()).goBack();
-                })
-                .setNegativeButton("Close", (dialog, which) -> ((MainActivity)requireActivity()).goBack())
-                .show();
+        if (getContext() == null) return;
+
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_order_success, null);
+        TextView tvMsg = dialogView.findViewById(R.id.tvSuccessMessage);
+        if (message != null) tvMsg.setText(message);
+
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setView(dialogView)
+                .setCancelable(false)
+                .create();
+
+        dialogView.findViewById(R.id.btnViewOrders).setOnClickListener(v -> {
+            dialog.dismiss();
+            // In future: Switch to Dashboard Orders tab
+            ((MainActivity)requireActivity()).goBack();
+        });
+
+        dialogView.findViewById(R.id.btnDone).setOnClickListener(v -> {
+            dialog.dismiss();
+            ((MainActivity)requireActivity()).goBack();
+        });
+
+        dialog.show();
     }
 }
