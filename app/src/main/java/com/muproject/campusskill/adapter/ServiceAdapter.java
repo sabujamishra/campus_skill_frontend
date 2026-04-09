@@ -11,13 +11,19 @@ import com.muproject.campusskill.R;
 import com.muproject.campusskill.model.Service;
 import java.util.List;
 
-// Services list ke liye adapter (Hinglish: Services ke cards dikhane wala manager)
+// Services list ke liye adapter (Hinglish: API se aane wale services ke cards dikhane wala manager)
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
     private List<Service> services;
 
     public ServiceAdapter(List<Service> services) {
         this.services = services;
+    }
+
+    // Naya data aane par list refresh karne ke liye function
+    public void setServices(List<Service> services) {
+        this.services = services;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -30,17 +36,21 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Service service = services.get(position);
-        holder.tvTitle.setText(service.getTitle());
-        holder.tvSeller.setText(service.getSellerName());
-        holder.tvPrice.setText("₹" + (int)service.getPrice());
-        holder.tvRating.setText("⭐ " + service.getRating());
-        // For now using placeholder
+        
+        holder.tvTitle.setText(service.getTitle() != null ? service.getTitle() : "No Title");
+        holder.tvSeller.setText(service.getSellerName() != null ? service.getSellerName() : "Unknown Seller");
+        holder.tvPrice.setText("₹" + service.getPrice());
+        holder.tvRating.setText("⭐ " + service.getAverageRating());
+        
+        // Category aur Delivery Time agar zarourat ho (Hinglish: Extra info add kar sakte hain tag ki tarah)
+        
+        // For now using placeholder (Image API is separate or handled later)
         holder.ivImage.setImageResource(R.drawable.rounded_placeholder);
     }
 
     @Override
     public int getItemCount() {
-        return services.size();
+        return services != null ? services.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

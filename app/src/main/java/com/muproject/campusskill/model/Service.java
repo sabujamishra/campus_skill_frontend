@@ -1,30 +1,31 @@
 package com.muproject.campusskill.model;
 
-// Service data model (Hinglish: Student ki service jaise Assignments, Logo design)
+import com.google.gson.annotations.SerializedName;
+
+// Service data model synced with API (Hinglish: API se aane waale services ka structure)
 public class Service {
     private int id;
-    private String sellerName;
     private String title;
     private String description;
-    private double price;
-    private float rating;
-    private int imageResId; // Placeholder image
-
-    public Service(int id, String sellerName, String title, String description, double price, float rating, int imageResId) {
-        this.id = id;
-        this.sellerName = sellerName;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.rating = rating;
-        this.imageResId = imageResId;
-    }
+    private String price; // String form mein aata hai server se
+    
+    @SerializedName("delivery_time")
+    private int deliveryTime;
+    
+    private String category;
+    
+    @SerializedName("seller_name")
+    private String sellerName;
+    
+    @SerializedName("average_rating")
+    private float averageRating;
 
     public int getId() { return id; }
-    public String getSellerName() { return sellerName; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
-    public double getPrice() { return price; }
-    public float getRating() { return rating; }
-    public int getImageResId() { return imageResId; }
+    public String getPrice() { return price; }
+    public int getDeliveryTime() { return deliveryTime; }
+    public String getCategory() { return category; }
+    public String getSellerName() { return sellerName; }
+    public float getAverageRating() { return averageRating; }
 }

@@ -50,4 +50,11 @@ public interface ApiService {
     // Naya service banane ke liye (Hinglish: Post a new service)
     @POST("service/create")
     Call<com.muproject.campusskill.model.CommonResponse> createService(@Body com.muproject.campusskill.model.ServiceCreateRequest request);
+
+    // Saari active services mangwane ke liye (Hinglish: Marketplace service list)
+    @GET("services")
+    Call<com.muproject.campusskill.model.ServiceListResponse> getServices(
+            @retrofit2.http.Query("category_id") Integer categoryId,
+            @retrofit2.http.Query("search") String search
+    );
 }
