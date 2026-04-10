@@ -30,6 +30,7 @@ public class ServicesFragment extends Fragment {
     private com.muproject.campusskill.adapter.CategoryAdapter categoryAdapter;
     private EditText etSearch;
     private Integer currentCategoryId = null;
+    private int lastSortId = R.id.chipNewest;
 
     @Nullable
     @Override
@@ -129,9 +130,12 @@ public class ServicesFragment extends Fragment {
         com.google.android.material.chip.ChipGroup cgSort = bottomSheetView.findViewById(R.id.cgSort);
         View btnApply = bottomSheetView.findViewById(R.id.btnApplyFilters);
 
+        // Pre-select the last chosen sort (Hinglish: Purana selection dikhao)
+        cgSort.check(lastSortId);
+
         btnApply.setOnClickListener(v -> {
-            int checkedId = cgSort.getCheckedChipId();
-            applySorting(checkedId);
+            lastSortId = cgSort.getCheckedChipId();
+            applySorting(lastSortId);
             dialog.dismiss();
             Toast.makeText(getContext(), "Filters applied", Toast.LENGTH_SHORT).show();
         });
