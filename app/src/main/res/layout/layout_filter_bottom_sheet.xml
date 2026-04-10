@@ -59,9 +59,7 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Newest First"
-            app:chipBackgroundColor="@color/primary_light"
-            app:chipStrokeColor="@color/primary" />
+            android:text="Newest First" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPriceLow"
