@@ -122,4 +122,12 @@ public interface ApiService {
 
     @GET("leaderboard/most-active")
     Call<com.muproject.campusskill.model.LeaderboardResponse> getMostActive();
+
+    // --- Chat Module ---
+
+    @POST("message/send")
+    Call<com.muproject.campusskill.model.CommonResponse> sendMessage(@Body java.util.Map<String, Object> body);
+
+    @GET("message/history")
+    Call<com.muproject.campusskill.model.MessageListResponse> getChatHistory(@retrofit2.http.Query("order_id") int orderId);
 }

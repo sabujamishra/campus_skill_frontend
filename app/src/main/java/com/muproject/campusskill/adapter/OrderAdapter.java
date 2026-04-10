@@ -125,7 +125,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 break;
         }
 
-        // Date formatting (Hinglish: Date ko readable format mein dikhao)
         if (order.getCreatedAt() != null) {
             try {
                 java.text.SimpleDateFormat inputFmt = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
@@ -138,6 +137,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         } else {
             holder.tvDate.setText("");
         }
+
+        holder.btnChat.setOnClickListener(v -> {
+            if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
+                ((com.muproject.campusskill.MainActivity) v.getContext())
+                        .replaceFragment(com.muproject.campusskill.ChatFragment.newInstance(order.getId(), status));
+            }
+        });
     }
 
     @Override
@@ -157,7 +163,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvServiceTitle, tvStatus, tvPerson, tvPrice, tvDate;
-        android.widget.Button btnAccept, btnComplete, btnReview;
+        android.widget.Button btnAccept, btnComplete, btnReview, btnChat;
 
         OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -170,6 +176,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             btnAccept = itemView.findViewById(R.id.btnAcceptOrder);
             btnComplete = itemView.findViewById(R.id.btnCompleteOrder);
             btnReview = itemView.findViewById(R.id.btnReviewOrder);
+            btnChat = itemView.findViewById(R.id.btnChatOrder);
         }
     }
 }

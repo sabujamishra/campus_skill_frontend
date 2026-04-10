@@ -35,6 +35,8 @@
                         app:shapeAppearanceOverlay="@style/CircleImage"
                         app:strokeWidth="3dp"
                         app:strokeColor="@color/white"
+                        android:background="@color/white"
+                        android:padding="8dp"
                         android:elevation="4dp" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton

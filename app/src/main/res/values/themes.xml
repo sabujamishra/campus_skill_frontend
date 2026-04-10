@@ -58,4 +58,19 @@
         <item name="android:background">@drawable/bg_price_pill</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="RoundedTopRight">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+        <item name="cornerSizeBottomLeft">2dp</item>
+    </style>
+
+    <style name="RoundedTopLeft">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">16dp</item>
+        <item name="cornerSizeBottomRight">2dp</item>
+    </style>
 </resources>
