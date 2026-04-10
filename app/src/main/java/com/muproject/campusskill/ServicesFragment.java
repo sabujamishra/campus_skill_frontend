@@ -38,6 +38,7 @@ public class ServicesFragment extends Fragment {
 
         etSearch = view.findViewById(R.id.etSearchMarket);
         rvServices = view.findViewById(R.id.rvMarketServices);
+        View btnFilter = view.findViewById(R.id.btnFilter);
 
         rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
         com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
@@ -52,6 +53,14 @@ public class ServicesFragment extends Fragment {
             loadServices(etSearch.getText().toString().trim(), true);
         });
         rvCategories.setAdapter(categoryAdapter);
+
+        // Filter button listener
+        if (btnFilter != null) {
+            btnFilter.setOnClickListener(v -> {
+                loadServices(etSearch.getText().toString().trim(), true);
+                Toast.makeText(getContext(), "Filters refreshed", Toast.LENGTH_SHORT).show();
+            });
+        }
 
         loadCategories();
         loadServices(null, false);
