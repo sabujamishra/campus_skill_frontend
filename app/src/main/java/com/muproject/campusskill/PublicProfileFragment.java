@@ -76,7 +76,12 @@ public class PublicProfileFragment extends Fragment {
 
         loadSellerServices();
 
-        view.findViewById(R.id.btnContactSeller).setOnClickListener(v -> {
+        View btnContact = view.findViewById(R.id.btnContactSeller);
+        if (userId == currentUserId) {
+            btnContact.setVisibility(View.GONE);
+        }
+
+        btnContact.setOnClickListener(v -> {
             // Find if there's an active order between current user and this seller
             // Hinglish: Hum orders check kar rahe hain taaki participant access mil sake
             RetrofitClient.getApiService().getOrders("buyer").enqueue(new Callback<com.muproject.campusskill.model.OrderListResponse>() {
