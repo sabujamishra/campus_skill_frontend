@@ -42,7 +42,17 @@ public class OrdersFragment extends Fragment {
         layoutEmpty = view.findViewById(R.id.layoutEmptyOrders);
 
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new OrderAdapter(new ArrayList<>(), currentRole);
+        adapter = new OrderAdapter(new ArrayList<Order>(), currentRole, new OrderAdapter.OnOrderActionListener() {
+            @Override
+            public void onAccept(Order order) {
+                handleAcceptOrder(order);
+            }
+
+            @Override
+            public void onComplete(Order order) {
+                handleCompleteOrder(order);
+            }
+        });
         rvOrders.setAdapter(adapter);
 
         TabLayout tabLayout = view.findViewById(R.id.tabOrderRole);
@@ -85,7 +95,17 @@ public class OrdersFragment extends Fragment {
                     } else {
                         layoutEmpty.setVisibility(View.GONE);
                         rvOrders.setVisibility(View.VISIBLE);
-                        adapter = new OrderAdapter(orders, currentRole);
+                        adapter = new OrderAdapter(orders, currentRole, new OrderAdapter.OnOrderActionListener() {
+                            @Override
+                            public void onAccept(Order order) {
+                                handleAcceptOrder(order);
+                            }
+
+                            @Override
+                            public void onComplete(Order order) {
+                                handleCompleteOrder(order);
+                            }
+                        });
                         rvOrders.setAdapter(adapter);
                     }
                 } else {
@@ -100,7 +120,61 @@ public class OrdersFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 layoutEmpty.setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                Log.e("OrdersFragment", "Fetch failed", t);
+            }
+        });
+    }
+
+    private void handleAcceptOrder(Order order) {
+        // Show progress loader
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        pd.setMessage("Accepting order...");
+        pd.setCancelable(false);
+        pd.show();
+
+        RetrofitClient.getApiService().acceptOrder(order.getId()).enqueue(new Callback<com.muproject.campusskill.model.CommonResponse>() {
+            @Override
+            public void onResponse(Call<com.muproject.campusskill.model.CommonResponse> call, Response<com.muproject.campusskill.model.CommonResponse> response) {
+                pd.dismiss();
+                if (!isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null && "success".equals(response.body().getStatus())) {
+                    Toast.makeText(getContext(), "Order Accepted!", Toast.LENGTH_SHORT).show();
+                    loadOrders(); // List refresh karo
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.muproject.campusskill.model.CommonResponse> call, Throwable t) {
+                pd.dismiss();
+                if (isAdded()) Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleCompleteOrder(Order order) {
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        pd.setMessage("Completing order...");
+        pd.setCancelable(false);
+        pd.show();
+
+        RetrofitClient.getApiService().completeOrder(order.getId()).enqueue(new Callback<com.muproject.campusskill.model.CommonResponse>() {
+            @Override
+            public void onResponse(Call<com.muproject.campusskill.model.CommonResponse> call, Response<com.muproject.campusskill.model.CommonResponse> response) {
+                pd.dismiss();
+                if (!isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null && "success".equals(response.body().getStatus())) {
+                    Toast.makeText(getContext(), "Order Completed! Enjoy your service.", Toast.LENGTH_LONG).show();
+                    loadOrders();
+                } else {
+                    Toast.makeText(getContext(), "Failed to complete order", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.muproject.campusskill.model.CommonResponse> call, Throwable t) {
+                pd.dismiss();
+                if (isAdded()) Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
             }
         });
     }

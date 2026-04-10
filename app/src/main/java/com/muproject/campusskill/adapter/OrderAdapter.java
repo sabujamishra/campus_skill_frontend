@@ -15,10 +15,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private List<Order> orders;
     private String role; // "buyer" or "seller"
+    private OnOrderActionListener listener;
 
-    public OrderAdapter(List<Order> orders, String role) {
+    public interface OnOrderActionListener {
+        void onAccept(Order order);
+        void onComplete(Order order);
+    }
+
+    public OrderAdapter(List<Order> orders, String role, OnOrderActionListener listener) {
         this.orders = orders;
         this.role = role;
+        this.listener = listener;
     }
 
     @NonNull
@@ -64,6 +71,26 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         // Status badge styling (Hinglish: Status ke hisaab se rang badalo)
         String status = order.getStatus() != null ? order.getStatus().toLowerCase() : "pending";
         holder.tvStatus.setText(capitalize(status));
+
+        // Accept Button Logic (Hinglish: Agar seller hai aur status pending hai, toh Accept button dikhao)
+        if ("seller".equals(role) && "pending".equals(status)) {
+            holder.btnAccept.setVisibility(View.VISIBLE);
+            holder.btnAccept.setOnClickListener(v -> {
+                if (listener != null) listener.onAccept(order);
+            });
+        } else {
+            holder.btnAccept.setVisibility(View.GONE);
+        }
+
+        // Complete Button Logic (Hinglish: Agar buyer hai aur status accepted hai, toh Complete button dikhao)
+        if ("buyer".equals(role) && "accepted".equals(status)) {
+            holder.btnComplete.setVisibility(View.VISIBLE);
+            holder.btnComplete.setOnClickListener(v -> {
+                if (listener != null) listener.onComplete(order);
+            });
+        } else {
+            holder.btnComplete.setVisibility(View.GONE);
+        }
 
         switch (status) {
             case "completed":
@@ -119,6 +146,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvServiceTitle, tvStatus, tvPerson, tvPrice, tvDate;
+        android.widget.Button btnAccept, btnComplete;
 
         OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +156,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvPerson = itemView.findViewById(R.id.tvOrderPerson);
             tvPrice = itemView.findViewById(R.id.tvOrderPrice);
             tvDate = itemView.findViewById(R.id.tvOrderDate);
+            btnAccept = itemView.findViewById(R.id.btnAcceptOrder);
+            btnComplete = itemView.findViewById(R.id.btnCompleteOrder);
         }
     }
 }

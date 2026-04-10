@@ -100,4 +100,11 @@ public interface ApiService {
     // Service delete karo (Hinglish: Apni service hatao)
     @retrofit2.http.DELETE("service/delete")
     Call<com.muproject.campusskill.model.CommonResponse> deleteService(@retrofit2.http.Query("id") int serviceId);
+    // Order accept karo (Hinglish: Seller order approve kar sakta hai)
+    @retrofit2.http.PUT("order/accept")
+    Call<com.muproject.campusskill.model.CommonResponse> acceptOrder(@retrofit2.http.Query("id") int orderId);
+
+    // Order complete karo (Hinglish: Buyer order done mark kar sakta hai)
+    @retrofit2.http.PUT("order/complete")
+    Call<com.muproject.campusskill.model.CommonResponse> completeOrder(@retrofit2.http.Query("id") int orderId);
 }
