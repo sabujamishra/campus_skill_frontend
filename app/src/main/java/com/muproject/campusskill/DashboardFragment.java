@@ -73,9 +73,16 @@ public class DashboardFragment extends Fragment {
             return true;
         });
 
-        // Default: Pichla select kiya hua tab load karo (Hinglish: Puraana selection restore karo)
         bottomNav.setSelectedItemId(lastSelectedId);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (bottomNav != null && bottomNav.getSelectedItemId() != lastSelectedId) {
+            bottomNav.setSelectedItemId(lastSelectedId);
+        }
     }
 }
