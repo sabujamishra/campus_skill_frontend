@@ -115,19 +115,48 @@ public class PublicProfileFragment extends Fragment {
     }
 
     private void showOrderSelectionDialog(java.util.List<com.muproject.campusskill.model.Order> orders) {
-        String[] items = new String[orders.size()];
-        for (int i = 0; i < orders.size(); i++) {
-            com.muproject.campusskill.model.Order o = orders.get(i);
-            items[i] = "Order #" + o.getId() + " - " + o.getServiceTitle();
-        }
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_order, null);
+        androidx.recyclerview.widget.RecyclerView rv = dialogView.findViewById(R.id.rvSelectOrder);
+        rv.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
 
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Select Order to Discuss")
-                .setItems(items, (dialog, which) -> {
-                    com.muproject.campusskill.model.Order selected = orders.get(which);
-                    ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(selected.getId(), selected.getStatus()));
-                })
-                .show();
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
+                .setView(dialogView)
+                .create();
+
+        rv.setAdapter(new androidx.recyclerview.widget.RecyclerView.Adapter<SimpleOrderViewHolder>() {
+            @NonNull
+            @Override
+            public SimpleOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dialog_order, parent, false);
+                return new SimpleOrderViewHolder(v);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull SimpleOrderViewHolder holder, int position) {
+                com.muproject.campusskill.model.Order o = orders.get(position);
+                holder.tvTitle.setText(o.getServiceTitle());
+                holder.tvId.setText("Order #" + o.getId());
+                holder.itemView.setOnClickListener(v -> {
+                    dialog.dismiss();
+                    ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(o.getId(), o.getStatus()));
+                });
+            }
+
+            @Override
+            public int getItemCount() { return orders.size(); }
+        });
+
+        dialogView.findViewById(R.id.btnCancelSelect).setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private static class SimpleOrderViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        TextView tvTitle, tvId;
+        SimpleOrderViewHolder(View v) {
+            super(v);
+            tvTitle = v.findViewById(R.id.tvSelectOrderTitle);
+            tvId = v.findViewById(R.id.tvSelectOrderId);
+        }
     }
 
     private void loadPublicProfile() {
