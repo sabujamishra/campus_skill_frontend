@@ -227,10 +227,12 @@ public class ProfileFragment extends Fragment {
         RetrofitClient.getApiService().updateProfile(request).enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if (pd.isShowing()) pd.dismiss();
-                if (isAdded() && response.isSuccessful()) {
+                if (pd != null && pd.isShowing()) pd.dismiss();
+                if (isAdded() && response.isSuccessful() && response.body() != null) {
                     Toast.makeText(getContext(), "Profile Updated!", Toast.LENGTH_SHORT).show();
-                    loadProfile();
+                    updateUI(response.body().getData());
+                } else if (isAdded()) {
+                    Toast.makeText(getContext(), "Update failed!", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
