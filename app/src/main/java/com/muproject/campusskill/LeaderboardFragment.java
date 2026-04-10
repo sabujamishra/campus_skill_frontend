@@ -85,9 +85,28 @@ public class LeaderboardFragment extends Fragment {
                         layoutEmpty.setVisibility(View.VISIBLE);
                         rvLeaderboard.setVisibility(View.GONE);
                     } else {
+                        java.util.List<com.muproject.campusskill.model.LeaderboardItem> all = response.body().getData();
                         layoutEmpty.setVisibility(View.GONE);
+                        
+                        // Separate Podium (Top 3) if available
+                        if (all.size() >= 1) {
+                            view.findViewById(R.id.layoutPodium).setVisibility(View.VISIBLE);
+                            view.findViewById(R.id.tvOthersTitle).setVisibility(View.VISIBLE);
+                            updatePodium(all, view);
+                            
+                            // The rest for the adapter (Rank 4+)
+                            java.util.List<com.muproject.campusskill.model.LeaderboardItem> others = new ArrayList<>();
+                            if (all.size() > 3) {
+                                others.addAll(all.subList(3, all.size()));
+                            }
+                            adapter.setItems(others, currentType, 3); // Tell adapter to start rank from 4
+                        } else {
+                            view.findViewById(R.id.layoutPodium).setVisibility(View.GONE);
+                            view.findViewById(R.id.tvOthersTitle).setVisibility(View.GONE);
+                            adapter.setItems(all, currentType, 0);
+                        }
+                        
                         rvLeaderboard.setVisibility(View.VISIBLE);
-                        adapter.setItems(response.body().getData(), currentType);
                     }
                 } else {
                     layoutEmpty.setVisibility(View.VISIBLE);
@@ -100,5 +119,41 @@ public class LeaderboardFragment extends Fragment {
                 if (isAdded()) layoutEmpty.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void updatePodium(java.util.List<com.muproject.campusskill.model.LeaderboardItem> all, View root) {
+        // Reset visibility
+        root.findViewById(R.id.podium1).setVisibility(View.INVISIBLE);
+        root.findViewById(R.id.podium2).setVisibility(View.INVISIBLE);
+        root.findViewById(R.id.podium3).setVisibility(View.INVISIBLE);
+
+        for (int i = 0; i < Math.min(all.size(), 3); i++) {
+            com.muproject.campusskill.model.LeaderboardItem item = all.get(i);
+            int layoutId = (i == 0) ? R.id.podium1 : (i == 1) ? R.id.podium2 : R.id.podium3;
+            int nameId = (i == 0) ? R.id.tvPodiumName1 : (i == 1) ? R.id.tvPodiumName2 : R.id.tvPodiumName3;
+            int valId = (i == 0) ? R.id.tvPodiumValue1 : (i == 1) ? R.id.tvPodiumValue2 : R.id.tvPodiumValue3;
+            int imgId = (i == 0) ? R.id.ivPodium1 : (i == 1) ? R.id.ivPodium2 : R.id.ivPodium3;
+
+            View pView = root.findViewById(layoutId);
+            pView.setVisibility(View.VISIBLE);
+
+            ((android.widget.TextView) root.findViewById(nameId)).setText(item.getName());
+            
+            String displayVal = "";
+            if (currentType.equals("earners")) displayVal = "₹" + (item.getTotalEarnings() != null ? item.getTotalEarnings() : "0");
+            else if (currentType.equals("rated")) displayVal = "⭐ " + item.getAverageRating();
+            else displayVal = item.getLeaderboardScore() + " pts";
+            
+            ((android.widget.TextView) root.findViewById(valId)).setText(displayVal);
+
+            android.widget.ImageView iv = root.findViewById(imgId);
+            String img = item.getProfileImage();
+            if (img != null && !img.isEmpty()) {
+                String url = img.startsWith("http") ? img : "https://lightgrey-dogfish-642647.hostingersite.com/" + img;
+                com.bumptech.glide.Glide.with(this).load(url).placeholder(R.drawable.ic_profile).circleCrop().into(iv);
+            }
+            
+            pView.setOnClickListener(v -> ((MainActivity) getActivity()).replaceFragment(PublicProfileFragment.newInstance(item.getId())));
+        }
     }
 }

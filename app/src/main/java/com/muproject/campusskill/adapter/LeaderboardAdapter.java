@@ -15,14 +15,16 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     private List<LeaderboardItem> items;
     private String type = "earners"; // earners, rated, active
+    private int startRank = 0;
 
     public LeaderboardAdapter(List<LeaderboardItem> items) {
         this.items = items;
     }
 
-    public void setItems(List<LeaderboardItem> items, String type) {
+    public void setItems(List<LeaderboardItem> items, String type, int startRank) {
         this.items = items;
         this.type = type;
+        this.startRank = startRank;
         notifyDataSetChanged();
     }
 
@@ -36,7 +38,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LeaderboardItem item = items.get(position);
-        holder.tvRank.setText(String.valueOf(position + 1));
+        holder.tvRank.setText(String.valueOf(position + 1 + startRank));
         holder.tvName.setText(item.getName() != null ? item.getName() : "Anonymous");
         holder.tvExtra.setText(item.getDepartment() != null ? item.getDepartment() : "Campus Elite");
 
