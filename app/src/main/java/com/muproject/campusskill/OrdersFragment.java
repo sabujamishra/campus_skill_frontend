@@ -32,6 +32,24 @@ public class OrdersFragment extends Fragment {
     private OrderAdapter adapter;
     private String currentRole = "buyer";
 
+    // Listener instance to avoid duplication and fix compilation errors
+    private final OrderAdapter.OnOrderActionListener orderActionListener = new OrderAdapter.OnOrderActionListener() {
+        @Override
+        public void onAccept(Order order) {
+            handleAcceptOrder(order);
+        }
+
+        @Override
+        public void onComplete(Order order) {
+            handleCompleteOrder(order);
+        }
+
+        @Override
+        public void onReview(Order order) {
+            handleReviewOrder(order);
+        }
+    };
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,17 +60,7 @@ public class OrdersFragment extends Fragment {
         layoutEmpty = view.findViewById(R.id.layoutEmptyOrders);
 
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new OrderAdapter(new ArrayList<Order>(), currentRole, new OrderAdapter.OnOrderActionListener() {
-            @Override
-            public void onAccept(Order order) {
-                handleAcceptOrder(order);
-            }
-
-            @Override
-            public void onComplete(Order order) {
-                handleCompleteOrder(order);
-            }
-        });
+        adapter = new OrderAdapter(new ArrayList<Order>(), currentRole, orderActionListener);
         rvOrders.setAdapter(adapter);
 
         TabLayout tabLayout = view.findViewById(R.id.tabOrderRole);
@@ -95,22 +103,7 @@ public class OrdersFragment extends Fragment {
                     } else {
                         layoutEmpty.setVisibility(View.GONE);
                         rvOrders.setVisibility(View.VISIBLE);
-                        adapter = new OrderAdapter(orders, currentRole, new OrderAdapter.OnOrderActionListener() {
-                            @Override
-                            public void onAccept(Order order) {
-                                handleAcceptOrder(order);
-                            }
-
-                            @Override
-                            public void onComplete(Order order) {
-                                handleCompleteOrder(order);
-                            }
-
-                            @Override
-                            public void onReview(Order order) {
-                                handleReviewOrder(order);
-                            }
-                        });
+                        adapter = new OrderAdapter(orders, currentRole, orderActionListener);
                         rvOrders.setAdapter(adapter);
                     }
                 } else {

@@ -8,6 +8,23 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Input fields ki specific styling -->
+        <item name="textInputStyle">@style/CustomTextInputLayout</item>
+        <item name="editTextStyle">@style/CustomEditText</item>
+    </style>
+
+    <!-- Outlined input box ki customized settings -->
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="android:textColorHint">@color/text_grey</item>
+    </style>
+
+    <!-- Input text (Jo user type karta hai) ki styling -->
+    <style name="CustomEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColorHighlight">#402196F3</item>
     </style>
 
     <style name="Theme.CampusSkill" parent="Base.Theme.CampusSkill" />
