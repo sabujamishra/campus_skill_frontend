@@ -139,6 +139,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.tvDate.setText("");
         }
 
+        holder.btnChat.setText("Chat with " + ("buyer".equals(role) ? "Seller" : "Buyer"));
+
         holder.btnChat.setOnClickListener(v -> {
             if (listener != null) listener.onChat(order);
         });
