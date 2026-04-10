@@ -54,12 +54,9 @@ public class ServicesFragment extends Fragment {
         });
         rvCategories.setAdapter(categoryAdapter);
 
-        // Filter button listener
+        // Filter button listener (Hinglish: Ab ye real filter bottom sheet dikhayega)
         if (btnFilter != null) {
-            btnFilter.setOnClickListener(v -> {
-                loadServices(etSearch.getText().toString().trim(), true);
-                Toast.makeText(getContext(), "Filters refreshed", Toast.LENGTH_SHORT).show();
-            });
+            btnFilter.setOnClickListener(v -> showFilterBottomSheet());
         }
 
         loadCategories();
@@ -121,5 +118,40 @@ public class ServicesFragment extends Fragment {
             @Override
             public void onFailure(Call<com.muproject.campusskill.model.CategoryResponse> call, Throwable t) {}
         });
+    }
+
+    private void showFilterBottomSheet() {
+        if (getContext() == null) return;
+        com.google.android.material.bottomsheet.BottomSheetDialog dialog = new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext());
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_filter_bottom_sheet, null);
+        dialog.setContentView(bottomSheetView);
+
+        com.google.android.material.chip.ChipGroup cgSort = bottomSheetView.findViewById(R.id.cgSort);
+        View btnApply = bottomSheetView.findViewById(R.id.btnApplyFilters);
+
+        btnApply.setOnClickListener(v -> {
+            int checkedId = cgSort.getCheckedChipId();
+            applySorting(checkedId);
+            dialog.dismiss();
+            Toast.makeText(getContext(), "Filters applied", Toast.LENGTH_SHORT).show();
+        });
+
+        dialog.show();
+    }
+
+    private void applySorting(int checkedId) {
+        if (adapter == null || adapter.getServices() == null) return;
+        List<com.muproject.campusskill.model.Service> currentList = new ArrayList<>(adapter.getServices());
+        if (currentList.isEmpty()) return;
+
+        if (checkedId == R.id.chipPriceLow) {
+            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(s1.getPrice(), s2.getPrice()));
+        } else if (checkedId == R.id.chipPriceHigh) {
+            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(s2.getPrice(), s1.getPrice()));
+        } else if (checkedId == R.id.chipNewest) {
+            java.util.Collections.sort(currentList, (s1, s2) -> Integer.compare(s2.getId(), s1.getId()));
+        }
+
+        adapter.setServices(currentList);
     }
 }

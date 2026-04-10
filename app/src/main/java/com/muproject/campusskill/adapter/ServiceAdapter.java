@@ -23,6 +23,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         this.currentUserId = currentUserId;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
+
     public void setServices(List<Service> services) {
         this.services = services;
         notifyDataSetChanged();
