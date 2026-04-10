@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorSecondary">@color/accent_teal</item>
         <item name="colorSecondaryContainer">@color/primary_light</item>
-        <item name="onSecondaryContainer">@color/primary</item>
+        <item name="colorOnSecondaryContainer">@color/primary</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
