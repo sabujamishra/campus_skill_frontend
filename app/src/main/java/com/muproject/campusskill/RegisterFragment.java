@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment {
                             // Ownership cache refresh karo (Hinglish: Registry bharo naye user ki)
                             if (getActivity() instanceof MainActivity) {
                                 ((MainActivity) getActivity()).refreshMyServiceIds();
-                                ((MainActivity) getActivity()).replaceFragment(new DashboardFragment());
+                                ((MainActivity) getActivity()).loadMainFragment(new DashboardFragment());
                             }
                             
                             android.widget.Toast.makeText(requireContext(), "Registration successful! Welcome.", android.widget.Toast.LENGTH_LONG).show();

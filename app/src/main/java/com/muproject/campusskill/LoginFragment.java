@@ -91,7 +91,7 @@ public class LoginFragment extends Fragment {
                             // Home screen par navigate kar rahe hain (Hinglish: Dashboard par le jaa rahe hain)
                             if (getActivity() instanceof MainActivity) {
                                 ((MainActivity) getActivity()).refreshMyServiceIds();
-                                ((MainActivity) getActivity()).replaceFragment(new DashboardFragment());
+                                ((MainActivity) getActivity()).loadMainFragment(new DashboardFragment());
                             }
                         } else {
                             throw new Exception(response.body().getMessage());

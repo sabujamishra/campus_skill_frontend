@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    // Enter Dashboard (Hinglish: Dashboard mein jaane ka fresh tarika, no back to login)
+    public void loadMainFragment(Fragment fragment) {
+        getSupportFragmentManager().popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
     // Naye fragment par switch karne ke liye logic (Hinglish: Switch to a new fragment with backstack)
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
