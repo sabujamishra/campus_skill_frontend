@@ -65,7 +65,9 @@ public class ChatFragment extends Fragment {
         adapter = new ChatAdapter(new ArrayList<>(), sessionManager.getUserId());
         rvChat.setAdapter(adapter);
 
-        view.findViewById(R.id.chatToolbar).setOnClickListener(v -> ((MainActivity) getActivity()).goBack());
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.chatToolbar);
+        toolbar.setTitle("Chat (Order #" + orderId + ")");
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity) getActivity()).goBack());
         
         view.findViewById(R.id.btnSendMessage).setOnClickListener(v -> sendMessage());
 
