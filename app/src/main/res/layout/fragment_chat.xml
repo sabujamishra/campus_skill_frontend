@@ -11,7 +11,7 @@
         android:background="@color/white"
         app:elevation="2dp">
 
-        <Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/chatToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
