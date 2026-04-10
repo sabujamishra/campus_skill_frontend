@@ -149,6 +149,17 @@ public class HomeFragment extends Fragment {
                                 .placeholder(R.drawable.ic_profile)
                                 .circleCrop()
                                 .into(ivHeader);
+                        
+                        ivHeader.setOnClickListener(v -> {
+                            DashboardFragment.setTab(R.id.nav_profile);
+                            // Refresh context (Hinglish: Bottom bar update karte hue switch karo)
+                            if (getParentFragment() instanceof DashboardFragment) {
+                                View navView = getActivity().findViewById(R.id.bottom_navigation);
+                                if (navView instanceof com.google.android.material.bottomnavigation.BottomNavigationView) {
+                                    ((com.google.android.material.bottomnavigation.BottomNavigationView) navView).setSelectedItemId(R.id.nav_profile);
+                                }
+                            }
+                        });
                     }
                 }
             }

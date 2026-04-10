@@ -13,7 +13,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class DashboardFragment extends Fragment {
 
     // Tab state persistence (Hinglish: Yaad rakhein pichli baar kaunsa tab khula tha)
-    private static int lastSelectedId = R.id.nav_home;
+    public static int lastSelectedId = R.id.nav_home;
+
+    public static void setTab(int navId) {
+        lastSelectedId = navId;
+    }
     private BottomNavigationView bottomNav;
 
     @Override

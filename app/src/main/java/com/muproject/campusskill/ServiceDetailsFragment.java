@@ -220,7 +220,8 @@ public class ServiceDetailsFragment extends Fragment {
 
         dialogView.findViewById(R.id.btnViewOrders).setOnClickListener(v -> {
             dialog.dismiss();
-            // In future: Switch to Dashboard Orders tab
+            // Hinglish: Dashboard state change karke orders tab par le ja rahe hain
+            DashboardFragment.setTab(R.id.nav_orders);
             ((MainActivity)requireActivity()).goBack();
         });
 
