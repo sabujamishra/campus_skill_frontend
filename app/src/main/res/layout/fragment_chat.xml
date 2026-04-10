@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:title="Order Chat"
             android:titleTextColor="@color/text_main"
-            android:navigationIcon="@drawable/ic_back" />
+            android:navigationIcon="@drawable/ic_back_arrow" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
