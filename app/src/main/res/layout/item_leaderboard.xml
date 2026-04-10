@@ -32,6 +32,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
+            android:padding="4dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_profile"
             app:shapeAppearanceOverlay="@style/CircleImage"
