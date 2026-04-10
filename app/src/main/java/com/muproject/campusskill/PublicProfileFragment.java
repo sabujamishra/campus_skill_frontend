@@ -128,6 +128,10 @@ public class PublicProfileFragment extends Fragment {
                 .setView(dialogView)
                 .create();
 
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
         rv.setAdapter(new androidx.recyclerview.widget.RecyclerView.Adapter<SimpleOrderViewHolder>() {
             @NonNull
             @Override

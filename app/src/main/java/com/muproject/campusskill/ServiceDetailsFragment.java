@@ -174,6 +174,10 @@ public class ServiceDetailsFragment extends Fragment {
                 .setView(dialogView)
                 .setCancelable(true)
                 .create();
+        
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
 
         dialogView.findViewById(R.id.btnFinalConfirm).setOnClickListener(v -> {
             dialog.dismiss();
@@ -234,6 +238,10 @@ public class ServiceDetailsFragment extends Fragment {
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
 
         dialogView.findViewById(R.id.btnViewOrders).setOnClickListener(v -> {
             dialog.dismiss();
