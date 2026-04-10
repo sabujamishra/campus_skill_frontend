@@ -78,7 +78,8 @@ public class LeaderboardFragment extends Fragment {
             @Override
             public void onResponse(Call<LeaderboardResponse> call, Response<LeaderboardResponse> response) {
                 pd.dismiss();
-                if (!isAdded() || getContext() == null) return;
+                if (!isAdded() || getContext() == null || getView() == null) return;
+                View root = getView();
 
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     if (response.body().getData().isEmpty()) {
@@ -90,9 +91,9 @@ public class LeaderboardFragment extends Fragment {
                         
                         // Separate Podium (Top 3) if available
                         if (all.size() >= 1) {
-                            view.findViewById(R.id.layoutPodium).setVisibility(View.VISIBLE);
-                            view.findViewById(R.id.tvOthersTitle).setVisibility(View.VISIBLE);
-                            updatePodium(all, view);
+                            root.findViewById(R.id.layoutPodium).setVisibility(View.VISIBLE);
+                            root.findViewById(R.id.tvOthersTitle).setVisibility(View.VISIBLE);
+                            updatePodium(all, root);
                             
                             // The rest for the adapter (Rank 4+)
                             java.util.List<com.muproject.campusskill.model.LeaderboardItem> others = new ArrayList<>();
@@ -101,8 +102,8 @@ public class LeaderboardFragment extends Fragment {
                             }
                             adapter.setItems(others, currentType, 3); // Tell adapter to start rank from 4
                         } else {
-                            view.findViewById(R.id.layoutPodium).setVisibility(View.GONE);
-                            view.findViewById(R.id.tvOthersTitle).setVisibility(View.GONE);
+                            root.findViewById(R.id.layoutPodium).setVisibility(View.GONE);
+                            root.findViewById(R.id.tvOthersTitle).setVisibility(View.GONE);
                             adapter.setItems(all, currentType, 0);
                         }
                         
