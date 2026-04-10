@@ -156,16 +156,33 @@ public class ServiceDetailsFragment extends Fragment {
             return;
         }
 
-        // Confirmation Dialog (Hinglish: Direct booking ke bajaye confirmation pop-up)
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Confirm Booking")
-                .setMessage("Price: ₹" + service.getPrice() + "\nAre you sure you want to book this service?")
+        // Custom Confirmation Dialog (Hinglish: Naya modern confirm screen)
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_booking, null);
+        
+        ((TextView) dialogView.findViewById(R.id.tvConfirmTitle)).setText(service.getTitle());
+        ((TextView) dialogView.findViewById(R.id.tvConfirmSeller)).setText("by " + service.getSellerName());
+        ((TextView) dialogView.findViewById(R.id.tvConfirmPrice)).setText("₹" + service.getPrice());
+        ((TextView) dialogView.findViewById(R.id.tvConfirmTime)).setText(service.getDeliveryTime() + " Days");
+
+        ImageView iv = dialogView.findViewById(R.id.ivConfirmServiceImg);
+        if (service.getThumbnail() != null) {
+            String url = service.getThumbnail().startsWith("http") ? service.getThumbnail() : "https://lightgrey-dogfish-642647.hostingersite.com/" + service.getThumbnail();
+            Glide.with(this).load(url).placeholder(R.drawable.service_placeholder).centerCrop().into(iv);
+        }
+
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
+                .setView(dialogView)
                 .setCancelable(true)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Confirm & Pay", (dialog, which) -> {
-                    processOrderAPI();
-                })
-                .show();
+                .create();
+
+        dialogView.findViewById(R.id.btnFinalConfirm).setOnClickListener(v -> {
+            dialog.dismiss();
+            processOrderAPI();
+        });
+
+        dialogView.findViewById(R.id.btnCancelBooking).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void processOrderAPI() {
@@ -213,7 +230,7 @@ public class ServiceDetailsFragment extends Fragment {
         TextView tvMsg = dialogView.findViewById(R.id.tvSuccessMessage);
         if (message != null) tvMsg.setText(message);
 
-        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();

@@ -73,4 +73,8 @@
         <item name="cornerSizeBottomLeft">16dp</item>
         <item name="cornerSizeBottomRight">2dp</item>
     </style>
+
+    <style name="CustomDialogTheme" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>
