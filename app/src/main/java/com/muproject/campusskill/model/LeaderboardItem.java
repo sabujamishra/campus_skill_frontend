@@ -4,23 +4,30 @@ import com.google.gson.annotations.SerializedName;
 
 public class LeaderboardItem {
     private int id;
-    
-    @SerializedName(value = "name", alternate = {"username", "full_name", "user_name"})
     private String name;
+    private String department;
     
     @SerializedName("profile_image")
     private String profileImage;
     
-    // Values can be earnings, rating, or activity score (Hinglish: API ke alag-alag keys handle karne ke liye alternates)
-    @SerializedName(value = "value", alternate = {"total_earnings", "average_rating", "leaderboard_score", "score", "earnings", "rating"})
-    private String value;
+    @SerializedName("total_completed_orders")
+    private int totalCompletedOrders;
     
-    @SerializedName("extra_label")
-    private String extraLabel;
+    @SerializedName("average_rating")
+    private float averageRating;
+    
+    @SerializedName("leaderboard_score")
+    private int leaderboardScore;
+    
+    @SerializedName("total_earnings")
+    private String totalEarnings;
 
     public int getId() { return id; }
     public String getName() { return name; }
+    public String getDepartment() { return department; }
     public String getProfileImage() { return profileImage; }
-    public String getValue() { return value; }
-    public String getExtraLabel() { return extraLabel; }
+    public int getTotalCompletedOrders() { return totalCompletedOrders; }
+    public float getAverageRating() { return averageRating; }
+    public int getLeaderboardScore() { return leaderboardScore; }
+    public String getTotalEarnings() { return totalEarnings; }
 }

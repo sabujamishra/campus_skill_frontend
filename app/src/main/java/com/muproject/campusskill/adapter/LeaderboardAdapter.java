@@ -38,19 +38,17 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         LeaderboardItem item = items.get(position);
         holder.tvRank.setText(String.valueOf(position + 1));
         holder.tvName.setText(item.getName() != null ? item.getName() : "Anonymous");
-        holder.tvExtra.setText(item.getExtraLabel() != null ? item.getExtraLabel() : "Campus Elite");
-
-        String value = item.getValue();
-        if (value == null || value.equals("null")) value = "0";
+        holder.tvExtra.setText(item.getDepartment() != null ? item.getDepartment() : "Campus Elite");
 
         if (type.equals("earners")) {
-            holder.tvValue.setText("₹" + value);
+            String earnings = item.getTotalEarnings() != null ? item.getTotalEarnings() : "0";
+            holder.tvValue.setText("₹" + earnings);
             holder.tvValue.setBackgroundResource(R.drawable.bg_price_pill);
         } else if (type.equals("rated")) {
-            holder.tvValue.setText("⭐ " + value);
+            holder.tvValue.setText("⭐ " + item.getAverageRating());
             holder.tvValue.setBackgroundResource(R.drawable.bg_rating_pill);
         } else {
-            holder.tvValue.setText(value + " pts");
+            holder.tvValue.setText(item.getLeaderboardScore() + " pts");
             holder.tvValue.setBackgroundResource(R.drawable.bg_tag_rounded);
         }
 
