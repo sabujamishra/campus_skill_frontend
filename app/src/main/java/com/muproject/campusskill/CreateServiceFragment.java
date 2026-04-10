@@ -212,19 +212,7 @@ public class CreateServiceFragment extends Fragment {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        int serviceId = existingService != null ? existingService.getId() : -1;
-                        
-                        // If new service, extract ID from response
-                        if (existingService == null) {
-                            Object data = response.body().getData();
-                            if (data instanceof Map) {
-                                try {
-                                    Double idDouble = (Double) ((Map) data).get("id");
-                                    if (idDouble != null) serviceId = idDouble.intValue();
-                                } catch (Exception e) {}
-                            }
-                        }
-
+                        int serviceId = existingService != null ? existingService.getId() : extractId(response.body().getData());
                         if (serviceId != -1 && selectedImageUri != null) {
                             pd.setMessage("Uploading cover image...");
                             uploadServiceImage(serviceId, pd);
@@ -251,6 +239,22 @@ public class CreateServiceFragment extends Fragment {
         }
     }
 
+    private int extractId(Object data) {
+        if (data instanceof Map) {
+            Object idObj = ((Map) data).get("id");
+            if (idObj instanceof Number) {
+                return ((Number) idObj).intValue();
+            } else if (idObj instanceof String) {
+                try {
+                    return Integer.parseInt((String) idObj);
+                } catch (Exception e) {}
+            }
+        } else if (data instanceof Number) {
+            return ((Number) data).intValue();
+        }
+        return -1;
+    }
+
     private void uploadServiceImage(int serviceId, android.app.ProgressDialog pd) {
         try {
             // Process Image
@@ -262,7 +266,8 @@ public class CreateServiceFragment extends Fragment {
             os.close();
 
             RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), tempFile);
-            MultipartBody.Part imagePart = MultipartBody.Part.createFormData("service_image", tempFile.getName(), reqFile);
+            // Key change to 'image' for better compatibility
+            MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", tempFile.getName(), reqFile);
             RequestBody serviceIdBody = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(serviceId));
 
             RetrofitClient.getApiService().uploadServiceImage(serviceIdBody, imagePart).enqueue(new Callback<CommonResponse>() {
