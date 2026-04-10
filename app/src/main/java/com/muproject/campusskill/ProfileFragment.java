@@ -187,24 +187,34 @@ public class ProfileFragment extends Fragment {
         com.google.android.material.textfield.TextInputEditText etName = dialogView.findViewById(R.id.etEditName);
         com.google.android.material.textfield.TextInputEditText etEmail = dialogView.findViewById(R.id.etEditEmail);
         com.google.android.material.textfield.TextInputEditText etDept = dialogView.findViewById(R.id.etEditDept);
+        com.google.android.material.button.MaterialButton btnSave = dialogView.findViewById(R.id.btnDialogSave);
+        com.google.android.material.button.MaterialButton btnCancel = dialogView.findViewById(R.id.btnDialogCancel);
 
         // Pre-fill existing data
         etName.setText(tvName.getText());
         etEmail.setText(tvEmail.getText());
         etDept.setText(tvDept.getText());
 
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext())
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
                 .setView(dialogView)
-                .setPositiveButton("Save Changes", (dialog, which) -> {
-                    String newName = etName.getText().toString().trim();
-                    String newEmail = etEmail.getText().toString().trim();
-                    String newDept = etDept.getText().toString().trim();
-                    if (!newName.isEmpty()) {
-                        updateProfile(newName, newEmail, newDept);
-                    }
-                })
-                .setNegativeButton("Maybe Later", null)
-                .show();
+                .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        btnSave.setOnClickListener(v -> {
+            String newName = etName.getText().toString().trim();
+            String newEmail = etEmail.getText().toString().trim();
+            String newDept = etDept.getText().toString().trim();
+            if (!newName.isEmpty()) {
+                dialog.dismiss();
+                updateProfile(newName, newEmail, newDept);
+            }
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 
     private void updateProfile(String name, String email, String dept) {
