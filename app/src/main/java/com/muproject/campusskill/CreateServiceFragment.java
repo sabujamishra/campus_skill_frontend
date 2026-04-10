@@ -82,7 +82,6 @@ public class CreateServiceFragment extends Fragment {
         ivServicePreview = view.findViewById(R.id.ivServicePreview);
         layoutUploadPlaceholder = view.findViewById(R.id.layoutUploadPlaceholder);
         
-        TextView tvAddCategory = view.findViewById(R.id.tvAddCategory);
         Button btnPublish = view.findViewById(R.id.btnCreateService);
         ImageView btnBack = view.findViewById(R.id.btnBackCreate);
 
@@ -113,7 +112,6 @@ public class CreateServiceFragment extends Fragment {
             }
         });
         
-        tvAddCategory.setOnClickListener(v -> showAddCategoryDialog());
 
         // Image selection click
         view.findViewById(R.id.cardUploadImage).setOnClickListener(v -> {
@@ -290,37 +288,4 @@ public class CreateServiceFragment extends Fragment {
         }
     }
 
-    private void showAddCategoryDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Create New Category");
-        final EditText input = new EditText(requireContext());
-        input.setHint("Category Name");
-        builder.setView(input);
-        builder.setPositiveButton("Create", (dialog, which) -> {
-            String name = input.getText().toString().trim();
-            if (!name.isEmpty()) createNewCategory(name);
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-    }
-
-    private void createNewCategory(String name) {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
-        pd.setMessage("Adding category...");
-        pd.show();
-        Map<String, String> body = new HashMap<>();
-        body.put("name", name);
-        RetrofitClient.getApiService().createCategory(body).enqueue(new Callback<CommonResponse>() {
-            @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
-                pd.dismiss();
-                if (response.isSuccessful()) {
-                    Toast.makeText(requireContext(), "Category added!", Toast.LENGTH_SHORT).show();
-                    loadCategories();
-                }
-            }
-            @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) { pd.dismiss(); }
-        });
-    }
 }
