@@ -67,7 +67,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         holder.itemView.setOnClickListener(v -> {
             if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
                 ((com.muproject.campusskill.MainActivity) v.getContext())
-                        .replaceFragment(new com.muproject.campusskill.PublicProfileFragment(item.getId()));
+                        .replaceFragment(com.muproject.campusskill.PublicProfileFragment.newInstance(item.getId()));
             }
         });
     }
