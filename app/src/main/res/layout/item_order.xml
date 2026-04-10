@@ -125,6 +125,17 @@
             android:backgroundTint="#43A047"
             android:visibility="gone" />
 
+        <Button
+            android:id="@+id/btnReviewOrder"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Leave a Review"
+            android:textColor="@color/white"
+            android:backgroundTint="#FF9800"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

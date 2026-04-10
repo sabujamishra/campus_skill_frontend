@@ -4,78 +4,79 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
-    app:shapeAppearanceOverlay="@style/BottomRoundedCard"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="#FFFFFF"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white"
     app:strokeWidth="1dp"
-    app:strokeColor="#F0F0F0">
+    app:strokeColor="#F3F4F6">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Fixed Aspect Ratio Image Area (Hinglish: Image visible karne ke liye height set kari) -->
+        <!-- Image Container (Hinglish: Naya rounded image layout shadow ke saath) -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="220dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivServiceImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/service_placeholder"
-                android:background="@color/white" />
+                app:shapeAppearanceOverlay="@style/RoundedTopCorners" />
 
-            <!-- Price Tag Overlay -->
+            <!-- Price Overlay (Glassmorphism inspired) -->
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="12dp"
-                android:background="@drawable/bg_price_tag"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:text="₹50"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_price_pill"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="₹500"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- Category Tag -->
+            <!-- Category Badge -->
             <TextView
                 android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_margin="12dp"
-                android:background="@drawable/bg_tag_blue"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Category"
-                android:textColor="@color/button_blue"
-                android:textSize="10sp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_tag_rounded"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="Programming"
+                android:textColor="@color/primary"
+                android:textSize="11sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
 
+        <!-- Content Area -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/tvServiceTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Service Title"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="@color/text_main"
+                android:textSize="18sp"
                 android:textStyle="bold"
+                android:lineSpacingExtra="2dp"
                 android:maxLines="2"
                 android:ellipsize="end" />
 
@@ -83,47 +84,57 @@
                 android:id="@+id/tvYourService"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/bg_tag_green"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_owner_pill"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
                 android:text="YOUR SERVICE"
-                android:textColor="#2E7D32"
-                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                android:layout_marginVertical="16dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="12dp">
+                android:gravity="center_vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivSellerAvatar"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:src="@drawable/ic_profile"
-                    app:shapeAppearanceOverlay="@style/CircleImage" />
+                    app:shapeAppearanceOverlay="@style/CircleImage"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/divider" />
 
                 <TextView
                     android:id="@+id/tvSellerName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="10dp"
                     android:text="Seller Name"
                     android:textColor="@color/text_grey"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⭐ 5.0"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:background="@drawable/bg_rating_pill"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="⭐ 4.9"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

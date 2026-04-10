@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFF">
+    android:background="@color/background">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -15,192 +15,230 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Profile Header (Hinglish: Profile photo aur naam) -->
-            <RelativeLayout
+            <!-- Profile Overview (Hinglish: Naya profile header centered design) -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="16dp">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/ivUserProfileImage"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:padding="4dp"
-                    android:src="@drawable/rounded_placeholder"
-                    app:strokeColor="@color/button_blue"
-                    app:strokeWidth="2dp"
-                    app:shapeAppearanceOverlay="@style/CircleImage" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fabEditImage"
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/ivUserProfileImage"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:src="@drawable/rounded_placeholder"
+                        app:shapeAppearanceOverlay="@style/CircleImage"
+                        app:strokeWidth="3dp"
+                        app:strokeColor="@color/white"
+                        android:elevation="4dp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabEditImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@id/ivUserProfileImage"
+                        android:layout_alignBottom="@id/ivUserProfileImage"
+                        android:layout_margin="2dp"
+                        android:src="@drawable/ic_edit_pencil"
+                        app:fabCustomSize="32dp"
+                        app:maxImageSize="14dp"
+                        app:tint="@color/white"
+                        android:backgroundTint="@color/primary"
+                        app:elevation="6dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@id/ivUserProfileImage"
-                    android:layout_alignBottom="@id/ivUserProfileImage"
-                    android:layout_marginEnd="-4dp"
-                    android:layout_marginBottom="-4dp"
-                    android:src="@drawable/ic_edit_pencil"
-                    app:fabSize="mini"
-                    app:fabCustomSize="36dp"
-                    app:maxImageSize="16dp"
-                    app:tint="@color/white"
-                    app:shapeAppearanceOverlay="@style/CircleImage"
-                    android:backgroundTint="@color/button_blue" />
-            </RelativeLayout>
+                    android:layout_marginTop="16dp"
+                    android:text="User Name"
+                    android:textColor="@color/text_main"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <!-- Name -->
-            <TextView
-                android:id="@+id/tvProfileName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="User Name"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <!-- Email -->
-            <TextView
-                android:id="@+id/tvProfileEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="email@example.com"
-                android:textColor="@color/text_grey"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp" />
-
-            <!-- Department -->
-            <TextView
-                android:id="@+id/tvProfileDept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Department"
-                android:textColor="@color/button_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="4dp" />
-
-            <!-- Stats Row 1: Earnings, Rating, Score -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="28dp"
-                android:weightSum="3">
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvProfileEmail"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView android:id="@+id/tvEarnings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₹0" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Earnings" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
+                    android:layout_marginTop="4dp"
+                    android:text="email@example.com"
+                    android:textColor="@color/text_grey"
+                    android:textSize="14sp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvProfileDept"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView android:id="@+id/tvRating" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.0" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rating" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView android:id="@+id/tvScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Score" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_tag_rounded"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:text="Computer Science"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Stats Row 2: Orders, Repeat Clients, Response Rate -->
-            <LinearLayout
+            <!-- Stats Card (Hinglish: Modern stats grid) -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:weightSum="3">
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/divider"
+                app:cardBackgroundColor="@color/white">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:columnCount="3"
+                    android:useDefaultMargins="true">
+
+                    <!-- Stat 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvEarnings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="₹0" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Earning" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <!-- Stat 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvRating" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.0" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rating" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <!-- Stat 3 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvScore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Score" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <!-- Row 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvOrders" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Orders" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvRepeatClients" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repeat" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tvResponseRate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0%" android:textColor="@color/text_main" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Response" android:textColor="@color/text_light" android:textSize="11sp" android:textStyle="bold" android:textAllCaps="true" />
+                    </LinearLayout>
+                </GridLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Menu List (Modern iOS-style list) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/divider"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
                     android:orientation="vertical">
-                    <TextView android:id="@+id/tvOrders" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Orders" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView android:id="@+id/tvRepeatClients" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repeat" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditProfile"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:text="Edit Account Settings"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_profile"
+                        app:iconTint="@color/primary"
+                        app:iconPadding="16dp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <TextView android:id="@+id/tvResponseRate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0%" android:textColor="@color/button_blue" android:textSize="18sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Response" android:textColor="@color/text_grey" android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
 
-            <!-- Member Since -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMyServices"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:text="Manage My Services"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_add"
+                        app:iconTint="@color/primary"
+                        app:iconPadding="16dp" />
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogout"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:text="Logout from Device"
+                        android:textColor="@color/error"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_logout"
+                        app:iconTint="@color/error"
+                        app:iconPadding="16dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
                 android:id="@+id/tvMemberSince"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Member since: -"
-                android:textColor="@color/text_grey"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Member since July 2026"
+                android:textColor="@color/text_light"
                 android:textSize="12sp"
-                android:layout_marginTop="20dp" />
-
-            <!-- Actions -->
-            <Button
-                android:id="@+id/btnEditProfile"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="32dp"
-                android:text="Edit Profile"
-                android:backgroundTint="@color/button_blue"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/btnMyServices"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:text="My Services"
-                android:backgroundTint="@color/button_blue"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:text="Logout"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:textColor="#F44336"
-                app:strokeColor="#F44336"
-                android:textAllCaps="false" />
+                android:textStyle="bold"
+                android:textAllCaps="true" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

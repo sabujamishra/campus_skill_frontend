@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FDFDFF">
+    android:background="@color/background">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -14,12 +14,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Header: Greeting and Profile -->
+            <!-- Header: Modern Gradient Background or Clean Space (Hinglish: Naya header setup) -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="24dp">
+                android:paddingHorizontal="24dp"
+                android:paddingTop="32dp"
+                android:paddingBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -29,93 +30,98 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hello, Student!"
-                        android:textColor="@color/button_blue"
-                        android:textSize="20sp"
+                        android:text="Discover"
+                        android:textColor="@color/text_main"
+                        android:textSize="28sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="What do you want to learn today?"
+                        android:text="Skills for your campus journey"
                         android:textColor="@color/text_grey"
-                        android:textSize="12sp" />
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivHeaderProfile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_profile"
                     app:shapeAppearanceOverlay="@style/CircleImage"
+                    android:background="@color/white"
                     android:padding="2dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/button_blue" />
+                    app:strokeWidth="1.5dp"
+                    app:strokeColor="@color/primary" />
             </RelativeLayout>
 
-            <!-- Search Bar -->
+            <!-- Search Bar (Modern Material 3 Style) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#F1F4FF">
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/divider">
                 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="12dp"
+                    android:paddingHorizontal="16dp"
                     android:gravity="center_vertical">
                     
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:src="@android:drawable/ic_menu_search"
-                        app:tint="#A0A0A0" />
+                        app:tint="@color/text_light" />
                         
                     <EditText
                         android:id="@+id/etSearch"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="12dp"
-                        android:hint="Search services..."
-                        android:textColor="@color/black"
-                        android:textColorHint="#A0A0A0"
+                        android:hint="Search for tutoring, design..."
+                        android:textColor="@color/text_main"
+                        android:textColorHint="@color/text_light"
                         android:background="@android:color/transparent"
-                        android:textSize="14sp"
+                        android:textSize="15sp"
                         android:imeOptions="actionSearch"
                         android:inputType="text" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Categories Horizontal Scroll (Dynamic) -->
+            <!-- Categories Horizontal Scroll -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCategories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="24dp"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <!-- Popular Section Title -->
+            <!-- Featured/Popular Section -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:paddingHorizontal="16dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="32dp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Popular Now"
-                    android:textColor="@color/black"
+                    android:text="Popular Services"
+                    android:textColor="@color/text_main"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -125,11 +131,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:text="View All"
-                    android:textColor="@color/button_blue"
+                    android:text="See All"
+                    android:textColor="@color/primary"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:padding="8dp" />
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <!-- Services List -->
@@ -138,21 +143,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:paddingBottom="80dp" />
+                android:paddingBottom="100dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Create Service FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- Create Service FAB (Modern Pill-style) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabCreateService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        app:tint="@color/white"
-        android:backgroundTint="@color/button_blue"
-        app:elevation="6dp" />
+        android:layout_margin="24dp"
+        android:text="Post Service"
+        app:icon="@drawable/ic_add"
+        android:textColor="@color/white"
+        app:iconTint="@color/white"
+        android:backgroundTint="@color/primary"
+        app:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

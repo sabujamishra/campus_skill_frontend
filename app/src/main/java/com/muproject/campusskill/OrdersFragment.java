@@ -105,6 +105,11 @@ public class OrdersFragment extends Fragment {
                             public void onComplete(Order order) {
                                 handleCompleteOrder(order);
                             }
+
+                            @Override
+                            public void onReview(Order order) {
+                                handleReviewOrder(order);
+                            }
                         });
                         rvOrders.setAdapter(adapter);
                     }
@@ -168,6 +173,60 @@ public class OrdersFragment extends Fragment {
                     loadOrders();
                 } else {
                     Toast.makeText(getContext(), "Failed to complete order", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.muproject.campusskill.model.CommonResponse> call, Throwable t) {
+                pd.dismiss();
+                if (isAdded()) Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleReviewOrder(Order order) {
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_submit_review, null);
+        android.widget.RatingBar rb = dialogView.findViewById(R.id.ratingBarReview);
+        com.google.android.material.textfield.TextInputEditText etComment = dialogView.findViewById(R.id.etReviewComment);
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Submit Review")
+                .setView(dialogView)
+                .setPositiveButton("Submit", (dialog, which) -> {
+                    int rating = (int) rb.getRating();
+                    if (rating == 0) {
+                        Toast.makeText(getContext(), "Please select at least 1 star!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String comment = etComment.getText().toString().trim();
+                    submitReviewToServer(order.getId(), rating, comment);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void submitReviewToServer(int orderId, int rating, String comment) {
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        pd.setMessage("Submitting review...");
+        pd.setCancelable(false);
+        pd.show();
+
+        java.util.Map<String, Object> body = new java.util.HashMap<>();
+        body.put("order_id", orderId);
+        body.put("rating", rating);
+        body.put("comment", comment);
+
+        RetrofitClient.getApiService().submitReview(body).enqueue(new Callback<com.muproject.campusskill.model.CommonResponse>() {
+            @Override
+            public void onResponse(Call<com.muproject.campusskill.model.CommonResponse> call, Response<com.muproject.campusskill.model.CommonResponse> response) {
+                pd.dismiss();
+                if (!isAdded()) return;
+
+                if (response.isSuccessful() && response.body() != null && "success".equals(response.body().getStatus())) {
+                    Toast.makeText(getContext(), "Review submitted successfully!", Toast.LENGTH_SHORT).show();
+                    loadOrders();
+                } else {
+                    Toast.makeText(getContext(), "Failed to submit review", Toast.LENGTH_SHORT).show();
                 }
             }
 

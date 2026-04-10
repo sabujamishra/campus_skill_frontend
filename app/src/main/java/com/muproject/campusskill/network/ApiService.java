@@ -107,4 +107,8 @@ public interface ApiService {
     // Order complete karo (Hinglish: Buyer order done mark kar sakta hai)
     @retrofit2.http.PUT("order/complete")
     Call<com.muproject.campusskill.model.CommonResponse> completeOrder(@retrofit2.http.Query("id") int orderId);
+
+    // Review submit karo (Hinglish: Completed orders par rating aur comment dena)
+    @retrofit2.http.POST("review/add")
+    Call<com.muproject.campusskill.model.CommonResponse> submitReview(@retrofit2.http.Body java.util.Map<String, Object> body);
 }

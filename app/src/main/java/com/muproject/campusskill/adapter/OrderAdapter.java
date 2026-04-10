@@ -20,6 +20,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public interface OnOrderActionListener {
         void onAccept(Order order);
         void onComplete(Order order);
+        void onReview(Order order);
     }
 
     public OrderAdapter(List<Order> orders, String role, OnOrderActionListener listener) {
@@ -92,6 +93,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnComplete.setVisibility(View.GONE);
         }
 
+        // Review Button Logic (Hinglish: Agar buyer hai aur status completed hai, toh Review button dikhao)
+        if ("buyer".equals(role) && "completed".equals(status)) {
+            holder.btnReview.setVisibility(View.VISIBLE);
+            holder.btnReview.setOnClickListener(v -> {
+                if (listener != null) listener.onReview(order);
+            });
+        } else {
+            holder.btnReview.setVisibility(View.GONE);
+        }
+
         switch (status) {
             case "completed":
                 holder.tvStatus.setBackgroundResource(R.drawable.bg_tag_green);
@@ -146,7 +157,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrderId, tvServiceTitle, tvStatus, tvPerson, tvPrice, tvDate;
-        android.widget.Button btnAccept, btnComplete;
+        android.widget.Button btnAccept, btnComplete, btnReview;
 
         OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -158,6 +169,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             tvDate = itemView.findViewById(R.id.tvOrderDate);
             btnAccept = itemView.findViewById(R.id.btnAcceptOrder);
             btnComplete = itemView.findViewById(R.id.btnCompleteOrder);
+            btnReview = itemView.findViewById(R.id.btnReviewOrder);
         }
     }
 }
