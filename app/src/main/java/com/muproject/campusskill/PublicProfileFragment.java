@@ -83,19 +83,20 @@ public class PublicProfileFragment extends Fragment {
                 @Override
                 public void onResponse(Call<com.muproject.campusskill.model.OrderListResponse> call, Response<com.muproject.campusskill.model.OrderListResponse> response) {
                     if (isAdded() && response.isSuccessful() && response.body() != null) {
-                        java.util.List<com.muproject.campusskill.model.Order> orders = response.body().getData();
-                        com.muproject.campusskill.model.Order match = null;
+                        java.util.List<com.muproject.campusskill.model.Order> sellerOrders = new ArrayList<>();
                         if (orders != null) {
                             for (com.muproject.campusskill.model.Order o : orders) {
                                 if (o.getSellerId() == userId) {
-                                    match = o;
-                                    break;
+                                    sellerOrders.add(o);
                                 }
                             }
                         }
 
-                        if (match != null) {
+                        if (sellerOrders.size() == 1) {
+                            com.muproject.campusskill.model.Order match = sellerOrders.get(0);
                             ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(match.getId(), match.getStatus()));
+                        } else if (sellerOrders.size() > 1) {
+                            showOrderSelectionDialog(sellerOrders);
                         } else {
                             Toast.makeText(getContext(), "You can only chat after booking a service!", Toast.LENGTH_LONG).show();
                         }
@@ -110,6 +111,22 @@ public class PublicProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void showOrderSelectionDialog(java.util.List<com.muproject.campusskill.model.Order> orders) {
+        String[] items = new String[orders.size()];
+        for (int i = 0; i < orders.size(); i++) {
+            com.muproject.campusskill.model.Order o = orders.get(i);
+            items[i] = "Order #" + o.getId() + " - " + o.getServiceTitle();
+        }
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Select Order to Discuss")
+                .setItems(items, (dialog, which) -> {
+                    com.muproject.campusskill.model.Order selected = orders.get(which);
+                    ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(selected.getId(), selected.getStatus()));
+                })
+                .show();
     }
 
     private void loadPublicProfile() {
