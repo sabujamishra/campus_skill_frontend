@@ -59,6 +59,11 @@ public class ProfileFragment extends Fragment {
                 ((MainActivity) getActivity()).replaceFragment(new MyServicesFragment());
             }
         });
+        view.findViewById(R.id.btnLeaderboard).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new LeaderboardFragment());
+            }
+        });
 
         view.findViewById(R.id.fabEditImage).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

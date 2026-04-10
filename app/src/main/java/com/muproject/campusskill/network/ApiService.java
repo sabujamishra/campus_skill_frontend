@@ -111,4 +111,15 @@ public interface ApiService {
     // Review submit karo (Hinglish: Completed orders par rating aur comment dena)
     @retrofit2.http.POST("review/add")
     Call<com.muproject.campusskill.model.CommonResponse> submitReview(@retrofit2.http.Body java.util.Map<String, Object> body);
+
+    // --- Leaderboard Module ---
+
+    @GET("leaderboard/top-earners")
+    Call<com.muproject.campusskill.model.LeaderboardResponse> getTopEarners();
+
+    @GET("leaderboard/top-rated")
+    Call<com.muproject.campusskill.model.LeaderboardResponse> getTopRated();
+
+    @GET("leaderboard/most-active")
+    Call<com.muproject.campusskill.model.LeaderboardResponse> getMostActive();
 }

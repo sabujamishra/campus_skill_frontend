@@ -210,6 +210,19 @@
                         app:iconTint="@color/primary"
                         app:iconPadding="16dp" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLeaderboard"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:text="View Global Leaderboard"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/primary"
+                        app:iconPadding="16dp" />
+
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
 
                     <com.google.android.material.button.MaterialButton
