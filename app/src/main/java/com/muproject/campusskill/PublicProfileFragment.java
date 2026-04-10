@@ -141,6 +141,7 @@ public class PublicProfileFragment extends Fragment {
                 com.muproject.campusskill.model.Order o = orders.get(position);
                 holder.tvTitle.setText(o.getServiceTitle());
                 holder.tvId.setText("Order #" + o.getId());
+                holder.tvNumber.setText(String.valueOf(o.getId()));
                 holder.itemView.setOnClickListener(v -> {
                     dialog.dismiss();
                     ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(o.getId(), o.getStatus()));
@@ -156,11 +157,12 @@ public class PublicProfileFragment extends Fragment {
     }
 
     private static class SimpleOrderViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
-        TextView tvTitle, tvId;
+        TextView tvTitle, tvId, tvNumber;
         SimpleOrderViewHolder(View v) {
             super(v);
             tvTitle = v.findViewById(R.id.tvSelectOrderTitle);
             tvId = v.findViewById(R.id.tvSelectOrderId);
+            tvNumber = v.findViewById(R.id.tvSelectOrderNumber);
         }
     }
 

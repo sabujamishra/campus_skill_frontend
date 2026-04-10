@@ -24,6 +24,7 @@
             android:background="@drawable/bg_tag_blue"
             android:layout_gravity="center">
             <TextView
+                android:id="@+id/tvSelectOrderNumber"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
