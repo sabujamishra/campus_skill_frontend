@@ -245,8 +245,16 @@ public class ServiceDetailsFragment extends Fragment {
 
         dialogView.findViewById(R.id.btnViewOrders).setOnClickListener(v -> {
             dialog.dismiss();
-            // Hinglish: Dashboard state change karke orders tab par le ja rahe hain
             DashboardFragment.setTab(R.id.nav_orders);
+            
+            // Explicitly find nav and select it if possible
+            if (getActivity() != null) {
+                View navView = getActivity().findViewById(R.id.bottom_navigation);
+                if (navView instanceof com.google.android.material.bottomnavigation.BottomNavigationView) {
+                    ((com.google.android.material.bottomnavigation.BottomNavigationView) navView).setSelectedItemId(R.id.nav_orders);
+                }
+            }
+            
             ((MainActivity)requireActivity()).goBack();
         });
 
