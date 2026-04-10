@@ -84,8 +84,9 @@ public class PublicProfileFragment extends Fragment {
                 public void onResponse(Call<com.muproject.campusskill.model.OrderListResponse> call, Response<com.muproject.campusskill.model.OrderListResponse> response) {
                     if (isAdded() && response.isSuccessful() && response.body() != null) {
                         java.util.List<com.muproject.campusskill.model.Order> sellerOrders = new ArrayList<>();
-                        if (orders != null) {
-                            for (com.muproject.campusskill.model.Order o : orders) {
+                        java.util.List<com.muproject.campusskill.model.Order> allOrders = response.body().getData();
+                        if (allOrders != null) {
+                            for (com.muproject.campusskill.model.Order o : allOrders) {
                                 if (o.getSellerId() == userId) {
                                     sellerOrders.add(o);
                                 }
