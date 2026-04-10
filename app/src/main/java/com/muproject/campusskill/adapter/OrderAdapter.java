@@ -21,6 +21,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         void onAccept(Order order);
         void onComplete(Order order);
         void onReview(Order order);
+        void onChat(Order order);
     }
 
     public OrderAdapter(List<Order> orders, String role, OnOrderActionListener listener) {
@@ -139,10 +140,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
 
         holder.btnChat.setOnClickListener(v -> {
-            if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
-                ((com.muproject.campusskill.MainActivity) v.getContext())
-                        .replaceFragment(com.muproject.campusskill.ChatFragment.newInstance(order.getId(), status));
-            }
+            if (listener != null) listener.onChat(order);
         });
     }
 

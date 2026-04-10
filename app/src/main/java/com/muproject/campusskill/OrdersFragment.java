@@ -48,6 +48,14 @@ public class OrdersFragment extends Fragment {
         public void onReview(Order order) {
             handleReviewOrder(order);
         }
+
+        @Override
+        public void onChat(Order order) {
+            if (getActivity() instanceof MainActivity) {
+                String status = order.getStatus() != null ? order.getStatus() : "pending";
+                ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(order.getId(), status));
+            }
+        }
     };
 
     @Nullable

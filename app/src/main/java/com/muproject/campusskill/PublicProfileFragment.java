@@ -76,6 +76,39 @@ public class PublicProfileFragment extends Fragment {
 
         loadSellerServices();
 
+        view.findViewById(R.id.btnContactSeller).setOnClickListener(v -> {
+            // Find if there's an active order between current user and this seller
+            // Hinglish: Hum orders check kar rahe hain taaki participant access mil sake
+            RetrofitClient.getApiService().getOrders("buyer").enqueue(new Callback<com.muproject.campusskill.model.OrderListResponse>() {
+                @Override
+                public void onResponse(Call<com.muproject.campusskill.model.OrderListResponse> call, Response<com.muproject.campusskill.model.OrderListResponse> response) {
+                    if (isAdded() && response.isSuccessful() && response.body() != null) {
+                        java.util.List<com.muproject.campusskill.model.Order> orders = response.body().getData();
+                        com.muproject.campusskill.model.Order match = null;
+                        if (orders != null) {
+                            for (com.muproject.campusskill.model.Order o : orders) {
+                                if (o.getSellerId() == userId) {
+                                    match = o;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (match != null) {
+                            ((MainActivity) getActivity()).replaceFragment(ChatFragment.newInstance(match.getId(), match.getStatus()));
+                        } else {
+                            Toast.makeText(getContext(), "You can only chat after booking a service!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<com.muproject.campusskill.model.OrderListResponse> call, Throwable t) {
+                    if (isAdded()) Toast.makeText(getContext(), "Chat unavailable", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
         return view;
     }
 
