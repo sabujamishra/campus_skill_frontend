@@ -84,4 +84,9 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="colorBackgroundFloating">@android:color/transparent</item>
     </style>
+
+    <style name="BottomNavTheme" parent="Widget.Material3.BottomNavigationView">
+        <item name="colorSecondaryContainer">#E3F2FD</item>
+        <item name="colorOnSecondaryContainer">@color/button_blue</item>
+    </style>
 </resources>
