@@ -41,6 +41,8 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         holder.tvExtra.setText(item.getExtraLabel() != null ? item.getExtraLabel() : "Campus Elite");
 
         String value = item.getValue();
+        if (value == null || value.equals("null")) value = "0";
+
         if (type.equals("earners")) {
             holder.tvValue.setText("₹" + value);
             holder.tvValue.setBackgroundResource(R.drawable.bg_price_pill);
