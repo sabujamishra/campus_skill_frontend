@@ -145,13 +145,22 @@ public class ServicesFragment extends Fragment {
         if (currentList.isEmpty()) return;
 
         if (checkedId == R.id.chipPriceLow) {
-            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(s1.getPrice(), s2.getPrice()));
+            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(parsePrice(s1.getPrice()), parsePrice(s2.getPrice())));
         } else if (checkedId == R.id.chipPriceHigh) {
-            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(s2.getPrice(), s1.getPrice()));
+            java.util.Collections.sort(currentList, (s1, s2) -> Double.compare(parsePrice(s2.getPrice()), parsePrice(s1.getPrice())));
         } else if (checkedId == R.id.chipNewest) {
             java.util.Collections.sort(currentList, (s1, s2) -> Integer.compare(s2.getId(), s1.getId()));
         }
 
         adapter.setServices(currentList);
+    }
+
+    private double parsePrice(String price) {
+        if (price == null || price.isEmpty()) return 0.0;
+        try {
+            return Double.parseDouble(price.replaceAll("[^0-9.]", "").trim());
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 }
