@@ -45,8 +45,10 @@ public class HomeFragment extends Fragment {
         rvCategories = view.findViewById(R.id.rvCategories);
 
         // Setup Services List
-        rvServices.setLayoutManager(new LinearLayoutManager(getContext())); 
-        serviceAdapter = new ServiceAdapter(new ArrayList<>());
+        rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
+        com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
+        int userId = sessionManager.getUserId();
+        serviceAdapter = new ServiceAdapter(new ArrayList<>(), userId);
         rvServices.setAdapter(serviceAdapter);
 
         // Setup Categories List

@@ -11,11 +11,18 @@ public class LoginResponse {
     private String message;
     
     @SerializedName("data")
-    private Data data;
+    private com.google.gson.JsonElement data;
 
     public String getStatus() { return status; }
     public String getMessage() { return message; }
-    public Data getData() { return data; }
+    
+    // Hinglish: "data" agar array hua toh null return karega, object hua toh convert karke dega
+    public Data getData() {
+        if (data != null && data.isJsonObject()) {
+            return new com.google.gson.Gson().fromJson(data, Data.class);
+        }
+        return null;
+    }
 
     public static class Data {
         @SerializedName("user")

@@ -86,9 +86,26 @@ public class RegisterFragment extends Fragment {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         if ("success".equals(response.body().getStatus())) {
+                            if (!isAdded()) return;
+                            
+                            // User details save karo taaki session start ho jaye (Hinglish: Instant login after registration)
+                            com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
+                            if (response.body().getData() != null && response.body().getData().getUser() != null) {
+                                sessionManager.saveToken(response.body().getData().getToken());
+                                sessionManager.saveUserDetails(
+                                        response.body().getData().getUser().getId(),
+                                        response.body().getData().getUser().getName(),
+                                        response.body().getData().getUser().getProfileImage()
+                                );
+                            }
+
+                            // Ownership cache refresh karo (Hinglish: Registry bharo naye user ki)
+                            if (getActivity() instanceof MainActivity) {
+                                ((MainActivity) getActivity()).refreshMyServiceIds();
+                                ((MainActivity) getActivity()).replaceFragment(new DashboardFragment());
+                            }
+                            
                             android.widget.Toast.makeText(requireContext(), "Registration successful! Welcome.", android.widget.Toast.LENGTH_LONG).show();
-                            // Dashboard par le jaa rahe hain (Hinglish: Naye account ke baad dashboard)
-                            ((MainActivity) requireActivity()).replaceFragment(new DashboardFragment());
                         } else {
                             throw new Exception(response.body().getMessage());
                         }
@@ -97,10 +114,10 @@ public class RegisterFragment extends Fragment {
                         String errorMsg = "Server Error: " + response.code();
                         if (response.errorBody() != null) {
                             com.google.gson.Gson gson = new com.google.gson.Gson();
-                            com.muproject.campusskill.model.RegisterResponse errorResponse = 
-                                gson.fromJson(response.errorBody().charStream(), com.muproject.campusskill.model.RegisterResponse.class);
+                            com.muproject.campusskill.model.CommonResponse errorResponse = 
+                                gson.fromJson(response.errorBody().charStream(), com.muproject.campusskill.model.CommonResponse.class);
                             if (errorResponse != null && errorResponse.getMessage() != null) {
-                                errorMsg = errorResponse.getMessage(); // Jaise "Email already exists"
+                                errorMsg = errorResponse.getMessage(); // Safe extracted message
                             }
                         }
                         throw new Exception(errorMsg);

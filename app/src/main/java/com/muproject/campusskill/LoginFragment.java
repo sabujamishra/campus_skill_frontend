@@ -74,21 +74,25 @@ public class LoginFragment extends Fragment {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
                         if ("success".equals(response.body().getStatus())) {
+                            if (!isAdded()) return;
+                            
                             // Token ko hamesha save karo current session ke liye (Hinglish: Token zaroor save hoga API calls ke liye)
                             com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
                             sessionManager.saveToken(response.body().getData().getToken());
+                            sessionManager.saveUserDetails(response.body().getData().getUser().getId(), 
+                                    response.body().getData().getUser().getName(),
+                                    response.body().getData().getUser().getProfileImage());
                             
                             // Remember Me off hone par app band hone par token clear hoga
-                            if (!cbRememberMe.isChecked()) {
-                                sessionManager.setRememberMe(false);
-                            } else {
-                                sessionManager.setRememberMe(true);
-                            }
+                            sessionManager.setRememberMe(cbRememberMe.isChecked());
                             
                             android.widget.Toast.makeText(requireContext(), "Welcome back, " + response.body().getData().getUser().getName(), android.widget.Toast.LENGTH_SHORT).show();
                             
                             // Home screen par navigate kar rahe hain (Hinglish: Dashboard par le jaa rahe hain)
-                            ((MainActivity) requireActivity()).replaceFragment(new DashboardFragment());
+                            if (getActivity() instanceof MainActivity) {
+                                ((MainActivity) getActivity()).refreshMyServiceIds();
+                                ((MainActivity) getActivity()).replaceFragment(new DashboardFragment());
+                            }
                         } else {
                             throw new Exception(response.body().getMessage());
                         }
@@ -97,10 +101,10 @@ public class LoginFragment extends Fragment {
                         String errorMsg = "Login failed: " + response.code();
                         if (response.errorBody() != null) {
                             com.google.gson.Gson gson = new com.google.gson.Gson();
-                            com.muproject.campusskill.model.LoginResponse errorResponse = 
-                                gson.fromJson(response.errorBody().charStream(), com.muproject.campusskill.model.LoginResponse.class);
+                            com.muproject.campusskill.model.CommonResponse errorResponse = 
+                                gson.fromJson(response.errorBody().charStream(), com.muproject.campusskill.model.CommonResponse.class);
                             if (errorResponse != null && errorResponse.getMessage() != null) {
-                                errorMsg = errorResponse.getMessage();
+                                errorMsg = errorResponse.getMessage(); // Safe message extraction
                             }
                         }
                         throw new Exception(errorMsg);

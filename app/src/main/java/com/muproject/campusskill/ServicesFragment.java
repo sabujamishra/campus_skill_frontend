@@ -17,6 +17,7 @@ import com.muproject.campusskill.adapter.ServiceAdapter;
 import com.muproject.campusskill.model.ServiceListResponse;
 import com.muproject.campusskill.network.RetrofitClient;
 import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,9 +25,11 @@ import retrofit2.Response;
 // Market Discovery Fragment (Hinglish: Safe context fetching aur loading logic update kiya gaya hai)
 public class ServicesFragment extends Fragment {
 
-    private RecyclerView rvServices;
+    private RecyclerView rvServices, rvCategories;
     private ServiceAdapter adapter;
+    private com.muproject.campusskill.adapter.CategoryAdapter categoryAdapter;
     private EditText etSearch;
+    private Integer currentCategoryId = null;
 
     @Nullable
     @Override
@@ -37,9 +40,20 @@ public class ServicesFragment extends Fragment {
         rvServices = view.findViewById(R.id.rvMarketServices);
 
         rvServices.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ServiceAdapter(new ArrayList<>());
+        com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
+        int userId = sessionManager.getUserId();
+        adapter = new ServiceAdapter(new ArrayList<>(), userId);
         rvServices.setAdapter(adapter);
 
+        rvCategories = view.findViewById(R.id.rvMarketCategories);
+        rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        categoryAdapter = new com.muproject.campusskill.adapter.CategoryAdapter(new ArrayList<>(), category -> {
+            currentCategoryId = (category.getId() == -1) ? null : category.getId();
+            loadServices(etSearch.getText().toString().trim(), true);
+        });
+        rvCategories.setAdapter(categoryAdapter);
+
+        loadCategories();
         loadServices(null, false);
 
         etSearch.setHint("Search anything...");
@@ -64,7 +78,7 @@ public class ServicesFragment extends Fragment {
         }
 
         final android.app.ProgressDialog finalPd = pd;
-        RetrofitClient.getApiService().getServices(null, query).enqueue(new Callback<ServiceListResponse>() {
+        RetrofitClient.getApiService().getServices(currentCategoryId, query).enqueue(new Callback<ServiceListResponse>() {
             @Override
             public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
                 if (finalPd != null) finalPd.dismiss();
@@ -79,8 +93,24 @@ public class ServicesFragment extends Fragment {
             public void onFailure(Call<ServiceListResponse> call, Throwable t) {
                 if (finalPd != null) finalPd.dismiss();
                 if (!isAdded()) return;
-                Log.e("ServicesFragment", "Error loading services", t);
             }
+        });
+    }
+
+    private void loadCategories() {
+        RetrofitClient.getApiService().getCategories().enqueue(new Callback<com.muproject.campusskill.model.CategoryResponse>() {
+            @Override
+            public void onResponse(Call<com.muproject.campusskill.model.CategoryResponse> call, Response<com.muproject.campusskill.model.CategoryResponse> response) {
+                if (!isAdded() || getContext() == null) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    List<com.muproject.campusskill.model.Category> cats = new ArrayList<>();
+                    cats.add(new com.muproject.campusskill.model.Category(-1, "All", 0));
+                    cats.addAll(response.body().getData());
+                    categoryAdapter.setCategories(cats);
+                }
+            }
+            @Override
+            public void onFailure(Call<com.muproject.campusskill.model.CategoryResponse> call, Throwable t) {}
         });
     }
 }

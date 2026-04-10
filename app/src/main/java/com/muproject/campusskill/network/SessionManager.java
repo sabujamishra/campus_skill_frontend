@@ -11,6 +11,9 @@ import java.security.GeneralSecurityException;
 public class SessionManager {
     private static final String PREF_NAME = "CampusSkillSecurePrefs";
     private static final String KEY_TOKEN = "auth_token";
+    private static final String KEY_USER_ID = "user_id";
+    private static final String KEY_USER_NAME = "user_name";
+    private static final String KEY_USER_IMAGE = "user_image";
     
     private SharedPreferences sharedPreferences;
 
@@ -44,6 +47,27 @@ public class SessionManager {
     // Token wapas nikalne (retrieve) ke liye
     public String getToken() {
         return sharedPreferences.getString(KEY_TOKEN, null);
+    }
+
+    // User details save karne ke liye
+    public void saveUserDetails(int id, String name, String imageUrl) {
+        sharedPreferences.edit()
+                .putInt(KEY_USER_ID, id)
+                .putString(KEY_USER_NAME, name)
+                .putString(KEY_USER_IMAGE, imageUrl)
+                .apply();
+    }
+
+    public int getUserId() {
+        return sharedPreferences.getInt(KEY_USER_ID, -1);
+    }
+
+    public String getUserName() {
+        return sharedPreferences.getString(KEY_USER_NAME, null);
+    }
+
+    public String getUserImage() {
+        return sharedPreferences.getString(KEY_USER_IMAGE, null);
     }
 
     // Logout karne par token delete karne ke liye

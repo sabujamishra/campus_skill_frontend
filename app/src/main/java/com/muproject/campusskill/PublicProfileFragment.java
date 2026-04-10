@@ -15,6 +15,9 @@ import com.bumptech.glide.Glide;
 import com.muproject.campusskill.model.User;
 import com.muproject.campusskill.model.ProfileResponse;
 import com.muproject.campusskill.network.RetrofitClient;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +27,8 @@ public class PublicProfileFragment extends Fragment {
     private int userId;
     private ImageView ivProfile;
     private TextView tvName, tvDept, tvOrders, tvRating, tvResponse, tvMemberSince;
+    private androidx.recyclerview.widget.RecyclerView rvServices;
+    private com.muproject.campusskill.adapter.ServiceAdapter adapter;
 
     public static PublicProfileFragment newInstance(int userId) {
         PublicProfileFragment fragment = new PublicProfileFragment();
@@ -62,12 +67,21 @@ public class PublicProfileFragment extends Fragment {
 
         loadPublicProfile();
 
+        rvServices = view.findViewById(R.id.rvPublicServices);
+        rvServices.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
+        // Get logged in user id for "YOUR SERVICE" badge logic in adapter
+        int currentUserId = new com.muproject.campusskill.network.SessionManager(requireContext()).getUserId();
+        adapter = new com.muproject.campusskill.adapter.ServiceAdapter(new ArrayList<>(), currentUserId);
+        rvServices.setAdapter(adapter);
+
+        loadSellerServices();
+
         return view;
     }
 
     private void loadPublicProfile() {
         if (userId <= 0) {
-            Toast.makeText(getContext(), "Error: Valid User ID not found in service data.", Toast.LENGTH_LONG).show();
+            if (getActivity() instanceof MainActivity) ((MainActivity) getActivity()).goBack();
             return;
         }
 
@@ -76,19 +90,14 @@ public class PublicProfileFragment extends Fragment {
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                 if (isAdded() && response.isSuccessful() && response.body() != null) {
                     updateUI(response.body().getData());
-                } else {
-                    String error = "Unknown Error";
-                    try { if (response.errorBody() != null) error = response.errorBody().string(); } catch (Exception e) {}
-                    Toast.makeText(getContext(), "Server Error (" + response.code() + "): " + error, Toast.LENGTH_LONG).show();
-                    Log.e("PublicProfile", "Failed to load ID " + userId + ". Code: " + response.code() + " Error: " + error);
+                } else if (isAdded()) {
+                    Toast.makeText(getContext(), "Could not load profile", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ProfileResponse> call, Throwable t) {
-                if (isAdded()) {
-                    Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                }
+                if (isAdded()) Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -103,42 +112,50 @@ public class PublicProfileFragment extends Fragment {
         tvResponse.setText(user.getResponseRate() + "%");
 
         if (user.getCreatedAt() != null) {
-            String date = user.getCreatedAt().split(" ")[0];
-            tvMemberSince.setText("Member since " + date);
+            try {
+                java.text.SimpleDateFormat inFmt = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault());
+                java.text.SimpleDateFormat outFmt = new java.text.SimpleDateFormat("MMM yyyy", java.util.Locale.getDefault());
+                tvMemberSince.setText("Member since " + outFmt.format(inFmt.parse(user.getCreatedAt())));
+            } catch (Exception e) {
+                tvMemberSince.setText("Member since " + user.getCreatedAt().split(" ")[0]);
+            }
         }
 
-        // Image loading with safety (Hinglish: Photo load karne ka safe tarikha)
+        // Profile image (Hinglish: Photo load karo)
         String imgPath = user.getProfileImage();
         if (imgPath != null && !imgPath.isEmpty()) {
-            String url;
-            if (imgPath.startsWith("http")) {
-                url = imgPath;
-            } else {
-                String baseUrl = "https://lightgrey-dogfish-642647.hostingersite.com/";
-                if (imgPath.startsWith("/")) imgPath = imgPath.substring(1);
-                url = baseUrl + imgPath;
-            }
-
-            Glide.with(this)
-                    .load(url)
-                    .placeholder(R.drawable.ic_profile)
-                    .error(R.drawable.service_placeholder)
-                    .circleCrop()
-                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable com.bumptech.glide.load.engine.GlideException e, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
-                            Log.e("PublicProfile", "Glide Load Failed for URL: " + url, e);
-                            return false; 
-                        }
-                        @Override
-                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
-                            Log.d("PublicProfile", "Glide Load Success: " + url);
-                            return false;
-                        }
-                    })
-                    .into(ivProfile);
+            String url = imgPath.startsWith("http") ? imgPath : "https://lightgrey-dogfish-642647.hostingersite.com/" + (imgPath.startsWith("/") ? imgPath.substring(1) : imgPath);
+            Glide.with(this).load(url).placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).circleCrop().into(ivProfile);
         } else {
             ivProfile.setImageResource(R.drawable.ic_profile);
         }
+    }
+
+    private void loadSellerServices() {
+        // Fetch all services and filter for this specific seller
+        // Hinglish: Saare services mangwa kar is seller ke liye filter kar rahe hain
+        RetrofitClient.getApiService().getServices(null, null).enqueue(new Callback<com.muproject.campusskill.model.ServiceListResponse>() {
+            @Override
+            public void onResponse(Call<com.muproject.campusskill.model.ServiceListResponse> call, Response<com.muproject.campusskill.model.ServiceListResponse> response) {
+                if (!isAdded() || getContext() == null) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    java.util.List<com.muproject.campusskill.model.Service> allServices = response.body().getData();
+                    java.util.List<com.muproject.campusskill.model.Service> filtered = new ArrayList<>();
+                    if (allServices != null) {
+                        for (com.muproject.campusskill.model.Service s : allServices) {
+                            if (s.getSellerId() == userId) {
+                                filtered.add(s);
+                            }
+                        }
+                    }
+                    adapter.setServices(filtered);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.muproject.campusskill.model.ServiceListResponse> call, Throwable t) {
+                if (isAdded()) Log.e("PublicProfile", "Error loading services", t);
+            }
+        });
     }
 }

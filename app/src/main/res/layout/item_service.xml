@@ -79,6 +79,20 @@
                 android:maxLines="2"
                 android:ellipsize="end" />
 
+            <TextView
+                android:id="@+id/tvYourService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_tag_green"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="YOUR SERVICE"
+                android:textColor="#2E7D32"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,8 +105,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_profile"
-                    app:shapeAppearanceOverlay="@style/CircleImage"
-                    app:tint="@color/text_grey" />
+                    app:shapeAppearanceOverlay="@style/CircleImage" />
 
                 <TextView
                     android:id="@+id/tvSellerName"

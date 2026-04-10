@@ -10,6 +10,7 @@ public class MainActivity extends AppCompatActivity {
 
     private long backPressedTime;
     private android.widget.Toast backToast;
+    public static java.util.List<Integer> myServiceIds = new java.util.ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (token != null && !token.isEmpty() && sessionManager.isRememberMe()) {
             // Token exists + Remember Me → Go straight to Dashboard
+            refreshMyServiceIds();
             loadFragment(new DashboardFragment());
             return;
         } else {
@@ -84,6 +86,28 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack();
         } else {
             loadFragment(new DashboardFragment());
+        }
+    }
+
+    public void refreshMyServiceIds() {
+        com.muproject.campusskill.network.SessionManager session = new com.muproject.campusskill.network.SessionManager(this);
+        String token = session.getToken();
+        if (token != null && !token.isEmpty()) {
+            com.muproject.campusskill.network.RetrofitClient.getApiService().getMyServices().enqueue(new retrofit2.Callback<com.muproject.campusskill.model.ServiceListResponse>() {
+                @Override
+                public void onResponse(retrofit2.Call<com.muproject.campusskill.model.ServiceListResponse> call, retrofit2.Response<com.muproject.campusskill.model.ServiceListResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        myServiceIds.clear();
+                        if (response.body().getData() != null) {
+                            for (com.muproject.campusskill.model.Service s : response.body().getData()) {
+                                myServiceIds.add(s.getId());
+                            }
+                        }
+                    }
+                }
+                @Override
+                public void onFailure(retrofit2.Call<com.muproject.campusskill.model.ServiceListResponse> call, Throwable t) {}
+            });
         }
     }
 }

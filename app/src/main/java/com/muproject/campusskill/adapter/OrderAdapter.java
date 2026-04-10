@@ -41,10 +41,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             String seller = order.getSellerName();
             holder.tvPerson.setText(seller != null && !seller.isEmpty() ? "Seller: " + seller : "");
             holder.tvPerson.setVisibility(seller != null && !seller.isEmpty() ? View.VISIBLE : View.GONE);
+            
+            holder.tvPerson.setOnClickListener(v -> {
+                if (v.getContext() instanceof com.muproject.campusskill.MainActivity && order.getSellerId() > 0) {
+                    ((com.muproject.campusskill.MainActivity) v.getContext())
+                            .replaceFragment(com.muproject.campusskill.PublicProfileFragment.newInstance(order.getSellerId()));
+                }
+            });
         } else {
             String buyer = order.getBuyerName();
             holder.tvPerson.setText(buyer != null && !buyer.isEmpty() ? "Buyer: " + buyer : "");
             holder.tvPerson.setVisibility(buyer != null && !buyer.isEmpty() ? View.VISIBLE : View.GONE);
+
+            holder.tvPerson.setOnClickListener(v -> {
+                if (v.getContext() instanceof com.muproject.campusskill.MainActivity && order.getBuyerId() > 0) {
+                    ((com.muproject.campusskill.MainActivity) v.getContext())
+                            .replaceFragment(com.muproject.campusskill.PublicProfileFragment.newInstance(order.getBuyerId()));
+                }
+            });
         }
 
         // Status badge styling (Hinglish: Status ke hisaab se rang badalo)

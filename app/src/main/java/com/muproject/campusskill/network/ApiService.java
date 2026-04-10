@@ -87,4 +87,17 @@ public interface ApiService {
     // Order history (Hinglish: Buyer ya Seller ke orders ki list)
     @GET("orders")
     Call<com.muproject.campusskill.model.OrderListResponse> getOrders(@retrofit2.http.Query("role") String role);
+
+    // --- Service Management ---
+
+    // Service update karo (Hinglish: Apni service edit karo)
+    @retrofit2.http.PUT("service/update")
+    Call<com.muproject.campusskill.model.CommonResponse> updateService(
+            @retrofit2.http.Query("id") int serviceId,
+            @Body com.muproject.campusskill.model.ServiceCreateRequest request
+    );
+
+    // Service delete karo (Hinglish: Apni service hatao)
+    @retrofit2.http.DELETE("service/delete")
+    Call<com.muproject.campusskill.model.CommonResponse> deleteService(@retrofit2.http.Query("id") int serviceId);
 }

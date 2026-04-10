@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.muproject.campusskill.model.Category;
 import com.muproject.campusskill.model.CategoryResponse;
 import com.muproject.campusskill.model.CommonResponse;
+import com.muproject.campusskill.model.Service;
 import com.muproject.campusskill.model.ServiceCreateRequest;
 import com.muproject.campusskill.network.RetrofitClient;
 import java.io.File;
@@ -49,6 +50,23 @@ public class CreateServiceFragment extends Fragment {
     private LinearLayout layoutUploadPlaceholder;
     private List<Category> categoryList = new ArrayList<>();
     private Uri selectedImageUri;
+    private Service existingService; // Hinglish: Agar edit mode hai toh yahan data aayega
+
+    public static CreateServiceFragment newInstance(Service service) {
+        CreateServiceFragment fragment = new CreateServiceFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("existing_service", service);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            existingService = (Service) getArguments().getSerializable("existing_service");
+        }
+    }
 
     @Nullable
     @Override
@@ -65,13 +83,30 @@ public class CreateServiceFragment extends Fragment {
         layoutUploadPlaceholder = view.findViewById(R.id.layoutUploadPlaceholder);
         
         TextView tvAddCategory = view.findViewById(R.id.tvAddCategory);
-        Button btnCreate = view.findViewById(R.id.btnCreateService);
+        Button btnPublish = view.findViewById(R.id.btnCreateService);
         ImageView btnBack = view.findViewById(R.id.btnBackCreate);
 
         setupPlaceholderSpinner();
         loadCategories();
 
-        btnCreate.setOnClickListener(v -> handleCreateService());
+        // Check if Edit Mode (Hinglish: Edit mode check karo aur UI adjust karo)
+        if (existingService != null) {
+            btnPublish.setText("Update Service");
+            etTitle.setText(existingService.getTitle());
+            etDesc.setText(existingService.getDescription());
+            etPrice.setText(String.valueOf(existingService.getPrice()));
+            etTime.setText(String.valueOf(existingService.getDeliveryTime()));
+            
+            // Show existing image
+            if (existingService.getThumbnail() != null) {
+                String url = existingService.getThumbnail().startsWith("http") ? existingService.getThumbnail() : "https://lightgrey-dogfish-642647.hostingersite.com/" + existingService.getThumbnail();
+                com.bumptech.glide.Glide.with(this).load(url).into(ivServicePreview);
+                ivServicePreview.setVisibility(View.VISIBLE);
+                layoutUploadPlaceholder.setVisibility(View.GONE);
+            }
+        }
+
+        btnPublish.setOnClickListener(v -> handlePublishOrUpdate());
         btnBack.setOnClickListener(v -> {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).goBack();
@@ -108,14 +143,20 @@ public class CreateServiceFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     categoryList = response.body().getData();
                     List<String> categoryNames = new ArrayList<>();
-                    for (Category cat : categoryList) {
+                    int selectionIdx = 0;
+                    for (int i = 0; i < categoryList.size(); i++) {
+                        Category cat = categoryList.get(i);
                         categoryNames.add(cat.getName());
+                        if (existingService != null && cat.getName().equals(existingService.getCategory())) {
+                            selectionIdx = i;
+                        }
                     }
                     
                     if (isAdded() && getContext() != null) {
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, categoryNames);
                         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                         spinnerCategory.setAdapter(adapter);
+                        if (existingService != null) spinnerCategory.setSelection(selectionIdx);
                     }
                 }
             }
@@ -132,14 +173,14 @@ public class CreateServiceFragment extends Fragment {
         spinnerCategory.setAdapter(adapter);
     }
 
-    private void handleCreateService() {
+    private void handlePublishOrUpdate() {
         try {
             String title = etTitle.getText().toString().trim();
             String desc = etDesc.getText().toString().trim();
             String priceStr = etPrice.getText().toString().trim();
             String timeStr = etTime.getText().toString().trim();
 
-            if (categoryList.isEmpty() || spinnerCategory.getSelectedItem().toString().contains("Loading")) {
+            if (categoryList.isEmpty() || spinnerCategory.getSelectedItem() == null || spinnerCategory.getSelectedItem().toString().contains("Loading")) {
                 Toast.makeText(requireContext(), "Select a valid category", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -156,26 +197,34 @@ public class CreateServiceFragment extends Fragment {
             int time = Integer.parseInt(timeStr);
 
             android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
-            pd.setMessage("Creating service...");
+            pd.setMessage(existingService == null ? "Creating service..." : "Updating service...");
             pd.setCancelable(false);
             pd.show();
 
             ServiceCreateRequest request = new ServiceCreateRequest(title, desc, categoryId, price, time);
 
-            RetrofitClient.getApiService().createService(request).enqueue(new Callback<CommonResponse>() {
+            Call<CommonResponse> call;
+            if (existingService == null) {
+                call = RetrofitClient.getApiService().createService(request);
+            } else {
+                call = RetrofitClient.getApiService().updateService(existingService.getId(), request);
+            }
+
+            call.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        // Service creation success, now check for image
-                        Object data = response.body().getData();
-                        int serviceId = -1;
+                        int serviceId = existingService != null ? existingService.getId() : -1;
                         
-                        // Extract ID from response data (Map)
-                        if (data instanceof Map) {
-                            try {
-                                Double idDouble = (Double) ((Map) data).get("id");
-                                if (idDouble != null) serviceId = idDouble.intValue();
-                            } catch (Exception e) {}
+                        // If new service, extract ID from response
+                        if (existingService == null) {
+                            Object data = response.body().getData();
+                            if (data instanceof Map) {
+                                try {
+                                    Double idDouble = (Double) ((Map) data).get("id");
+                                    if (idDouble != null) serviceId = idDouble.intValue();
+                                } catch (Exception e) {}
+                            }
                         }
 
                         if (serviceId != -1 && selectedImageUri != null) {
@@ -183,12 +232,12 @@ public class CreateServiceFragment extends Fragment {
                             uploadServiceImage(serviceId, pd);
                         } else {
                             pd.dismiss();
-                            Toast.makeText(requireContext(), "Service Published!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), existingService == null ? "Service Published!" : "Service Updated!", Toast.LENGTH_SHORT).show();
                             requireActivity().getSupportFragmentManager().popBackStack();
                         }
                     } else {
                         pd.dismiss();
-                        Toast.makeText(requireContext(), "Failed to create service", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Failed: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

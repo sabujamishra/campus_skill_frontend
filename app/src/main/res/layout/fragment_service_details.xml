@@ -65,6 +65,23 @@
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
+
+                <!-- Service ID Tag (Hinglish: Top par ID dikhao) -->
+                <TextView
+                    android:id="@+id/tvDetailId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_tag_blue"
+                    android:backgroundTint="#80FFFFFF"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:text="#001"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <LinearLayout
@@ -196,11 +213,11 @@
 
                 <!-- Description -->
                 <TextView
-                    android:id="@+id/tvDetailId"
+                    android:id="@+id/tvDescriptionHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Service Description #4"
+                    android:text="Service Description"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"

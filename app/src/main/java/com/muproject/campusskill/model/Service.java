@@ -30,6 +30,8 @@ public class Service implements java.io.Serializable {
     @SerializedName("average_rating")
     private float averageRating;
 
+    private String status;
+
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
@@ -41,4 +43,6 @@ public class Service implements java.io.Serializable {
     public String getSellerProfileImage() { return sellerProfileImage; }
     public String getThumbnail() { return thumbnail; }
     public float getAverageRating() { return averageRating; }
+    public String getStatus() { return status; }
+    public void setSellerId(int sellerId) { this.sellerId = sellerId; }
 }

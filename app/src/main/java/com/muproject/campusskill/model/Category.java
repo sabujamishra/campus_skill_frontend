@@ -5,6 +5,9 @@ public class Category {
     private int id;
     private String name;
     private int iconResId; // Using local resource for now
+    
+    @com.google.gson.annotations.SerializedName("service_count")
+    private int serviceCount;
 
     public Category(int id, String name, int iconResId) {
         this.id = id;
@@ -15,4 +18,5 @@ public class Category {
     public int getId() { return id; }
     public String getName() { return name; }
     public int getIconResId() { return iconResId; }
+    public int getServiceCount() { return serviceCount; }
 }

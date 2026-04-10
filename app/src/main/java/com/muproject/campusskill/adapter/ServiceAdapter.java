@@ -16,14 +16,20 @@ import java.util.List;
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
     private List<Service> services;
+    private int currentUserId;
 
-    public ServiceAdapter(List<Service> services) {
+    public ServiceAdapter(List<Service> services, int currentUserId) {
         this.services = services;
+        this.currentUserId = currentUserId;
     }
 
     public void setServices(List<Service> services) {
         this.services = services;
         notifyDataSetChanged();
+    }
+
+    public void setCurrentUserId(int id) {
+        this.currentUserId = id;
     }
 
     @NonNull
@@ -41,6 +47,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.tvSeller.setText(service.getSellerName() != null ? service.getSellerName() : "Unknown");
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
+
+        // YOUR SERVICE Detection (Hinglish: Global ID list se ownership match kar rahe hain optimized logic)
+        boolean isOwner = com.muproject.campusskill.MainActivity.myServiceIds != null && 
+                com.muproject.campusskill.MainActivity.myServiceIds.contains(service.getId());
+
+        if (isOwner) {
+            holder.tvYourService.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvYourService.setVisibility(View.GONE);
+        }
         
         if (holder.tvCategory != null) {
             holder.tvCategory.setText(service.getCategory() != null ? service.getCategory() : "Misc");
@@ -65,10 +81,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             if (avatarUrl.startsWith("http")) {
                 url = avatarUrl;
             } else {
-                String baseUrl = "http://lightgrey-dogfish-642647.hostingersite.com/";
                 if (avatarUrl.startsWith("/")) avatarUrl = avatarUrl.substring(1);
-                url = baseUrl + avatarUrl;
-                Log.d("ServiceAdapter", "Loading Image URL: " + url);
+                url = "https://lightgrey-dogfish-642647.hostingersite.com/" + avatarUrl;
             }
             
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
@@ -83,7 +97,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
         // Logic to open Service Details (Hinglish: Card click par detail fragment load karo)
         holder.itemView.setOnClickListener(v -> {
-            Log.d("ServiceAdapter", "Service Clicked: " + service.getTitle() + " | Seller ID: " + service.getSellerId());
             if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
                 ((com.muproject.campusskill.MainActivity) v.getContext())
                         .replaceFragment(com.muproject.campusskill.ServiceDetailsFragment.newInstance(service));
@@ -98,7 +111,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImage, ivSellerAvatar;
-        TextView tvTitle, tvSeller, tvPrice, tvRating, tvCategory;
+        TextView tvTitle, tvSeller, tvPrice, tvRating, tvCategory, tvYourService;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,6 +122,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvCategory = itemView.findViewById(R.id.tvCategory);
+            tvYourService = itemView.findViewById(R.id.tvYourService);
         }
     }
 }
