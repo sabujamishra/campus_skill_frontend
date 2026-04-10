@@ -190,8 +190,8 @@ public class OrdersFragment extends Fragment {
         android.widget.RatingBar rb = dialogView.findViewById(R.id.ratingBarReview);
         com.google.android.material.textfield.TextInputEditText etComment = dialogView.findViewById(R.id.etReviewComment);
 
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Submit Review")
+        com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme);
+        builder.setTitle("Submit Review")
                 .setView(dialogView)
                 .setPositiveButton("Submit", (dialog, which) -> {
                     int rating = (int) rb.getRating();
