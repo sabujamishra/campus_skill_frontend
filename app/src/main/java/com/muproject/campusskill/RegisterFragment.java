@@ -19,7 +19,7 @@ public class RegisterFragment extends Fragment {
         // fragment_register layout ko host activity par lagane ke liye (inflate)
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        // UI elements ko link kar raha hai (Hinglish: Elements ko variable se connect kar raha hai)
+        // UI elements ko link kar raha hai naye user ke liye
         ImageView btnBack = view.findViewById(R.id.btnBack);
         Button btnSignUp = view.findViewById(R.id.btnSignUp);
         
@@ -35,7 +35,7 @@ public class RegisterFragment extends Fragment {
             requireActivity().onBackPressed();
         });
 
-        // Sign Up button press hone par logic (Hinglish: Jab Sign Up dabayein)
+        // Sign Up click handling
         btnSignUp.setOnClickListener(v -> {
             try {
                 // Input fields se text nikal rahe hain
@@ -59,7 +59,7 @@ public class RegisterFragment extends Fragment {
                 performRegistration(name, email, dept, pass);
 
             } catch (Exception e) {
-                // Agar koi bhi error (Exception) aaye toh message dikhao bin if-else ke
+                // Exceptions ko direct toast mein dikha do without extra logic
                 android.widget.Toast.makeText(requireContext(), e.getMessage(), android.widget.Toast.LENGTH_SHORT).show();
             }
         });
@@ -88,7 +88,7 @@ public class RegisterFragment extends Fragment {
                         if ("success".equals(response.body().getStatus())) {
                             if (!isAdded()) return;
                             
-                            // User details save karo taaki session start ho jaye (Hinglish: Instant login after registration)
+                            // Account bante hi user ko login karwa do session start karke
                             com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
                             if (response.body().getData() != null && response.body().getData().getUser() != null) {
                                 sessionManager.saveToken(response.body().getData().getToken());
@@ -99,7 +99,7 @@ public class RegisterFragment extends Fragment {
                                 );
                             }
 
-                            // Ownership cache refresh karo (Hinglish: Registry bharo naye user ki)
+                            // App ki ownership list update karo naye user ke liye
                             if (getActivity() instanceof MainActivity) {
                                 ((MainActivity) getActivity()).refreshMyServiceIds();
                                 ((MainActivity) getActivity()).loadMainFragment(new DashboardFragment());
@@ -110,7 +110,7 @@ public class RegisterFragment extends Fragment {
                             throw new Exception(response.body().getMessage());
                         }
                     } else {
-                        // Agar error aaya (jaise 409: Email exists), toh errorBody parse karo (Hinglish: Error message nikal rahe hain)
+                        // Agar error aaya (jaise email already hai), toh error message nikal lo
                         String errorMsg = "Server Error: " + response.code();
                         if (response.errorBody() != null) {
                             com.google.gson.Gson gson = new com.google.gson.Gson();

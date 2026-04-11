@@ -154,7 +154,11 @@ public class LeaderboardFragment extends Fragment {
                 com.bumptech.glide.Glide.with(this).load(url).placeholder(R.drawable.ic_profile).circleCrop().into(iv);
             }
             
-            pView.setOnClickListener(v -> ((MainActivity) getActivity()).replaceFragment(PublicProfileFragment.newInstance(item.getId())));
+            pView.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).replaceFragment(PublicProfileFragment.newInstance(item.getId()));
+                }
+            });
         }
     }
 }

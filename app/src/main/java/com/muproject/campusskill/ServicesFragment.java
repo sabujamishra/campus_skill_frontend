@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Market Discovery Fragment (Hinglish: Safe context fetching aur loading logic update kiya gaya hai)
+// Market Discovery: Isme non-blocking load add kiya hai crashes prevent karne ke liye
 public class ServicesFragment extends Fragment {
 
     private RecyclerView rvServices, rvCategories;
@@ -55,7 +55,7 @@ public class ServicesFragment extends Fragment {
         });
         rvCategories.setAdapter(categoryAdapter);
 
-        // Filter button listener (Hinglish: Ab ye real filter bottom sheet dikhayega)
+        // Filter button click logic
         if (btnFilter != null) {
             btnFilter.setOnClickListener(v -> showFilterBottomSheet());
         }
@@ -130,7 +130,7 @@ public class ServicesFragment extends Fragment {
         com.google.android.material.chip.ChipGroup cgSort = bottomSheetView.findViewById(R.id.cgSort);
         View btnApply = bottomSheetView.findViewById(R.id.btnApplyFilters);
 
-        // Pre-select the last chosen sort (Hinglish: Purana selection dikhao)
+        // Purana selection dikhao group mein
         cgSort.check(lastSortId);
 
         btnApply.setOnClickListener(v -> {
@@ -166,5 +166,12 @@ public class ServicesFragment extends Fragment {
         } catch (Exception e) {
             return 0.0;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadCategories();
+        loadServices(null, false);
     }
 }

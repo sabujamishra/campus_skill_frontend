@@ -10,7 +10,6 @@ import com.muproject.campusskill.R;
 import com.muproject.campusskill.model.Order;
 import java.util.List;
 
-// Order list adapter (Hinglish: Orders ki list dikhane wala adapter)
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     private List<Order> orders;
@@ -45,7 +44,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvServiceTitle.setText(order.getServiceTitle() != null ? order.getServiceTitle() : "Service #" + order.getServiceId());
         holder.tvPrice.setText("₹" + (order.getAmount() != null ? order.getAmount() : "N/A"));
 
-        // Show relevant person based on role (Hinglish: Role ke hisaab se naam dikhao)
         if ("buyer".equals(role)) {
             String seller = order.getSellerName();
             holder.tvPerson.setText(seller != null && !seller.isEmpty() ? "Seller: " + seller : "");
@@ -70,11 +68,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             });
         }
 
-        // Status badge styling (Hinglish: Status ke hisaab se rang badalo)
         String status = order.getStatus() != null ? order.getStatus().toLowerCase() : "pending";
         holder.tvStatus.setText(capitalize(status));
 
-        // Accept Button Logic (Hinglish: Agar seller hai aur status pending hai, toh Accept button dikhao)
         if ("seller".equals(role) && "pending".equals(status)) {
             holder.btnAccept.setVisibility(View.VISIBLE);
             holder.btnAccept.setOnClickListener(v -> {
@@ -84,7 +80,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnAccept.setVisibility(View.GONE);
         }
 
-        // Complete Button Logic (Hinglish: Agar buyer hai aur status accepted hai, toh Complete button dikhao)
         if ("buyer".equals(role) && "accepted".equals(status)) {
             holder.btnComplete.setVisibility(View.VISIBLE);
             holder.btnComplete.setOnClickListener(v -> {
@@ -94,7 +89,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.btnComplete.setVisibility(View.GONE);
         }
 
-        // Review Button Logic (Hinglish: Agar buyer hai aur status completed hai, toh Review button dikhao)
         if ("buyer".equals(role) && "completed".equals(status)) {
             holder.btnReview.setVisibility(View.VISIBLE);
             holder.btnReview.setOnClickListener(v -> {
@@ -120,7 +114,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.button_blue));
                 holder.tvStatus.setText("In Progress");
                 break;
-            default: // pending
+            default:
                 holder.tvStatus.setBackgroundResource(R.drawable.bg_tag_orange);
                 holder.tvStatus.setTextColor(0xFFE65100);
                 break;
@@ -140,7 +134,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
 
         holder.btnChat.setText("Chat with " + ("buyer".equals(role) ? "Seller" : "Buyer"));
-
         holder.btnChat.setOnClickListener(v -> {
             if (listener != null) listener.onChat(order);
         });

@@ -9,10 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-// Main App Dashboard handling fragment (Hinglish: App ka main hub jahan bottom bar hai)
+// Dashboard screen: Jahan main bottom navigation bar host hoti hai
 public class DashboardFragment extends Fragment {
 
-    // Tab state persistence (Hinglish: Yaad rakhein pichli baar kaunsa tab khula tha)
+    // Pichli baar kaunsa tab khula tha uska record rakhne ke liye
     public static int lastSelectedId = R.id.nav_home;
 
     public static void setTab(int navId) {
@@ -24,7 +24,7 @@ public class DashboardFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Back interception (Hinglish: Kisi bhi tab se Home par wapas bhejene ka logic)
+        // Back navigation interceptor: Kisi bhi tab se Home par wapas bhej deta hai
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new androidx.activity.OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment {
 
         bottomNav = view.findViewById(R.id.bottom_navigation);
 
-        // Sidebar click handling logic (Hinglish: Bar ke items click hone par fragments change karna)
+        // Bottom bar ke items select hone par fragment switch karna
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int id = item.getItemId();
@@ -54,13 +54,13 @@ public class DashboardFragment extends Fragment {
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (id == R.id.nav_services) {
-                // Discover services (Hinglish: Services browse karne wala page)
+                // Services browse karne wala fragment
                 selectedFragment = new ServicesFragment();
             } else if (id == R.id.nav_orders) {
-                // Orders history (Hinglish: Buyer/Seller ke orders dikhao)
+                // Orders history dikhane ke liye
                 selectedFragment = new OrdersFragment();
             } else if (id == R.id.nav_profile) {
-                // Profile screen load karo (Hinglish: Naye Profile fragment par switch)
+                // Profile section load karo
                 selectedFragment = new ProfileFragment();
             }
 

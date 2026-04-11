@@ -35,26 +35,37 @@
             android:background="@color/divider"
             android:layout_marginVertical="20dp" />
 
-        <!-- Service Summary -->
+        <!-- Service Preview Banner -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivConfirmServiceImg"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/service_placeholder"
+            android:layout_marginTop="16dp"
+            app:shapeAppearanceOverlay="@style/RoundedTopCorners"
+            app:cornerSize="16dp" />
+
+        <!-- Seller Info Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/ivConfirmServiceImg"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/ivConfirmSellerImg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/service_placeholder"
-                app:shapeAppearanceOverlay="@style/RoundedTopCorners"
-                app:cornerSize="12dp" />
+                android:src="@drawable/ic_profile"
+                app:shapeAppearanceOverlay="@style/CircleImage" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 

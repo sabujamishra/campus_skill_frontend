@@ -55,11 +55,13 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.btnLogout).setOnClickListener(v -> logout());
         view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditProfileDialog());
         view.findViewById(R.id.btnMyServices).setOnClickListener(v -> {
+            // "My Services" screen par switch karo (Hinglish: User ki apni banayi list)
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).replaceFragment(new MyServicesFragment());
             }
         });
         view.findViewById(R.id.btnLeaderboard).setOnClickListener(v -> {
+            // Global rankings par le jao (Hinglish: Rankings aur scorers dekhne ke liye)
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).replaceFragment(new LeaderboardFragment());
             }
@@ -68,6 +70,29 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.fabEditImage).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
+        });
+
+        // Informational Buttons (Hinglish: Naye profile page links)
+        view.findViewById(R.id.btnHowToUse).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new HowToUseFragment());
+            }
+        });
+        
+        view.findViewById(R.id.btnPrivacyPolicy).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new PrivacyPolicyFragment());
+            }
+        });
+        view.findViewById(R.id.btnTerms).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new TermsFragment());
+            }
+        });
+        view.findViewById(R.id.btnAbout).setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new AboutFragment());
+            }
         });
 
         return view;
@@ -140,6 +165,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    // Profile photo change karne ka logic (Hinglish: Image compress karke upload karna)
     private void uploadProfileImage(android.net.Uri uri) {
         if (getContext() == null) return;
         com.bumptech.glide.Glide.with(this).load(uri).circleCrop().into(ivProfileImage);

@@ -7,24 +7,24 @@ import android.util.Log;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// Retrofit ko initialize karne ke liye singleton class (Hinglish: Network connector)
+// Retrofit initialization singleton: Yahan se pura network connectivity manage hoti hai
 public class RetrofitClient {
     private static final String BASE_URL = "https://lightgrey-dogfish-642647.hostingersite.com/api/";
     private static Retrofit retrofit = null;
     private static android.content.Context appContext;
 
-    // App ke startup par context initialize karne ke liye (Hinglish: Context set kar rahe hain taaki SessionManager chale)
+    // App startup par context set karna taaki sessionManager ko token mil sake
     public static void init(android.content.Context context) {
         appContext = context.getApplicationContext();
     }
 
-    // Yeh function humein ApiService ka object bana ke deta hai network calls ke liye (Hinglish: API call karne ka engine yahan se milta hai)
+    // ApiService ka singleton instance banata hai network transactions ke liye
     public static ApiService getApiService() {
         // Singleton pattern: Check kar raha hai ki kya Retrofit pehle se bana hua hai?
         if (retrofit == null) {
             okhttp3.OkHttpClient.Builder clientBuilder = SslUtils.getUnsafeOkHttpClient();
 
-            // Interceptor adding Authorization header (Hinglish: Token khud-ba-khud header mein add karega)
+            // Interceptor: Har request mein token load karne ke liye
             clientBuilder.addInterceptor(chain -> {
                 okhttp3.Request.Builder requestBuilder = chain.request().newBuilder();
                 if (appContext != null) {
@@ -37,7 +37,7 @@ public class RetrofitClient {
                 return chain.proceed(requestBuilder.build());
             });
 
-            // Global Auth Guard (Hinglish: Server 401 de toh seedha login page par bhejo)
+            // Global Auth Guard: Server 401 (Unauthorized) de toh seedha login par phek do
             clientBuilder.addInterceptor(chain -> {
                 okhttp3.Response response = chain.proceed(chain.request());
                 if (response.code() == 401 && appContext != null) {

@@ -17,22 +17,22 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // fragment_login layout file ko view mein convert kar raha hai
+        // fragment_login layout ko inflate kar raha hai
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        // UI components (Buttons, Links) ko find kar raha hai
+        // UI components link kar raha hai
         android.widget.EditText etEmail = view.findViewById(R.id.etEmail);
         android.widget.EditText etPassword = view.findViewById(R.id.etPassword);
         TextView tvRegister = view.findViewById(R.id.tvRegister);
         Button btnLogin = view.findViewById(R.id.btnLogin);
         cbRememberMe = view.findViewById(R.id.cbRememberMe);
 
-        // Sabse pehle version check karenge (Hinglish: Pehle version match karenge)
+        // Sabse pehle version consistency check karenge
         checkVersion();
 
         // Agar user "Register" link par click kare
         tvRegister.setOnClickListener(v -> {
-            // MainActivity ko command de raha hai ki RegisterFragment par switch karein
+            // MainActivity ko RegisterFragment par switch karne ke liye bol raha hai
             ((MainActivity) requireActivity()).replaceFragment(new RegisterFragment());
         });
 
@@ -42,7 +42,7 @@ public class LoginFragment extends Fragment {
                 String email = etEmail.getText().toString().trim();
                 String pass = etPassword.getText().toString().trim();
 
-                // Validation: Check if fields are empty (Hinglish: Khali fields check kar rahe hain)
+                // Pehle check karo ki fields khali toh nahi
                 if (email.isEmpty() || pass.isEmpty()) {
                     throw new Exception("Please enter email and password!");
                 }
@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment {
                         if ("success".equals(response.body().getStatus())) {
                             if (!isAdded()) return;
                             
-                            // Token ko hamesha save karo current session ke liye (Hinglish: Token zaroor save hoga API calls ke liye)
+                            // Token save karna must hai naye requests ke liye
                             com.muproject.campusskill.network.SessionManager sessionManager = new com.muproject.campusskill.network.SessionManager(requireContext());
                             sessionManager.saveToken(response.body().getData().getToken());
                             sessionManager.saveUserDetails(response.body().getData().getUser().getId(), 
@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment {
                             
                             android.widget.Toast.makeText(requireContext(), "Welcome back, " + response.body().getData().getUser().getName(), android.widget.Toast.LENGTH_SHORT).show();
                             
-                            // Home screen par navigate kar rahe hain (Hinglish: Dashboard par le jaa rahe hain)
+                            // Login successful, ab dashboard par le jao
                             if (getActivity() instanceof MainActivity) {
                                 ((MainActivity) getActivity()).refreshMyServiceIds();
                                 ((MainActivity) getActivity()).loadMainFragment(new DashboardFragment());
@@ -128,7 +128,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(retrofit2.Call<com.muproject.campusskill.model.VersionResponse> call, retrofit2.Response<com.muproject.campusskill.model.VersionResponse> response) {
                 try {
-                    // Agar response theek nahi hai toh exception throw kar do (Hinglish: Error aane par sidha catch mein)
+                    // Agar response theek nahi aaya toh seedha error state mein
                     if (!response.isSuccessful() || response.body() == null) {
                         throw new Exception("Server communication failed.");
                     }

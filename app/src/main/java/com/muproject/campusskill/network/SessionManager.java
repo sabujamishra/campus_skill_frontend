@@ -7,7 +7,7 @@ import androidx.security.crypto.MasterKey;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-// Token aur user session ko securely save karne ke liye manager (Hinglish: Token save karne waali safe)
+// Token aur user session securely save karne ke liye manager
 public class SessionManager {
     private static final String PREF_NAME = "CampusSkillSecurePrefs";
     private static final String KEY_TOKEN = "auth_token";
@@ -19,7 +19,7 @@ public class SessionManager {
 
     public SessionManager(Context context) {
         try {
-            // Android Keystore se ek Master Key bana rahe hain (Hinglish: Tijori ki chabi)
+            // Tijori ki chabi: Android Keystore se encryption key generate karna
             MasterKey masterKey = new MasterKey.Builder(context)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
@@ -75,7 +75,7 @@ public class SessionManager {
         sharedPreferences.edit().clear().apply();
     }
 
-    // Remember Me flag save karo (Hinglish: Auto-login on/off rakhne ke liye)
+    // Auto-login setting save karne ke liye
     public void setRememberMe(boolean value) {
         sharedPreferences.edit().putBoolean("remember_me", value).apply();
     }

@@ -24,7 +24,7 @@ import retrofit2.Response;
 import com.muproject.campusskill.network.SessionManager;
 import com.muproject.campusskill.model.User;
 
-// Service ki poori detail dikhane wala aur order place karne wala screen (Hinglish: Order Module integration)
+// Service ki poori detail dikhane aur order place karne wala screen
 public class ServiceDetailsFragment extends Fragment {
 
     private Service service;
@@ -79,9 +79,16 @@ public class ServiceDetailsFragment extends Fragment {
             tvId.setText("#" + service.getId());
         }
 
-        // Load Images
-        if (service.getThumbnail() != null) {
-            String url = service.getThumbnail().startsWith("http") ? service.getThumbnail() : "https://lightgrey-dogfish-642647.hostingersite.com/" + service.getThumbnail();
+        // Load Images (Path cleaning included)
+        if (service.getThumbnail() != null && !service.getThumbnail().isEmpty()) {
+            String thumbUrl = service.getThumbnail();
+            String url;
+            if (thumbUrl.startsWith("http")) {
+                url = thumbUrl;
+            } else {
+                String cleanPath = thumbUrl.startsWith("/") ? thumbUrl.substring(1) : thumbUrl;
+                url = "https://lightgrey-dogfish-642647.hostingersite.com/" + cleanPath;
+            }
             Glide.with(this).load(url).placeholder(R.drawable.service_placeholder).into(ivImage);
         } else {
             ivImage.setImageResource(R.drawable.service_placeholder);
@@ -102,10 +109,16 @@ public class ServiceDetailsFragment extends Fragment {
             ivAvatar.setImageResource(R.drawable.ic_profile);
         }
 
-        btnBack.setOnClickListener(v -> ((MainActivity)requireActivity()).goBack());
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).goBack();
+            }
+        });
         
-        // Owner Check (Hinglish: Check karo kya user khud hi seller hai)
-        SessionManager session = new SessionManager(requireContext());
+        // Check karo ki kahin user apni hi service toh nahi dekh raha
+        android.content.Context context = getContext();
+        if (context == null) return view;
+        SessionManager session = new SessionManager(context);
         int currentUserId = session.getUserId();
         
         if (currentUserId != -1) {
@@ -113,7 +126,7 @@ public class ServiceDetailsFragment extends Fragment {
                     com.muproject.campusskill.MainActivity.myServiceIds.contains(service.getId());
             
             if (isOwner) {
-                // Hinglish: Agar owner hai toh booking band karo aur ribbon dikhao
+                // Agar owner hai toh booking mat dikhao
                 btnBook.setEnabled(false);
                 btnBook.setText("This is your service");
                 btnBook.setAlpha(0.6f);
@@ -122,7 +135,7 @@ public class ServiceDetailsFragment extends Fragment {
                 View badge = view.findViewById(R.id.tvYourServiceBadge);
                 if (badge != null) badge.setVisibility(View.VISIBLE);
 
-                // Hinglish: "About Seller" hide nahi karna, session details se fill karna hai agar API blank hai
+                // Seller info fallback local session se agar API mein data missing hai
                 if (service.getSellerName() == null || service.getSellerName().isEmpty()) {
                     tvSeller.setText(session.getUserName());
                     String sessionImg = session.getUserImage();
@@ -147,30 +160,42 @@ public class ServiceDetailsFragment extends Fragment {
     }
 
     private void handlePlaceOrder() {
-        if (service == null) return;
+        if (service == null || !isAdded() || getContext() == null) return;
 
-        // Validation for ownership (Hinglish: Global ID Registry se final check)
+        // Service Registry se final check taaki khud ki service book na ho
         if (com.muproject.campusskill.MainActivity.myServiceIds != null && 
                 com.muproject.campusskill.MainActivity.myServiceIds.contains(service.getId())) {
-            android.widget.Toast.makeText(requireContext(), "You cannot book your own service!", android.widget.Toast.LENGTH_SHORT).show();
+            android.widget.Toast.makeText(getContext(), "You cannot book your own service!", android.widget.Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Custom Confirmation Dialog (Hinglish: Naya modern confirm screen)
-        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_booking, null);
+        // Booking confirmation popup dikhao
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_confirm_booking, null);
         
         ((TextView) dialogView.findViewById(R.id.tvConfirmTitle)).setText(service.getTitle());
         ((TextView) dialogView.findViewById(R.id.tvConfirmSeller)).setText("by " + service.getSellerName());
         ((TextView) dialogView.findViewById(R.id.tvConfirmPrice)).setText("₹" + service.getPrice());
         ((TextView) dialogView.findViewById(R.id.tvConfirmTime)).setText(service.getDeliveryTime() + " Days");
 
-        ImageView iv = dialogView.findViewById(R.id.ivConfirmServiceImg);
-        if (service.getThumbnail() != null) {
-            String url = service.getThumbnail().startsWith("http") ? service.getThumbnail() : "https://lightgrey-dogfish-642647.hostingersite.com/" + service.getThumbnail();
-            Glide.with(this).load(url).placeholder(R.drawable.service_placeholder).centerCrop().into(iv);
+        // Service Image (Preview)
+        ImageView ivService = dialogView.findViewById(R.id.ivConfirmServiceImg);
+        if (service.getThumbnail() != null && !service.getThumbnail().isEmpty()) {
+            String thumbUrl = service.getThumbnail();
+            String url = thumbUrl.startsWith("http") ? thumbUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + (thumbUrl.startsWith("/") ? thumbUrl.substring(1) : thumbUrl);
+            Glide.with(this).load(url).placeholder(R.drawable.service_placeholder).centerCrop().into(ivService);
         }
 
-        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
+        // Seller Profile Image (Corrected mapping: Hinglish - Seller ki photo alag se load ho rahi hai)
+        ImageView ivSeller = dialogView.findViewById(R.id.ivConfirmSellerImg);
+        if (service.getSellerProfileImage() != null && !service.getSellerProfileImage().isEmpty()) {
+            String avatarUrl = service.getSellerProfileImage();
+            String url = avatarUrl.startsWith("http") ? avatarUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + (avatarUrl.startsWith("/") ? avatarUrl.substring(1) : avatarUrl);
+            Glide.with(this).load(url).circleCrop().placeholder(R.drawable.ic_profile).error(R.drawable.ic_profile).into(ivSeller);
+        } else {
+            ivSeller.setImageResource(R.drawable.ic_profile);
+        }
+
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme)
                 .setView(dialogView)
                 .setCancelable(true)
                 .create();
@@ -190,7 +215,8 @@ public class ServiceDetailsFragment extends Fragment {
     }
 
     private void processOrderAPI() {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        if (!isAdded() || getContext() == null) return;
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(getContext());
         pd.setMessage("Placing your order...");
         pd.setCancelable(false);
         pd.show();
@@ -214,7 +240,7 @@ public class ServiceDetailsFragment extends Fragment {
                             if (err != null) error = err.getMessage();
                         }
                     } catch (Exception e) {}
-                    android.widget.Toast.makeText(requireContext(), error, android.widget.Toast.LENGTH_LONG).show();
+                    android.widget.Toast.makeText(getContext(), error, android.widget.Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -234,7 +260,7 @@ public class ServiceDetailsFragment extends Fragment {
         TextView tvMsg = dialogView.findViewById(R.id.tvSuccessMessage);
         if (message != null) tvMsg.setText(message);
 
-        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
+        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme)
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();
@@ -245,14 +271,17 @@ public class ServiceDetailsFragment extends Fragment {
 
         dialogView.findViewById(R.id.btnViewOrders).setOnClickListener(v -> {
             dialog.dismiss();
-            // Hinglish: Dashboard state change karke orders tab par le ja rahe hain
             DashboardFragment.setTab(R.id.nav_orders);
-            ((MainActivity)requireActivity()).goBack();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).goBack();
+            }
         });
 
         dialogView.findViewById(R.id.btnDone).setOnClickListener(v -> {
             dialog.dismiss();
-            ((MainActivity)requireActivity()).goBack();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).goBack();
+            }
         });
 
         dialog.show();

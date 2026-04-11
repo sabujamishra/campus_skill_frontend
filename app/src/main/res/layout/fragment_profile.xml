@@ -243,6 +243,83 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Information & Support (Hinglish: Help aur Policies section) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/divider"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnHowToUse"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="How to Use"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/text_light"
+                        app:iconPadding="16dp" />
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPrivacyPolicy"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="Privacy Policy"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/text_light"
+                        app:iconPadding="16dp" />
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTerms"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="Terms &amp; Conditions"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/text_light"
+                        app:iconPadding="16dp" />
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" android:layout_marginHorizontal="24dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAbout"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:text="About CampusSkill"
+                        android:textColor="@color/text_main"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="24dp"
+                        app:icon="@drawable/ic_check_circle"
+                        app:iconTint="@color/text_light"
+                        app:iconPadding="16dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <TextView
                 android:id="@+id/tvMemberSince"
                 android:layout_width="match_parent"

@@ -15,11 +15,27 @@ public class ServiceCreateRequest {
     @SerializedName("delivery_time")
     private int deliveryTime; // Days
 
+    @SerializedName("service_image")
+    private String serviceImage;
+
     public ServiceCreateRequest(String title, String description, int categoryId, double price, int deliveryTime) {
         this.title = title;
         this.description = description;
         this.categoryId = categoryId;
         this.price = price;
         this.deliveryTime = deliveryTime;
+    }
+
+    public void setServiceImage(String serviceImage) {
+        this.serviceImage = serviceImage;
+    }
+
+    public String getServiceImage() {
+        return serviceImage;
+    }
+
+    // Adding setThumbnail as an alias to setServiceImage to fix the compilation error
+    public void setThumbnail(String path) {
+        this.serviceImage = path;
     }
 }

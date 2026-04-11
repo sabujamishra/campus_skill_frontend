@@ -9,11 +9,11 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 
-// SSL Certificate errors ko ignore karne ke liye utility class (Hinglish: Certificate errors ko bypass karne ke liye)
+// SSL Certificate errors ignore karne ke liye utility: Hosting ke certificates fix karne ke liye
 public class SslUtils {
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
-            // Ek aisa TrustManager bana rahe hain jo sabhi certificates ko trust kare (Hinglish: Sabhi certificates ko allow karne wala manager)
+            // TrustManager jo sab certificates ko trust kar lega
             final TrustManager[] trustAllCerts = new TrustManager[] {
                 new X509TrustManager() {
                     @Override

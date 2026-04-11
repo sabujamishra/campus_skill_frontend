@@ -90,6 +90,10 @@ public class MyServicesFragment extends Fragment {
                 pd.dismiss();
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Service deleted", Toast.LENGTH_SHORT).show();
+                    // Global registry update karo taaki ownership sync rahe
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).refreshMyServiceIds();
+                    }
                     loadMyServices();
                 } else {
                     Toast.makeText(getContext(), "Failed to delete", Toast.LENGTH_SHORT).show();
@@ -134,5 +138,10 @@ public class MyServicesFragment extends Fragment {
                 Log.e("MyServices", "Failed to load", t);
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadMyServices();
     }
 }

@@ -106,9 +106,10 @@ public class OrdersFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     List<Order> orders = response.body().getData();
                     if (orders.isEmpty()) {
-                        layoutEmpty.setVisibility(View.VISIBLE);
+                        layoutEmpty.setVisibility(View.VISIBLE); // Khali list dikhao
                         rvOrders.setVisibility(View.GONE);
                     } else {
+                        // Data milne par list refresh karo (Hinglish: List bharo aur loader hata do)
                         layoutEmpty.setVisibility(View.GONE);
                         rvOrders.setVisibility(View.VISIBLE);
                         adapter = new OrderAdapter(orders, currentRole, orderActionListener);
@@ -131,8 +132,8 @@ public class OrdersFragment extends Fragment {
     }
 
     private void handleAcceptOrder(Order order) {
-        // Show progress loader
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        if (!isAdded() || getContext() == null) return;
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(getContext());
         pd.setMessage("Accepting order...");
         pd.setCancelable(false);
         pd.show();
@@ -158,7 +159,8 @@ public class OrdersFragment extends Fragment {
     }
 
     private void handleCompleteOrder(Order order) {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        if (!isAdded() || getContext() == null) return;
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(getContext());
         pd.setMessage("Completing order...");
         pd.setCancelable(false);
         pd.show();
@@ -186,11 +188,12 @@ public class OrdersFragment extends Fragment {
     }
 
     private void handleReviewOrder(Order order) {
-        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_submit_review, null);
+        if (!isAdded() || getContext() == null) return;
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_submit_review, null);
         android.widget.RatingBar rb = dialogView.findViewById(R.id.ratingBarReview);
         com.google.android.material.textfield.TextInputEditText etComment = dialogView.findViewById(R.id.etReviewComment);
 
-        com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme);
+        com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme);
         builder.setTitle("Submit Review")
                 .setView(dialogView)
                 .setPositiveButton("Submit", (dialog, which) -> {
@@ -207,7 +210,8 @@ public class OrdersFragment extends Fragment {
     }
 
     private void submitReviewToServer(int orderId, int rating, String comment) {
-        android.app.ProgressDialog pd = new android.app.ProgressDialog(requireContext());
+        if (!isAdded() || getContext() == null) return;
+        android.app.ProgressDialog pd = new android.app.ProgressDialog(getContext());
         pd.setMessage("Submitting review...");
         pd.setCancelable(false);
         pd.show();

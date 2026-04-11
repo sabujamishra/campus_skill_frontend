@@ -59,7 +59,10 @@ public class ChatFragment extends Fragment {
 
         rvChat = view.findViewById(R.id.rvChat);
         etMessage = view.findViewById(R.id.etMessage);
-        sessionManager = new SessionManager(requireContext());
+        
+        android.content.Context context = getContext();
+        if (context == null) return view;
+        sessionManager = new SessionManager(context);
 
         rvChat.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ChatAdapter(new ArrayList<>(), sessionManager.getUserId());
@@ -72,6 +75,7 @@ public class ChatFragment extends Fragment {
         view.findViewById(R.id.btnSendMessage).setOnClickListener(v -> sendMessage());
 
         if ("completed".equalsIgnoreCase(orderStatus)) {
+            // Agar order complete ho chuka hai (Hinglish: Chat band kardi gayi hai records ke taur par)
             etMessage.setEnabled(false);
             etMessage.setHint("Messaging blocked for completed orders");
             view.findViewById(R.id.btnSendMessage).setEnabled(false);
@@ -84,12 +88,16 @@ public class ChatFragment extends Fragment {
     }
 
     private void loadChatHistory() {
+        // Purani baatein load karna server se (Hinglish: Chat messages fetch kar rahe hain)
         RetrofitClient.getApiService().getChatHistory(orderId).enqueue(new Callback<MessageListResponse>() {
             @Override
             public void onResponse(Call<MessageListResponse> call, Response<MessageListResponse> response) {
                 if (isAdded() && response.isSuccessful() && response.body() != null) {
                     adapter.setMessages(response.body().getData());
-                    rvChat.scrollToPosition(adapter.getItemCount() - 1);
+                    // Naye message par automatic scroll (Hinglish: Sabse niche scroll karo)
+                    if (adapter.getItemCount() > 0) {
+                        rvChat.scrollToPosition(adapter.getItemCount() - 1);
+                    }
                 }
             }
 

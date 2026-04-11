@@ -61,10 +61,16 @@ public class MyServiceAdapter extends RecyclerView.Adapter<MyServiceAdapter.View
             holder.tvStatus.setTextColor(0xFFE65100);
         }
 
-        // Image loading
+        // Image loading (Path cleaning included)
         String thumbUrl = service.getThumbnail();
         if (thumbUrl != null && !thumbUrl.isEmpty()) {
-            String url = thumbUrl.startsWith("http") ? thumbUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + thumbUrl;
+            String url;
+            if (thumbUrl.startsWith("http")) {
+                url = thumbUrl;
+            } else {
+                String cleanPath = thumbUrl.startsWith("/") ? thumbUrl.substring(1) : thumbUrl;
+                url = "https://lightgrey-dogfish-642647.hostingersite.com/" + cleanPath;
+            }
             Glide.with(holder.itemView.getContext())
                     .load(url)
                     .placeholder(R.drawable.service_placeholder)

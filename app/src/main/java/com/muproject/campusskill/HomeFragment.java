@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// Marketplace Home screen (Hinglish: Lifecycle safety aur non-blocking load add kiya gaya hai)
+// Marketplace Home screen: Isme non-blocking load add kiya hai crashes prevent karne ke liye
 public class HomeFragment extends Fragment {
 
     private RecyclerView rvServices, rvCategories;
@@ -51,9 +51,10 @@ public class HomeFragment extends Fragment {
         serviceAdapter = new ServiceAdapter(new ArrayList<>(), userId);
         rvServices.setAdapter(serviceAdapter);
 
-        // Setup Categories List
+        // Categories list: Filter karne ke liye scrollable categories dikhao
         rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(new ArrayList<>(), category -> {
+            // Category click hone par data refresh karo naye ID ke saath
             currentCategoryId = (category.getId() == -1) ? null : category.getId();
             loadServices();
         });
@@ -73,11 +74,12 @@ public class HomeFragment extends Fragment {
         loadServices();
         loadHeaderProfile(view);
 
-        // "View All" logic
+        // View All click logic: Services tab par switch karne ke liye
         view.findViewById(R.id.tvViewAllHome).setOnClickListener(v -> {
             if (getParentFragment() instanceof DashboardFragment && getActivity() != null) {
                 View navView = getActivity().findViewById(R.id.bottom_navigation);
                 if (navView instanceof com.google.android.material.bottomnavigation.BottomNavigationView) {
+                    // Manual selection: Services tab par click simulate karo
                     ((com.google.android.material.bottomnavigation.BottomNavigationView) navView).setSelectedItemId(R.id.nav_services);
                 }
             }
@@ -136,6 +138,7 @@ public class HomeFragment extends Fragment {
 
     private void loadHeaderProfile(View view) {
         android.widget.ImageView ivHeader = view.findViewById(R.id.ivHeaderProfile);
+        // Header profile load: Top right corner mein user ki photo lagana
         RetrofitClient.getApiService().getMyProfile().enqueue(new Callback<com.muproject.campusskill.model.ProfileResponse>() {
             @Override
             public void onResponse(Call<com.muproject.campusskill.model.ProfileResponse> call, Response<com.muproject.campusskill.model.ProfileResponse> response) {
@@ -152,7 +155,7 @@ public class HomeFragment extends Fragment {
                         
                         ivHeader.setOnClickListener(v -> {
                             DashboardFragment.setTab(R.id.nav_profile);
-                            // Refresh context (Hinglish: Bottom bar update karte hue switch karo)
+                            // Profile tab par switch karo bottom bar update ke saath
                             if (getParentFragment() instanceof DashboardFragment) {
                                 View navView = getActivity().findViewById(R.id.bottom_navigation);
                                 if (navView instanceof com.google.android.material.bottomnavigation.BottomNavigationView) {
@@ -166,5 +169,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<com.muproject.campusskill.model.ProfileResponse> call, Throwable t) {}
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Wapas aane par list refresh karo taaki naya ya updated content dikhe
+        loadCategories();
+        loadServices();
     }
 }

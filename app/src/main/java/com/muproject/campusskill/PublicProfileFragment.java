@@ -70,7 +70,9 @@ public class PublicProfileFragment extends Fragment {
         rvServices = view.findViewById(R.id.rvPublicServices);
         rvServices.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
         // Get logged in user id for "YOUR SERVICE" badge logic in adapter
-        int currentUserId = new com.muproject.campusskill.network.SessionManager(requireContext()).getUserId();
+        android.content.Context context = getContext();
+        if (context == null) return view;
+        int currentUserId = new com.muproject.campusskill.network.SessionManager(context).getUserId();
         adapter = new com.muproject.campusskill.adapter.ServiceAdapter(new ArrayList<>(), currentUserId);
         rvServices.setAdapter(adapter);
 
@@ -82,8 +84,7 @@ public class PublicProfileFragment extends Fragment {
         }
 
         btnContact.setOnClickListener(v -> {
-            // Find if there's an active order between current user and this seller
-            // Hinglish: Hum orders check kar rahe hain taaki participant access mil sake
+            // Orders check kar rahe hain taaki participant access mil sake
             RetrofitClient.getApiService().getOrders("buyer").enqueue(new Callback<com.muproject.campusskill.model.OrderListResponse>() {
                 @Override
                 public void onResponse(Call<com.muproject.campusskill.model.OrderListResponse> call, Response<com.muproject.campusskill.model.OrderListResponse> response) {
@@ -120,11 +121,13 @@ public class PublicProfileFragment extends Fragment {
     }
 
     private void showOrderSelectionDialog(java.util.List<com.muproject.campusskill.model.Order> orders) {
-        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_order, null);
+        if (!isAdded() || getContext() == null) return;
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_order, null);
         androidx.recyclerview.widget.RecyclerView rv = dialogView.findViewById(R.id.rvSelectOrder);
         rv.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
 
-        androidx.appcompat.app.AlertDialog dialog = new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext(), R.style.CustomDialogTheme)
+        com.google.android.material.dialog.MaterialAlertDialogBuilder builder = new com.google.android.material.dialog.MaterialAlertDialogBuilder(getContext(), R.style.CustomDialogTheme);
+        androidx.appcompat.app.AlertDialog dialog = builder
                 .setView(dialogView)
                 .create();
 
@@ -212,7 +215,7 @@ public class PublicProfileFragment extends Fragment {
             }
         }
 
-        // Profile image (Hinglish: Photo load karo)
+        // User ki photo load karo
         String imgPath = user.getProfileImage();
         if (imgPath != null && !imgPath.isEmpty()) {
             String url = imgPath.startsWith("http") ? imgPath : "https://lightgrey-dogfish-642647.hostingersite.com/" + (imgPath.startsWith("/") ? imgPath.substring(1) : imgPath);
@@ -223,8 +226,7 @@ public class PublicProfileFragment extends Fragment {
     }
 
     private void loadSellerServices() {
-        // Fetch all services and filter for this specific seller
-        // Hinglish: Saare services mangwa kar is seller ke liye filter kar rahe hain
+        // Saare services mangwa kar is seller ke liye filter kar rahe hain
         RetrofitClient.getApiService().getServices(null, null).enqueue(new Callback<com.muproject.campusskill.model.ServiceListResponse>() {
             @Override
             public void onResponse(Call<com.muproject.campusskill.model.ServiceListResponse> call, Response<com.muproject.campusskill.model.ServiceListResponse> response) {

@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.muproject.campusskill.R;
 import com.muproject.campusskill.model.Service;
+import java.io.Serializable;
 import java.util.List;
 
-// Services list ke liye adapter (Hinglish: API se aane wale services ke cards dikhane wala manager)
+// Services list ke liye adapter: API se aane wale services ke cards dikhane wala manager
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
 
     private List<Service> services;
@@ -52,7 +53,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         holder.tvPrice.setText("₹" + service.getPrice());
         holder.tvRating.setText("⭐ " + service.getAverageRating());
 
-        // YOUR SERVICE Detection (Hinglish: Global ID list se ownership match kar rahe hain optimized logic)
+        // Global ID list se ownership match kar rahe hain optimized logic
         boolean isOwner = com.muproject.campusskill.MainActivity.myServiceIds != null && 
                 com.muproject.campusskill.MainActivity.myServiceIds.contains(service.getId());
 
@@ -66,19 +67,26 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             holder.tvCategory.setText(service.getCategory() != null ? service.getCategory() : "Misc");
         }
         
-        // Image logic (Thumbnail) (Hinglish: Service ki photo load ho rahi hai)
+        // Service ki photo load ho rahi hai (Path cleaning included)
         String thumbUrl = service.getThumbnail();
         if (thumbUrl != null && !thumbUrl.isEmpty()) {
-            String url = thumbUrl.startsWith("http") ? thumbUrl : "https://lightgrey-dogfish-642647.hostingersite.com/" + thumbUrl;
+            String url;
+            if (thumbUrl.startsWith("http")) {
+                url = thumbUrl;
+            } else {
+                String cleanPath = thumbUrl.startsWith("/") ? thumbUrl.substring(1) : thumbUrl;
+                url = "https://lightgrey-dogfish-642647.hostingersite.com/" + cleanPath;
+            }
             com.bumptech.glide.Glide.with(holder.itemView.getContext())
                     .load(url)
                     .placeholder(R.drawable.service_placeholder)
+                    .centerCrop()
                     .into(holder.ivImage);
         } else {
             holder.ivImage.setImageResource(R.drawable.service_placeholder);
         }
         
-        // Seller avatar logic (Hinglish: Seller ki photo load ho rahi hai)
+        // Seller ki photo load ho rahi hai
         String avatarUrl = service.getSellerProfileImage();
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
             String url;
@@ -99,7 +107,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             holder.ivSellerAvatar.setImageResource(R.drawable.ic_profile);
         }
 
-        // Logic to open Service Details (Hinglish: Card click par detail fragment load karo)
+        // Card click par detail fragment load karo
         holder.itemView.setOnClickListener(v -> {
             if (v.getContext() instanceof com.muproject.campusskill.MainActivity) {
                 ((com.muproject.campusskill.MainActivity) v.getContext())
