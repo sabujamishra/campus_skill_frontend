@@ -95,7 +95,8 @@ public class RegisterFragment extends Fragment {
                                 sessionManager.saveUserDetails(
                                         response.body().getData().getUser().getId(),
                                         response.body().getData().getUser().getName(),
-                                        response.body().getData().getUser().getProfileImage()
+                                        response.body().getData().getUser().getProfileImage(),
+                                        response.body().getData().getUser().getStatus()
                                 );
                             }
 

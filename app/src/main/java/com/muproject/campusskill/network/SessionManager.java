@@ -14,6 +14,7 @@ public class SessionManager {
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_USER_IMAGE = "user_image";
+    private static final String KEY_USER_STATUS = "user_status";
     
     private SharedPreferences sharedPreferences;
 
@@ -50,11 +51,12 @@ public class SessionManager {
     }
 
     // User details save karne ke liye
-    public void saveUserDetails(int id, String name, String imageUrl) {
+    public void saveUserDetails(int id, String name, String imageUrl, String status) {
         sharedPreferences.edit()
                 .putInt(KEY_USER_ID, id)
                 .putString(KEY_USER_NAME, name)
                 .putString(KEY_USER_IMAGE, imageUrl)
+                .putString(KEY_USER_STATUS, status)
                 .apply();
     }
 
@@ -68,6 +70,10 @@ public class SessionManager {
 
     public String getUserImage() {
         return sharedPreferences.getString(KEY_USER_IMAGE, null);
+    }
+
+    public String getUserStatus() {
+        return sharedPreferences.getString(KEY_USER_STATUS, null);
     }
 
     // Logout karne par token delete karne ke liye

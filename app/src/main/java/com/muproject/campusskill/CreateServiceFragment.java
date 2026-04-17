@@ -217,9 +217,6 @@ public class CreateServiceFragment extends Fragment {
                     if (serviceId != -1 && selectedImageUri != null) {
                         pd.setMessage("Uploading thumbnail...");
                         uploadAndLinkImage(serviceId, pd, title, desc, catId, price, time);
-                    } else if (selectedImageUri != null) {
-                        pd.setMessage("Detecting new service ID...");
-                        fetchLatestServiceAndUpload(pd, title, desc, catId, price, time);
                     } else {
                         pd.dismiss();
                         finishFlow("Success!");
@@ -237,39 +234,7 @@ public class CreateServiceFragment extends Fragment {
         });
     }
 
-    private void fetchLatestServiceAndUpload(android.app.ProgressDialog pd, String title, String desc, int catId, double price, int time) {
-        RetrofitClient.getApiService().getMyServices().enqueue(new Callback<ServiceListResponse>() {
-            @Override
-            public void onResponse(Call<ServiceListResponse> call, Response<ServiceListResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                    List<Service> myServices = response.body().getData();
-                    int latestId = -1;
-                    for (Service s : myServices) {
-                        if (s.getTitle().equalsIgnoreCase(title) && s.getId() > latestId) latestId = s.getId();
-                    }
-                    if (latestId == -1 && !myServices.isEmpty()) {
-                        for (Service s : myServices) if (s.getId() > latestId) latestId = s.getId();
-                    }
 
-                    if (latestId != -1) {
-                        pd.setMessage("Uploading thumbnail...");
-                        uploadAndLinkImage(latestId, pd, title, desc, catId, price, time);
-                    } else {
-                        pd.dismiss();
-                        finishFlow("Service created, but could not detect ID.");
-                    }
-                } else {
-                    pd.dismiss();
-                    finishFlow("Service created, but failed to fetch ID list.");
-                }
-            }
-            @Override
-            public void onFailure(Call<ServiceListResponse> call, Throwable t) {
-                pd.dismiss();
-                finishFlow("Fetch list network error.");
-            }
-        });
-    }
 
     private void uploadAndLinkImage(int serviceId, android.app.ProgressDialog pd, String title, String desc, int catId, double price, int time) {
         try {

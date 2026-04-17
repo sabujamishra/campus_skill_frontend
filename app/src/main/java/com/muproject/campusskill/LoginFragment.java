@@ -81,7 +81,8 @@ public class LoginFragment extends Fragment {
                             sessionManager.saveToken(response.body().getData().getToken());
                             sessionManager.saveUserDetails(response.body().getData().getUser().getId(), 
                                     response.body().getData().getUser().getName(),
-                                    response.body().getData().getUser().getProfileImage());
+                                    response.body().getData().getUser().getProfileImage(),
+                                    response.body().getData().getUser().getStatus());
                             
                             // Remember Me off hone par app band hone par token clear hoga
                             sessionManager.setRememberMe(cbRememberMe.isChecked());
